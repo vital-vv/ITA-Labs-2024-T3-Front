@@ -1,6 +1,6 @@
 import '../assets/styles/nullStyles.module.css'
-import Lotslist from './Lotslist'
-import Footer from './Footer'
+import Lotslist from './Lotslist/Lotslist'
+import Footer from './Footer/Footer'
 
 function App() {
 

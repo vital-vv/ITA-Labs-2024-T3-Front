@@ -1,7 +1,7 @@
-import Filter from './Filter';
-import Main from './Main';
-import classes from '../assets/styles/Content.module.scss';
-import LoadMore from './LoadMore';
+import Filter from '../Filter/Filter';
+import Main from '../Mainlotslist/Mainlotslist';
+import classes from './Content.module.scss';
+import LoadMore from '../Loadmore/LoadMore';
 
 const Content = () => {
   return (

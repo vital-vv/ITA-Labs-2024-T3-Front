@@ -1,4 +1,4 @@
-import classes from '../assets/styles/Labelforfilter.module.scss';
+import classes from './Labelforfilter.module.scss';
 
 const LabelForFilter = (props) => {
   return (

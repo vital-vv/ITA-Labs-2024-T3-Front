@@ -1,4 +1,4 @@
-import classes from '../assets/styles/Buttonfilter.module.scss'
+import classes from './Buttonfilter.module.scss'
 
 const Buttonfilter = () => {
   return (
@@ -21,5 +21,4 @@ const Buttonfilter = () => {
     </>
   );
 };
-
 export default Buttonfilter;

@@ -1,4 +1,4 @@
-import classes from '../assets/styles/LoadMore.module.scss'
+import classes from './LoadMore.module.scss'
 
 function LoadMore() {
   return (

@@ -1,5 +1,5 @@
-import classes from '../assets/styles/Choseoptions.module.scss';
-import Selector from './Selector'
+import classes from './Choseoptions.module.scss';
+import Selector from '../Selector/Selector'
 
 function ChoseOptions() {
   return (

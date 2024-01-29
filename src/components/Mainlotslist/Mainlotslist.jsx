@@ -1,5 +1,5 @@
-import ChoseOptions from "./Choseoptions"
-import Goods  from "./Goods"
+import ChoseOptions from "../Choseoptions/Choseoptions"
+import Goods  from "../Goods/Goods"
 
 const Main = () => {
     return (

@@ -1,4 +1,4 @@
-import classes from '../assets/styles/label.module.scss';
+import classes from './label.module.scss';
 
 function Label() {
   return (

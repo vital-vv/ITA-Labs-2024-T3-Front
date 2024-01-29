@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import classes from '../assets/styles/ElementForFilter.module.scss';
+import classes from './ElementForFilter.module.scss';
 
 const ElementForFilter = (props) => {
   const [isChecked, setIsChecked] = useState(false);

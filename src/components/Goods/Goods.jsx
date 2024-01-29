@@ -1,5 +1,5 @@
-import classes from '../assets/styles/Goods.module.scss';
-import photo from './image_15.png';
+import classes from './Goods.module.scss';
+import photo from '../../assets/images/image_15.png';
 
 function Goods() {
   return (

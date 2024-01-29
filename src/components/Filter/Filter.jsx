@@ -1,10 +1,10 @@
-import classes from '../assets/styles/Filter.module.scss';
-import ElementForFilter from './Elementforfilter';
-import RSlider from './Slider';
-import NumberInput from './Numberinput';
-import LabelForFilter from './Labelforfilter';
-import MoreFilter from './Morefilter';
-import FilterSizing from './Filtersizing';
+import classes from './Filter.module.scss';
+import ElementForFilter from '../Elementforfilter/Elementforfilter';
+import RSlider from '../Slider/Slider';
+import NumberInput from '../Numberinput/Numberinput';
+import LabelForFilter from '../Labelforfilter/Labelforfilter';
+import MoreFilter from '../Morefilter/Morefilter';
+import FilterSizing from '../Filtersizing/Filtersizing';
 import {
   apples,
   packages,
@@ -12,8 +12,8 @@ import {
   sizing,
   quantity,
   valutes,
-} from './dataoffilter';
-import Buttonfilter from './Buttonfilter';
+} from '../dataoffilter';
+import Buttonfilter from '../Buttonfilter/Buttonfilter';
 import { useState } from 'react';
 
 const Filter = () => {

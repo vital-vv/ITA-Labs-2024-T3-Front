@@ -1,4 +1,4 @@
-import classes from '../assets/styles/Morefilter.module.scss';
+import classes from './Morefilter.module.scss';
 
 const MoreFilter = (props) => {
   return (

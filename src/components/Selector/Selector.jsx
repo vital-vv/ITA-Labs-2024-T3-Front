@@ -1,4 +1,4 @@
-import classes from '../assets/styles/selector.module.scss';
+import classes from './selector.module.scss';
 
 export default function Selector() {
   return (

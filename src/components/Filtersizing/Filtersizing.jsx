@@ -1,4 +1,4 @@
-import classes from '../assets/styles/Filtersizing.module.scss';
+import classes from './Filtersizing.module.scss';
 
 const FilterSizing = (props) => {
   return (

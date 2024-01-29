@@ -1,6 +1,6 @@
-import Label from './Label'
-import Content from './Content.jsx'
-import classes from '../assets/styles/Lotslist.module.scss'
+import Label from '../Label/Label.jsx'
+import Content from '../Content/Content.jsx'
+import classes from './Lotslist.module.scss'
 
 function Lotslist() {
     return (
