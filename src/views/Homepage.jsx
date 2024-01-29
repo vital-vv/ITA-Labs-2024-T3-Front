@@ -1,9 +1,10 @@
+// import styles from './Homepage.module.scss';
 function Homepage() {
 
     return (
-        <>
-            Vegetables
-        </>
+        <section >
+            home
+        </section>
     )
 }
 
