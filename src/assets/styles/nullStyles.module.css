@@ -31,6 +31,8 @@ body {
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
+    font-family: 'IBM Plex Sans', sans-serif;
+    background-color: #F2F5F5;
 }
 
 ul[class],
@@ -52,4 +54,8 @@ button,
 textarea,
 select {
     font: inherit;
+}
+
+hr {
+    margin: 0;
 }

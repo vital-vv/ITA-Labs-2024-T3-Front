@@ -1,0 +1,38 @@
+.sizing {
+  margin-top: 40px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  span {
+    display: inline-block;
+    color: #38999b;
+    font-weight: 400;
+  }
+  p {
+    display: flex;
+    align-items: center;
+  }
+  p:first-child {
+    justify-content: flex-start;
+  }
+  p:last-child {
+    justify-content: flex-end;
+  }
+}
+
+.sizing span:first-of-type {
+  margin-right: 8px;
+}
+
+.sizing span:last-of-type {
+  margin-left: 8px;
+}
+
+.labelOfSize {
+  flex-grow: 1;
+}

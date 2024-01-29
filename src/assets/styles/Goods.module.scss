@@ -1,0 +1,158 @@
+.goods {
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
+}
+
+.goods:hover .purchasing {
+    visibility: visible;
+}
+
+.goods:hover {
+    opacity: 1;
+}
+
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50vw;
+}
+
+.labelOfGood {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.15px;
+}
+
+.data {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  p:first-child {
+    padding: 4px 8px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    background-color: #eef7ff;
+    border-radius: 4px;
+    color: #2978b8;
+    svg {
+      display: block;
+    }
+  }
+  p:last-child {
+    color: #798787;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+  }
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dataOfAd {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+  color: #798787;
+}
+
+.bet {
+  margin-left: auto;
+  div:first-child {
+    display: flex;
+  }
+}
+
+@mixin big-font {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 140% */
+  letter-spacing: 0.15px;
+}
+
+@mixin smallFont {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: 0.15px;
+}
+
+.cost {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  p {
+    @include big-font;
+    padding-right: 30px;
+  }
+  p:first-child {
+    color: #f87e25;
+  }
+  p:last-child {
+    @include smallFont;
+  }
+}
+
+.perKg {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  p:first-child {
+    @include big-font;
+  }
+  p:last-child {
+    padding-right: 25px;
+  }
+}
+
+.purchasing {
+  display: flex;
+  margin-top: 24px;
+  gap: 8px;
+  width: 100%;
+  visibility: hidden;
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 2px;
+    border: 1px solid #38999b;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.3px;
+    border-radius: 2px;
+  }
+  svg {
+    display: block;
+  }
+  div:first-child {
+    color: #38999b;
+    padding-right: 0 10px;
+  }
+  div:last-child {
+    background-color: #38999b;
+    color: white;
+  }
+}

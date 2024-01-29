@@ -1,0 +1,38 @@
+@mixin aligner($gap) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+span {
+  display: inline-block;
+}
+
+svg {
+  display: block;
+}
+
+.load {
+  @include aligner(0);
+}
+
+.buttonForLoad {
+  @include aligner(12px);
+  flex-grow: 1;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  color: #38999B;
+}
+
+.page {
+  @include aligner(4px);
+  padding: 9px 12px;
+  :first-child {
+    padding-right: 5px;
+  }
+}
