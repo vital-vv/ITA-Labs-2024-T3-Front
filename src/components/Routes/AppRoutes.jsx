@@ -1,11 +1,11 @@
 import {Routes,Route} from 'react-router-dom';
-import {Homepage} from '../../views/Homepage/Homepage.jsx';
+import {HomePage} from '../../views/HomePage/HomePage.jsx';
 
 function AppRoutes() {
 
     return (
         <Routes>
-            <Route index element={<Homepage/>}/>
+            <Route index element={<HomePage/>}/>
         </Routes>
     )
 }

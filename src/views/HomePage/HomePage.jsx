@@ -1,10 +1,10 @@
-import styles from './Homepage.module.scss';
+import styles from './HomePage.module.scss';
 import {SideBar} from '../../components/SideBar/SideBar.jsx';
 import {Categories} from '../../components/Categories/Categories.jsx';
 import {SubcategoryItem} from '../../components/SubcategoryItem/SubcategoryItem.jsx';
 
 
-function Homepage() {
+function HomePage() {
 
     return (
         <>
@@ -19,4 +19,4 @@ function Homepage() {
     )
 }
 
-export {Homepage}
+export {HomePage}
