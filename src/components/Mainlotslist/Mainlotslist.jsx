@@ -1,7 +1,7 @@
 import ChoseOptions from "../ChoseOptions/ChoseOptions"
 import Goods  from "../Goods/Goods"
 
-const Main = () => {
+const MainLotsList = () => {
     return (
         <div>
             <ChoseOptions/>
@@ -14,4 +14,4 @@ const Main = () => {
     )
 }
 
-export default Main
+export default MainLotsList

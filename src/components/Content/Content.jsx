@@ -1,5 +1,5 @@
 import Filter from '../Filter/Filter';
-import Main from '../MainLotsList/MainLotsList';
+import MainLotsList from '../MainLotsList/MainLotsList';
 import classes from './Content.module.scss';
 import LoadMore from '../LoadMore/LoadMore';
 
@@ -8,7 +8,7 @@ const Content = () => {
     <div>
       <main>
         <Filter classname={classes.filter} />
-        <Main classname={classes.content} />
+        <MainLotsList classname={classes.content} />
       </main>
       <LoadMore />
     </div>
