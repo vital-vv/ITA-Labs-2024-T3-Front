@@ -1,17 +1,15 @@
-import styles from './SideBar.module.scss'
-function SideBar() {
+import styles from './SideBar.module.scss';
+import {subCategories} from '../../utils/constants.js';
 
+function SideBar() {
+    const filtredCategory = subCategories.filter(product => product.category === 'Vegetables');
     return (
-        <section className={styles.d}>
-            <p>Cabbage</p>
-            <p>Cucumbers</p>
-            <p>Onion</p>
-            <p>Parsley</p>
-            <p>Potatos</p>
-            <p>Tomatoes</p>
-        </section>
+        <div className={styles.sidebar}>
+            {filtredCategory.map((item) => (
+                <p key={item.id}>{item.name}</p>
+            ))}
+        </div>
     )
 }
-
 
 export {SideBar}

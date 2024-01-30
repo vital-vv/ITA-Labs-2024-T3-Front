@@ -8,26 +8,19 @@ nav {
   justify-content: stretch;
   align-items: center;
 
-  & .chosen{
-    border-bottom: 3px solid #51ACAE;
-  }
-
-
-  a {
+  .category {
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
     justify-content: center;
     color: black;
-    //border-bottom: 3px solid #51ACAE;
     text-decoration: none;
-    &.active{
-      border-bottom: 3px solid #51ACAE;
-    }
 
-    p{ font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 500;}
+    p {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 500;
+    }
 
     &:hover {
       color: #595959;
@@ -39,5 +32,32 @@ nav {
       margin: 0 12px 0 0;
     }
   }
+
 }
 
+.active {
+  border-bottom: 3px solid #51ACAE;
+}
+
+input[type=radio]{
+  display: none;
+
+}
+
+form{
+  cursor: pointer;
+  display: inline-block;
+
+}
+
+form label{
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 500;
+  display: inline-block;
+  cursor: pointer;
+
+}
+
+form:has(input[type=radio]:checked){
+  border-bottom: 3px solid #51ACAE;
+}
