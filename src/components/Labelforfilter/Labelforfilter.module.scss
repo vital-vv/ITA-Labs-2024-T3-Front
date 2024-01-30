@@ -1,0 +1,16 @@
+.variety {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0;
+    align-items: center;
+    p {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: 0.4px;
+    }
+    span {
+        display: inline-block;
+    }    
+}

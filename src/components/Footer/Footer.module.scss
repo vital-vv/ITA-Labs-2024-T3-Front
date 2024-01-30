@@ -1,0 +1,76 @@
+$mainMargin: 4vw;
+@mixin aligner() {
+  display: flex;
+  align-items: center;
+}
+
+@mixin fontDeclaration($font-size, $font-weight, $letter-spacing, $color) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: normal;
+  letter-spacing: $letter-spacing;
+  color: $color;
+}
+
+.footer {
+  background-color: #183c48;
+  margin-top: 5px;
+  @include aligner();
+  div:first-child {
+    margin-left: $mainMargin;
+  }
+}
+
+.logo {
+  @include fontDeclaration(24px, 500, 0.4px, #e6e6e6);
+  margin-bottom: 12px;
+}
+
+.rights {
+  @include fontDeclaration(14px, 400, 0.15px, #798787);
+  line-height: 20px;
+}
+
+.about {
+  @include fontDeclaration(16px, 400, 0.15px, #ffffff);
+  display: flex;
+  justify-content: flex-start;
+  gap: 120px;
+  line-height: 24px;
+  flex-grow: 1;
+  margin: 16px 0;
+  p:first-child {
+    color: #798787;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.networks {
+  display: flex;
+  gap: 8px;
+  margin-right: $mainMargin;
+  span {
+    padding: 12px;
+    @include aligner();
+  }
+}
+
+.contact {
+  @include aligner();
+  @include fontDeclaration(18px, 500, 0.4px, #51acae);
+  gap: 12px;
+  justify-content: start;
+  line-height: 28px;
+  span:first-child {
+    display: inline-block;
+    padding-right: 0;
+  }
+  span:last-child {
+    display: inline-block;
+    padding-left: 0;
+  }
+}
