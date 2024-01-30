@@ -1,10 +1,10 @@
 import Label from '../Label/Label.jsx'
 import Content from '../Content/Content.jsx'
-import classes from './Lotslist.module.scss'
+import classes from './LotsList.module.scss'
 
-function Lotslist() {
+function LotsList() {
     return (
-    <div className={classes.lotslist}>
+    <div className={classes.lotsList}>
         <Label />
         <hr />
         <Content />
@@ -12,4 +12,4 @@ function Lotslist() {
     );
 }
 
-export default Lotslist
+export default LotsList

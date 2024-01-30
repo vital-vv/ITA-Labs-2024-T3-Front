@@ -1,12 +1,12 @@
 import '../assets/styles/nullStyles.module.css'
-import Lotslist from './Lotslist/Lotslist'
+import LotsList from './Lotslist/LotsList'
 import Footer from './Footer/Footer'
 
 function App() {
 
   return (
     <>
-      <Lotslist /> 
+      <LotsList /> 
       <Footer />
     </>
   )

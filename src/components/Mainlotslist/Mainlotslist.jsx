@@ -1,4 +1,4 @@
-import ChoseOptions from "../Choseoptions/Choseoptions"
+import ChoseOptions from "../ChoseOptions/ChoseOptions"
 import Goods  from "../Goods/Goods"
 
 const Main = () => {

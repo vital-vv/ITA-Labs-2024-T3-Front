@@ -1,4 +1,4 @@
-import classes from './Numberinput.module.scss';
+import classes from './NumberInput.module.scss';
 
 const NumberInput = (props) => {
   
