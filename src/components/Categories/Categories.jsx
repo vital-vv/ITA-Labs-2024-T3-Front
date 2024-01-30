@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import categoryIcon from '../../assets/images/categoryIcon.png';
 import styles from './Categories.module.scss';
 import {useEffect} from 'react';
-import {getCategories} from '../featuers/categories/categoriesSlice.js';
+import {getCategories} from '../features/categories/categoriesSlice.js';
 
 function Categories() {
 
