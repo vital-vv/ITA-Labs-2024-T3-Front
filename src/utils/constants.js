@@ -29,7 +29,7 @@ export const subCategories = [
         id: 5,
         name: 'Potatoes',
         category: 'Vegetables',
-        url: 'src/assets/images/potatos.png',
+        url: 'src/assets/images/potatoes.png',
     },
     {
         id: 6,

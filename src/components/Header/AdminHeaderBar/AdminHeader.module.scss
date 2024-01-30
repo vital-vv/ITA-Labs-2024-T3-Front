@@ -1,0 +1,16 @@
+.rightBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+  width: 120px;
+
+  .badge{
+    cursor: pointer;
+  }
+
+  img{
+    height: 21px;
+    margin: 2px;
+  }
+}
