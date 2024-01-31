@@ -3,7 +3,11 @@
   align-items: center;
   justify-content: space-between;
   font-weight: 400;
-  width: 120px;
+  width: 15%;
+  p{
+    font-weight: 500;
+    margin: auto 8px;
+  }
 
   .badge{
     cursor: pointer;

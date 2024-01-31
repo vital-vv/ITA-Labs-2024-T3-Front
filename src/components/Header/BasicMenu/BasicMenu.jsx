@@ -1,8 +1,12 @@
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+
+import styles from './BasicMenu.module.scss';
+import menuIcon from '../../../assets/images/menuIcon.png';
+import {ROUTES} from '../../../utils/routes.js';
+
+import {NavLink} from 'react-router-dom';
 import {useState} from 'react';
-import menuIcon from '../../../assets/images/menuIcon.png'
 
 export default function BasicMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -23,9 +27,10 @@ export default function BasicMenu() {
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-               <img src={menuIcon} alt={menuIcon}/>
+               <img className={styles.img} src={menuIcon} alt={menuIcon}/>
             </Button>
             <Menu
+                className={styles.menu}
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -34,9 +39,9 @@ export default function BasicMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <NavLink to={ROUTES.HOME} onClick={handleClose}>Profile</NavLink>
+                <NavLink to={ROUTES.HOME} onClick={handleClose}>My account</NavLink>
+                <NavLink to={ROUTES.HOME} onClick={handleClose}>Logout</NavLink>
             </Menu>
         </div>
     );
