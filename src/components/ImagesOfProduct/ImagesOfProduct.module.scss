@@ -1,0 +1,27 @@
+@mixin positionArrow (){
+    position: absolute;
+    top:47%;
+}
+
+.imagesOfProduct {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 40%;
+}
+
+.bigProduct {
+    max-height: 62vh;
+    display: block;
+    position: relative;
+}
+
+.arrowLeft{
+    @include positionArrow();
+    left: 1%;
+}
+
+.arrowRight{
+    @include positionArrow();
+    right: 1%;
+}
