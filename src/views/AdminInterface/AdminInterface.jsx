@@ -1,12 +1,13 @@
 import styles from './AdminInterface.module.scss';
-import Footer from '../../components/Footer/Footer.jsx';
+import {UserTable} from '../../components/TableOfUsers/UserTable.jsx';
 
 function AdminInterface() {
 
     return (
         <div className={styles.adminContainer}>
-            <p>Admin</p>
-            <Footer/>
+            <div className={styles.adminPanel}>
+                <UserTable/>
+            </div>
         </div>
     )
 }
