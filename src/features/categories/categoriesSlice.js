@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {BASE_URL} from '../../../utils/constants.js';
+import {BASE_URL} from '../../utils/constants.js';
 import axios from 'axios';
 
 export const getCategories = createAsyncThunk(
@@ -9,7 +9,6 @@ export const getCategories = createAsyncThunk(
             const res = await axios(`${BASE_URL}/categories`);
             return res.data;
         } catch (err){
-            console.log(err);  // eslint-disable-line
             return thunkAPI.rejectWithValue(err);
         }
     })

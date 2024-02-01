@@ -22,33 +22,15 @@ header {
   .logo {
     display: flex;
     align-items: center;
+    cursor: pointer;
     height: 100%;
     margin: 0 40px 0 0;
-
 
     .logoName {
       color: #183C48;
       font-size: 24px;
       margin: 0 0 0 8px;
       font-weight: 500;
-    }
-  }
-
-  .rightBar {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 400;
-    width: 284px;
-
-    div {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      img {
-        margin: 0 0 0 8px;
-        height: 20px;
-      }
     }
   }
 

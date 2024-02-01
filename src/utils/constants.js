@@ -1,5 +1,4 @@
 export const BASE_URL = 'https://api.escuelajs.co/api/v1';
-
 export const subCategories = [
     {
         id: 1,
@@ -29,7 +28,7 @@ export const subCategories = [
         id: 5,
         name: 'Potatoes',
         category: 'Vegetables',
-        url: 'src/assets/images/potatos.png',
+        url: 'src/assets/images/potatoes.png',
     },
     {
         id: 6,
