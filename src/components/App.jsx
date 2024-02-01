@@ -3,16 +3,16 @@ import { AppRoutes } from './Routes/AppRoutes.jsx';
 import { Header } from './Header/Header.jsx';
 import LotsList from './LotsList/LotsList';
 import Footer from './Footer/Footer';
-// import LotView from './LotView/LotView.jsx'
+import LotView from './LotView/LotView.jsx'
 
 function App() {
   return (
-    <div className={styles.routes}>
+    <div>
       <Header />
       <LotView />
       {/* <AppRoutes /> */}
       {/* <LotsList />  */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

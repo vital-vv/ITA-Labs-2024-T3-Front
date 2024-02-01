@@ -118,7 +118,7 @@
   margin-top: 24px;
   gap: 8px;
   width: 100%;
-  visibility: hidden;
+  // visibility: hidden;
   > div {
     @include fontStyle(14px, 500, 20px , 0.3px );
     display: flex;

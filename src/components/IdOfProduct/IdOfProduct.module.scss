@@ -1,0 +1,37 @@
+@mixin fontStyle($size, $weight, $height, $spacing) {
+  font-size: $size;
+  font-style: normal;
+  font-weight: $weight;
+  line-height: $height;
+  letter-spacing: $spacing;
+}
+
+.data {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  p:first-child {
+    padding: 4px 8px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    background-color: #eef7ff;
+    border-radius: 4px;
+    color: #2978b8;
+    svg {
+      display: block;
+    }
+  }
+  p:last-child {
+    color: #798787;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+  }
+}
+
+.labelOfGood {
+  @include fontStyle(20px, 500, 28px, 0.15px);
+}
