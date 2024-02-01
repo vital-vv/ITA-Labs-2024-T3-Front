@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       <Header />
-      <LotView />
+      {/* <LotView /> */}
       {/* <AppRoutes /> */}
       {/* <LotsList />  */}
       <Footer />

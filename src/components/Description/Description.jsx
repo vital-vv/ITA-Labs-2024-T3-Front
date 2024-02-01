@@ -52,6 +52,7 @@ function Description() {
             <Cart />
             Buy for $12,000
           </div>
+          {/* This button won't render if it's user  */}
           <div>
             <Trash />
             Delete
