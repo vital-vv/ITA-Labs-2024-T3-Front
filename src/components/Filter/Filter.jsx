@@ -13,7 +13,7 @@ import {
   quantity,
   valutes,
 } from '../dataoffilter';
-import Buttonfilter from '../Buttonfilter/Buttonfilter';
+import Buttonfilter from '../ButtonFilter/ButtonFilter';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
