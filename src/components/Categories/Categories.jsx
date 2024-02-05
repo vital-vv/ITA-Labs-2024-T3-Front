@@ -3,7 +3,7 @@ import categoryIcon from '../../assets/images/categoryIcon.png';
 import styles from './Categories.module.scss';
 import { useEffect } from 'react';
 import { getCategories } from '../../features/categories/categoriesSlice.js';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ROUTES } from '../../utils/routes.js';
 function Categories() {
   const dispatch = useDispatch();
@@ -20,10 +20,10 @@ function Categories() {
         <nav className={styles.categories}>
           {list.map((_, index) => (
               <div key={list[index].id} className={styles.category}>
-                <Link to={ROUTES.LOTSLIST}>
+                <NavLink to={ROUTES.LOTSLIST}>
                 <img src={categoryIcon} alt={categoryIcon} />
                 <p> {list[index].name}</p>
-                </Link>
+                </NavLink>
             </div>
           ))}
         </nav>
