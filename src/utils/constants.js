@@ -1,40 +1,50 @@
 export const BASE_URL = 'https://api.escuelajs.co/api/v1';
+// export const BASE_URL = 'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api';
+
+import cabbage from '../assets/images/cabbage.png'
+import cucumber from '../assets/images/cucumber.png'
+import onion from '../assets/images/onion.png'
+import parsley from '../assets/images/parsley.png'
+import potatoes from '../assets/images/potatoes.png'
+import tomatoes from '../assets/images/tomatoes.png'
+
+
 export const subCategories = [
     {
         id: 1,
         name: 'Cabbage',
         category: 'Vegetables',
-        url: 'src/assets/images/cabbage.png',
+        url: `${cabbage}`,
     },
     {
         id: 2,
         name: 'Cucumber',
         category: 'Vegetables',
-        url: 'src/assets/images/cucumber.png',
+        url: `${cucumber}`,
     },
     {
         id: 3,
         name: 'Onion',
         category: 'Vegetables',
-        url: 'src/assets/images/onion.png',
+        url: `${onion}`,
     },
     {
         id: 4,
         name: 'Parsley',
         category: 'Vegetables',
-        url: 'src/assets/images/parsley.png',
+        url: `${parsley}`,
     },
     {
         id: 5,
         name: 'Potatoes',
         category: 'Vegetables',
-        url: 'src/assets/images/potatoes.png',
+        url: `${potatoes}`,
     },
     {
         id: 6,
         name: 'Tomatoes',
         category: 'Vegetables',
-        url: 'src/assets/images/tomatoes.png',
+        url: `${tomatoes}`,
     },
     {
         id: 1,
