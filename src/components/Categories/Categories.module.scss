@@ -2,7 +2,7 @@ nav {
   width: 90%;
   height: 67px;
   background-color: white;
-  margin: auto;
+  margin: 0 auto;
   box-shadow: 0 5px 17px -8px rgba(169, 169, 169, 0.37) inset;
   display: flex;
   justify-content: stretch;
@@ -30,6 +30,10 @@ nav {
       width: 24px;
       height: 24px;
       margin: 0 12px 0 0;
+    }
+
+    a {
+      display: flex;
     }
   }
 

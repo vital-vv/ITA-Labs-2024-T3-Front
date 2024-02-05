@@ -10,7 +10,7 @@ function HomePage() {
             <Categories/>
             <div className={styles.homeContent}>
                 <SideBar/>
-                <main>
+                <main className={styles.categories}>
                     <SubcategoryItem/>
                 </main>
             </div>

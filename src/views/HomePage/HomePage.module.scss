@@ -5,10 +5,12 @@ width: 100%;
 .homeContent{
   display: flex;
   width: 90%;
-  margin: auto;
+  margin: 0 auto;
 }
 
-main{
+.categories{
   width: 100%;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 }

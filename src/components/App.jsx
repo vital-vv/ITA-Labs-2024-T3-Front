@@ -1,10 +1,7 @@
 import '../assets/styles/nullStyles.module.css';
-// import styles from './App.module.scss';
 import { AppRoutes } from './Routes/AppRoutes.jsx';
 import { Header } from './Header/Header.jsx';
-// import LotsList from './LotsList/LotsList';
 import Footer from './Footer/Footer';
-import LotView from './LotView/LotView.jsx';
 import classes from '../assets/styles/nullStyles.module.css';
 
 function App() {
@@ -12,9 +9,7 @@ function App() {
     <div>
       <div className={classes.main}>
         <Header />
-        {/* <LotView /> */}
-        {/* <AppRoutes /> */}
-        {/* <LotsList />  */}
+        <AppRoutes />
       </div>
       <Footer />
     </div>
