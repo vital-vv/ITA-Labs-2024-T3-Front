@@ -1,7 +1,6 @@
 import styles from './SubcategoryItem.module.scss';
 import {subCategories} from '../../utils/constants.js';
 
-
 function SubcategoryItem() {
 
     const filtredCategory = subCategories.filter(product => product.category === 'Vegetables');

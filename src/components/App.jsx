@@ -1,5 +1,4 @@
 import '../assets/styles/nullStyles.module.css';
-// import styles from './App.module.scss';
 import { AppRoutes } from './Routes/AppRoutes.jsx';
 import { Header } from './Header/Header.jsx';
 // import LotsList from './LotsList/LotsList';
@@ -13,7 +12,7 @@ function App() {
       <div className={classes.main}>
         <Header />
         {/* <LotView /> */}
-        {/* <AppRoutes /> */}
+         <AppRoutes />
         {/* <LotsList />  */}
       </div>
       <Footer />

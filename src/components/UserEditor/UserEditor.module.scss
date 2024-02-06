@@ -1,0 +1,138 @@
+$blueColor: #38999B;
+$redColor: #D72C00;
+
+@mixin greenBtn {
+  border: 2px solid $blueColor;
+  color: $blueColor;
+  &:hover {
+    color: #32888a;
+    border: 2px solid #32888a;
+  }
+}
+
+.userEditorWindow {
+  display: flex;
+  width: 70%;
+  box-sizing: content-box;
+  height: 568px;
+  margin: auto;
+  background-color: white;
+
+  .userBox {
+    padding: 25px;
+
+    .editTitle {
+      font-weight: 500;
+      font-size: 18px;
+
+      span {
+        color: $blueColor;
+        margin: 0 4px
+      }
+    }
+
+    .userData {
+      display: flex;
+      width: 576px;
+      margin: 25px 0 0 0;
+
+      .avatar {
+        width: 160px;
+        height: 160px;
+        border-radius: 100px;
+        background-color: #F87E25;
+        text-align: center;
+        margin: 0 40px 0 0;
+
+        .nickname {
+          color: white;
+          font-weight: 400;
+          font-size: 70px;
+          margin: 30px auto;
+        }
+      }
+
+      select {
+        width: 120px;
+        height: 100%;
+        border-radius: 4px;
+        border-color: #a2a2a2;
+        padding: 0 0 0 5px;
+      }
+
+      .inputContainer {
+        display: flex;
+        flex-direction: column;
+        width: 376px;
+        height: 300px;
+        justify-content: space-between;
+
+        input {
+          height: 44px;
+          padding: 0 0 0 5px;
+        }
+
+        .numberContainer {
+          display: flex;
+          justify-content: space-between;
+
+          .phoneNumber {
+            width: 60%;
+          }
+        }
+
+        .editInput {
+          width: 100%;
+        }
+      }
+
+      .groupBtn {
+        display: flex;
+        justify-content: flex-end;
+
+        .btn {
+          height: 40px;
+          background-color: white;
+          font-weight: 500;
+          display: flex;
+          cursor: pointer;
+        }
+
+        .deleteBtn {
+          color: $redColor;
+          width: 132px;
+          border-color: $redColor;
+          margin: 0 0 0 40px;
+
+          &:hover {
+            color: #9b2000;
+            border: 2px solid #b02300;
+          }
+
+          img {
+            width: 28px;
+            margin: 5px 0 5px 2px;
+          }
+
+          p {
+            margin: 7px 0 7px 2px;
+          }
+        }
+
+        .editBtn {
+          width: 132px;
+          @include greenBtn;
+
+          p {
+            margin: 7px 0 7px 12px;
+          }
+
+          img {
+            margin: 9px 0 10px 10px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+}

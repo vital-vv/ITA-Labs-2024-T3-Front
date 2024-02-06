@@ -2,11 +2,16 @@ nav {
   width: 90%;
   height: 67px;
   background-color: white;
-  margin: auto;
+  margin: 0 auto;
   box-shadow: 0 5px 17px -8px rgba(169, 169, 169, 0.37) inset;
   display: flex;
   justify-content: stretch;
   align-items: center;
+
+
+  .activeCategory{
+    border-bottom: 2px solid #51ACAE;
+  }
 
   .category {
     display: flex;
@@ -16,6 +21,7 @@ nav {
     justify-content: center;
     color: black;
     text-decoration: none;
+    cursor: pointer;
 
     p {
       font-family: 'IBM Plex Sans', sans-serif;
@@ -32,32 +38,4 @@ nav {
       margin: 0 12px 0 0;
     }
   }
-
-}
-
-.active {
-  border-bottom: 3px solid #51ACAE;
-}
-
-input[type=radio]{
-  display: none;
-
-}
-
-form{
-  cursor: pointer;
-  display: inline-block;
-
-}
-
-form label{
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 500;
-  display: inline-block;
-  cursor: pointer;
-
-}
-
-form:has(input[type=radio]:checked){
-  border-bottom: 3px solid #51ACAE;
 }
