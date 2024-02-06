@@ -14,18 +14,11 @@ import {
   valutes,
 } from '../dataoffilter';
 import Buttonfilter from '../ButtonFilter/ButtonFilter';
-import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const Filter = () => {
   const fillContainer = (array) => {
     return array.map((item) => <ElementForFilter name={item.name} key={uuidv4()}/>);
-  };
-
-  const [arrayValue, setArrayValue] = useState([]);
-
-  const setArray = (array) => {
-    setArrayValue(array);
   };
 
   return (
@@ -37,8 +30,8 @@ const Filter = () => {
           <MoreFilter options={33} />
         </div>
         <FilterSizing values={'Size, mm'} measures={sizing} />
-        <RSlider setArray={setArray} />
-        <NumberInput from={arrayValue[0]} until={arrayValue[1]} />
+        <RSlider />
+        <NumberInput />
         <LabelForFilter name={'Packaging'} />
         {fillContainer(packages)}
         <LabelForFilter name={'Location'} />

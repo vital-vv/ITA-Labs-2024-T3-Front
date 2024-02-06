@@ -1,31 +1,31 @@
 import * as React from 'react';
 import { styled, alpha, Box } from '@mui/system';
 import { Slider as BaseSlider, sliderClasses } from '@mui/base/Slider';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeSliderValues } from '../../features/filter/filterSlice';
 
-export default function RangeSlider(props) {
+export default function RangeSlider() {
+  const valueSlider = useSelector((state) => state.filter.sliderDefaultValues);
+  const dispatch = useDispatch();
 
-  const [value, setValue] = React.useState([200, 600]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  props.setArray(value);
-  
   return (
-      <Box sx={{ 
-        width: '100%' 
-        }}>
-        <Slider
-          value={value}
-          onChange={handleChange}
-          getAriaLabel={() => 'Neccessary weight'}
-          getAriaValueText={valuetext}
-          min={0}
-          max={1000}
-          disableSwap={true}
-        />
-      </Box>
+    <Box
+      sx={{
+        width: '100%',
+      }}
+    >
+      <Slider
+        value={valueSlider}
+        onChange={(event, newValue) =>
+          dispatch(changeSliderValues({ newValue }))
+        }
+        getAriaLabel={() => 'Neccessary weight'}
+        getAriaValueText={valuetext}
+        min={0}
+        max={1000}
+        disableSwap={true}
+      />
+    </Box>
   );
 }
 
