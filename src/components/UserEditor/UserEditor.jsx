@@ -1,7 +1,7 @@
 import styles from './UserEditor.module.scss';
-import {TextField} from '@mui/material';
 import editIcon from '../../assets/images/editIconGreen.png';
 import deleteIcon from '../../assets/images/deleteIcon.png';
+import InputContainerUser from '../InputContainerUser/InputContainerUser';
 
 function UserEditor() {
 
@@ -16,36 +16,8 @@ function UserEditor() {
                     <div className={styles.avatar}>
                         <div className={styles.nickname}>SF</div>
                     </div>
-                    <div className={styles.inputContainer}>
-                        <TextField
-                            id="standard-helperText"
-                            label="Name"
-                            defaultValue="Sam Foster"
-                            variant="outlined"
-                            className={styles.editInput}
-                            disabled
-                        />
-                        <TextField
-                            disabled
-                            id="outlined-disabled"
-                            label="Email"
-                            defaultValue="SamFoss92@gamil.com"
-                            className={styles.editInput}
-                        />
-                        <div className={styles.numberContainer}>
-                            <select disabled>
-                                <option>+375</option>
-                                <option>2</option>
-                            </select>
-                            <TextField
-                                disabled
-                                id="standard-helperText"
-                                label="Phone"
-                                defaultValue="297369823"
-                                variant="outlined"
-                                className={styles.phoneNumber}
-                            />
-                        </div>
+                    <div>
+                        <InputContainerUser/>
                         <div className={styles.groupBtn}>
                             <button className={`${styles.btn} ${styles.editBtn}`}>
                                 <img src={editIcon} alt={editIcon}/>

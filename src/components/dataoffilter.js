@@ -26,5 +26,6 @@ const locations = [
 const sizing = ['mm', 'cm'];
 const quantity = ['ton', 'kg', 'pcs'];
 const valutes = ['EUR', 'UZS', 'RUB'];
+const settings = ['Notify me of new messages', 'Hide my presence on the site', 'Show me Email to everyone', 'Receive promotinal notifications']
 
-export { apples, packages, locations, sizing, quantity, valutes };
+export { apples, packages, locations, sizing, quantity, valutes, settings };
