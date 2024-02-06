@@ -8,7 +8,6 @@ import parsley from '../assets/images/parsley.png'
 import potatoes from '../assets/images/potatoes.png'
 import tomatoes from '../assets/images/tomatoes.png'
 
-
 export const subCategories = [
     {
         id: 1,

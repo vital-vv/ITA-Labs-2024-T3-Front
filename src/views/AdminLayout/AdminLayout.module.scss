@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap');
+$blueColor: #38999B;
 
 .adminPanel {
   height: 100%;
@@ -31,15 +31,10 @@
 
 }
 
-
-
 .active{
   background-color: #EEF8F8;
   transition-property: border-right-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-  border-right: 3px solid #38999B;
-}
-.notActive{
-  //border-right: 3px solid white;
+  border-right: 3px solid $blueColor;
 }

@@ -1,8 +1,11 @@
 import {useDispatch, useSelector} from 'react-redux';
-import categoryIcon from '../../assets/images/categoryIcon.png';
-import styles from './Categories.module.scss';
 import {useEffect} from 'react';
+
+import styles from './Categories.module.scss';
+import categoryIcon from '../../assets/images/categoryIcon.png';
+
 import {getCategories} from '../../features/categories/categoriesSlice.js';
+// import {NavItem} from "../NavItem/NavItem.jsx";
 
 function Categories() {
 
@@ -17,10 +20,10 @@ function Categories() {
     if (list.length !== 0) {
         return (
             <>
-                <nav className={styles.categories}>
+                <nav>
                     {
                         list.map((_,index) => (
-                            <div key={list[index].id} className={styles.category}>
+                            <div id={index} key={list[index].id} className={styles.category}>
                                 <img src={categoryIcon}
                                      alt={categoryIcon}/>
                                 <p> {list[index].name}</p></div>

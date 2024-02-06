@@ -1,4 +1,5 @@
 $padding: 0 0 0 40px;
+$blueColor: #38999B;
 
 .tableContainer {
   width: 80%;
@@ -57,7 +58,7 @@ table {
 }
 
 .createUserBtn {
-  background-color: #38999B;
+  background-color: $blueColor;
   color: white;
   border: none;
   margin: 10px 0;
