@@ -14,7 +14,6 @@ function AppRoutes() {
     return (
         <Routes>
             <Route index element={<HomePage/>}/>
-            <Route path={ROUTES.ADMIN} element={<AdminInterface />} />
             <Route path={ROUTES.LOTSLIST} element={<LotsList />} />
             <Route path={ROUTES.LOTVIEW} element={<LotView />} />
             <Route path="/admin/*" element={<AdminLayout/>}>
