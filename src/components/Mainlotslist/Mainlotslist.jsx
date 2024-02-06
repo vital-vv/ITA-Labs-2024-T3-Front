@@ -4,24 +4,17 @@ import Goods from '../Goods/Goods';
 import { ROUTES } from '../../utils/routes';
 
 const MainLotsList = () => {
+
+  const items = Array.from({ length: 5 }, (_, index) => (
+    <NavLink key={index} to={ROUTES.LOTVIEW}>
+      <Goods />
+    </NavLink>
+  ));
+
   return (
     <div>
       <ChoseOptions />
-      <NavLink to={ROUTES.LOTVIEW}>
-        <Goods />
-      </NavLink>
-      <NavLink to={ROUTES.LOTVIEW}>
-        <Goods />
-      </NavLink>
-      <NavLink to={ROUTES.LOTVIEW}>
-        <Goods />
-      </NavLink>
-      <NavLink to={ROUTES.LOTVIEW}>
-        <Goods />
-      </NavLink>
-      <NavLink to={ROUTES.LOTVIEW}>
-        <Goods />
-      </NavLink>
+      {items}
     </div>
   );
 };
