@@ -3,5 +3,9 @@ export const ROUTES = {
     LOGIN: '/login',
     ADMIN: '/admin',
     LOTSLIST: '/lotslist',
-    LOTVIEW: '/lotslist/lotview'
+    LOTVIEW: '/lotslist/lotview',
+    ADMINUSERS: '/admin/users',
+    ADMINBETS: '/admin/bets',
+    ADMINACCOUNT: '/admin/account',
+    USERINFO: '/admin/users/:id',
 }

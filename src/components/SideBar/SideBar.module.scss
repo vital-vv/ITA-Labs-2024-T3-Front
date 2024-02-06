@@ -7,9 +7,9 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 400;
     cursor: pointer;
-  }
-}
 
-.activeLink {
-  border-bottom: 3px solid #51ACAE;
+    &:hover {
+      color: #595959;
+    }
+  }
 }

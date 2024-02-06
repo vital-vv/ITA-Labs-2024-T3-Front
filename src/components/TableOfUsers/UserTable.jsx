@@ -1,6 +1,6 @@
 import styles from './UserTable.module.scss';
 import editIcon from '../../assets/images/editIcon.png'
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {ROUTES} from '../../utils/routes.js';
 import {useSelector} from 'react-redux';
 
@@ -10,14 +10,14 @@ function UserTable() {
 
     if (list.length !== 0) {
         return (
-            <>
+            <div className={styles.tableContainer}>
                 <table>
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th className={styles.tableColMrg} scope="col">First Name</th>
-                        <th className={styles.tableColMrg} scope="col">Last Name</th>
-                        <th className={styles.tableColMrg} scope="col">Role</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Role</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -25,17 +25,16 @@ function UserTable() {
                     {list.map(({id, name, password, role})=>(
                         <tr key={id}>
                             <td>{id}</td>
-                            <td className={styles.tableMrg}>{name}</td>
-                            <td className={styles.tableMrg}>{password}</td>
-                            <td className={styles.tableMrg} >{role}</td>
-                            <td><img src={editIcon} alt={editIcon}/></td>
+                            <td>{name}</td>
+                            <td>{password}</td>
+                            <td>{role}</td>
+                            <td><NavLink to={ROUTES.USERINFO}><img src={editIcon} alt={editIcon}/></NavLink></td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
-
                 <Link to={ROUTES.HOME} className={styles.createUserBtn}>Create new user</Link>
-            </>
+            </div>
         )
     }
 }

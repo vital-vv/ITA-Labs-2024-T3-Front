@@ -3,6 +3,7 @@ import { subCategories } from '../../utils/constants.js';
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from '../../utils/routes.js';
 
+
 function SubcategoryItem() {
   const filtredCategory = subCategories.filter(
     (product) => product.category === 'Vegetables'
