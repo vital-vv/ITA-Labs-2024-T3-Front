@@ -1,0 +1,138 @@
+@mixin fontStyle($size, $weight, $height, $spacing) {
+  font-size: $size;
+  font-style: normal;
+  font-weight: $weight;
+  line-height: $height;
+  letter-spacing: $spacing;
+}
+
+.description {
+  flex-grow: 1;
+}
+
+.labelOfDescription {
+  @include fontStyle(32px, 400, 42px, 0.25px);
+}
+
+.shortInfo {
+  @include fontStyle(14px, 400, 20px, 0.15px);
+  display: flex;
+  justify-items: center;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #798787;
+  background-color: #f2f5f5;
+}
+
+.wrapperPurchasing {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.betBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0;
+  > div > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  p {
+    width: 50%;
+  }
+}
+
+.pricing {
+  @include fontStyle(14px, 400, 20px, 0.15px);
+  color: #798787;
+}
+
+.cost {
+  @include fontStyle(32px, 400, 42px, 0.25px);
+  :first-child {
+    color: #fb6d1d;
+  }
+}
+
+.costKg {
+  @include fontStyle(16px, 400, 24px, 0.15px);
+  color: #798787;
+}
+
+.offerSum {
+  > div {
+    padding: 10px 12px;
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 8px !important;
+    border: 1px solid #bcc3c3;
+    width: 50%;
+    border-radius: 2px;
+    height: 44px;
+  }
+  span {
+    display: inline-block;
+  }
+  input {
+    flex-grow: 1;
+    border: none;
+    width: 135%;
+    &:focus {
+      outline: none;
+    }
+  }
+  :last-child {
+    @include fontStyle(16px, 400, 24px, 0.15px);
+    color: #798787;
+  }
+}
+
+.comment {
+  @include fontStyle(12px, 400, 16px, null);
+  color: #798787;
+}
+
+.buttonManage {
+  display: flex;
+  gap: 16px;
+  > div {
+    padding: 10px 20px;
+    background-color: #38999b;
+    color: white;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    flex-grow: 1;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+  div:last-child {
+    background-color: #D40000;
+  }
+}
+
+.hammer {
+    background-color: white !important;
+    border: 1px solid #798787;
+    color: #798787 !important;
+}
+
+.tableOfInfo {
+    >div {
+        display: flex;
+        padding: 16px;
+        border-bottom: 1px solid #DDE7E7;
+        :first-child {
+            width: 50%;
+            @include fontStyle (20px, 500, 28px, 0.15px);
+            color: #798787;
+        };
+        :last-child {
+            @include fontStyle (20px, 500, 28px, 0.15px);
+        }
+    }
+}

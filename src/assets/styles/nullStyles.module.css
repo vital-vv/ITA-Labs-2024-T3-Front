@@ -35,6 +35,13 @@ body {
     background-color: #E6E6E6;
 }
 
+.main {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    min-height: 84vh;
+}
+
 ul[class],
 ol[class] {
     list-style: none;

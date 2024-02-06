@@ -3,6 +3,7 @@ import photo from '../../assets/images/apples.png';
 import Clock from '../../assets/svg/Clock';
 import Hammer from '../../assets/svg/Hammer';
 import Cart from '../../assets/svg/Cart';
+import Trash from '../../assets/svg/Trash';
 
 function Goods() {
   return (
@@ -50,6 +51,9 @@ function Goods() {
           <div>
             <Cart/>
             Buy now
+          </div>
+          <div>
+            <Trash/>
           </div>
         </div>
       </div>

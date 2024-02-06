@@ -6,11 +6,6 @@ function Label() {
   return (
     <div className={classes.label}>
       <div>
-        <div className={classes.bredCrumbs}>
-          <span className={classes.firstCategory}>Categories</span>
-          <span>&gt;</span>
-          <span className={classes.secondCategory}>Apples</span>
-        </div>
         <div className={classes.bigLabel}>Apples</div>
       </div>
       <div className={classes.buttons}>

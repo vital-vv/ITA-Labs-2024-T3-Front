@@ -1,0 +1,17 @@
+.smallPicture {
+    height: 99px;
+    width: auto;
+    border-radius: 4px;
+    margin: 4px 4px;
+    transition: opacity 0.3s ease;
+    &:hover {
+        box-shadow: 0px 0px 0px 4px #51ACAE, 0px 0px 0px 2px #FFF;
+        opacity: 0.7;
+    }
+}
+
+.wrapper {
+    display: flex;
+    gap: 16px;
+    overflow: hidden;
+}

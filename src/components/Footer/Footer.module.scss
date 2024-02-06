@@ -14,7 +14,6 @@ $mainMargin: 4vw;
 
 .footer {
   background-color: #183c48;
-  margin-top: 5px;
   @include aligner();
   div:first-child {
     margin-left: $mainMargin;
