@@ -1,14 +1,25 @@
 import styles from './UserTable.module.scss';
 import editIcon from '../../assets/images/editIcon.png'
+
 import {Link, NavLink} from 'react-router-dom';
 import {ROUTES} from '../../utils/routes.js';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
+
+import {getUsers} from '../../features/users/usersSlice.js';
+import {PaginationControlled} from '../Pagination/Pagination.jsx';
 
 function UserTable() {
+    const [page, setPage] = useState(1);
+
+
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(getUsers(page))
+    },[dispatch, page])
 
     const {list} = useSelector(({users}) => users);
 
-    if (list.length !== 0) {
         return (
             <div className={styles.tableContainer}>
                 <table>
@@ -22,21 +33,21 @@ function UserTable() {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.map(({id, name, password, role})=>(
-                        <tr key={id}>
-                            <td>{id}</td>
-                            <td>{name}</td>
-                            <td>{password}</td>
+                    {list.map(({user_id, first_name, last_name, role})=>(
+                        <tr key={user_id}>
+                            <td>{user_id}</td>
+                            <td>{first_name}</td>
+                            <td>{last_name}</td>
                             <td>{role}</td>
                             <td><NavLink to={ROUTES.USERINFO}><img src={editIcon} alt={editIcon}/></NavLink></td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
-                <Link to={ROUTES.HOME} className={styles.createUserBtn}>Create new user</Link>
+                <PaginationControlled setPage={setPage} page={page}/>
+                <Link to={ROUTES.ADMINCREATEUSER} className={styles.createUserBtn}>Create new user</Link>
             </div>
         )
-    }
 }
 
 export {UserTable}
