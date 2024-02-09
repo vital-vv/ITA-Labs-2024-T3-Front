@@ -1,0 +1,50 @@
+$blueColor: #38999B;
+$redColor: #D72C00;
+
+@mixin greenBtn {
+  border: 2px solid $blueColor;
+  color: $blueColor;
+  &:hover {
+    color: #32888a;
+    border: 2px solid #32888a;
+  }
+  &:disabled{
+    background-color: #e3e3e3;
+    border: none;
+    cursor: default;
+    color: #a4a4a4;
+  };
+}
+
+@mixin redBtn {
+  border: 2px solid $redColor;
+  color: $redColor;
+  &:hover {
+    color: #ad1a00;
+    border: 2px solid #ad1a00;
+  }
+}
+
+.btn {
+  height: 40px;
+  background-color: white;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  padding: 0 10px;
+  margin: 0 0 0 20px;
+}
+
+.greenBtn {
+  width: 132px;
+  @include greenBtn;
+}
+
+.redBtn{
+  width: 150px;
+  @include redBtn;
+  img{
+    height: 25px;
+  }
+}
