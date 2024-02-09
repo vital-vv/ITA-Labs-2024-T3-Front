@@ -1,25 +1,11 @@
 import classes from './NumberInput.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeSliderByKeysFrom, changeSliderByKeysUntil } from '../../features/filter/filterSlice';
 
-const NumberInput = () => {
-  const [from, until] = useSelector(
-    (state) => state.filter.sliderDefaultValues
-  );
-  const dispatch = useDispatch();
-
-  const changeFrom = (event) => {
-    dispatch(changeSliderByKeysFrom(event.target.value));
-  };
-
-  const changeUntil = (event) => {
-    dispatch(changeSliderByKeysUntil(event.target.value));
-  };
-
+const NumberInput = ({from, until, changeFrom, changeUntil, isValidFrom, isValidUntil}) => {
+  
   return (
     <div className={classes.inputs}>
-      <input type="text" placeholder={from} onChange={changeFrom} value={from}/>
-      <input type="text" placeholder={until} onChange={changeUntil} value={until}/>
+      <input type="text" onChange={changeFrom} value={from} className={!isValidFrom ? classes.red : null} />
+      <input type="text" onChange={changeUntil} value={until} className={!isValidUntil ? classes.red : null}/>
     </div>
   );
 };

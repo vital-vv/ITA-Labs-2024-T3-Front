@@ -8,10 +8,14 @@ const apples = [
 ];
 
 const packages = [
-  { name: 'bins' },
-  { name: 'plastic bag' },
-  { name: 'plastic box' },
-  { name: 'wooden box' },
+  { name: 'Box' },
+  { name: 'Basket' },
+  { name: 'Carton' },
+  { name: 'Bag' },
+  { name: 'Crate' },
+  { name: 'Bottle' },
+  { name: 'Bunch' },
+  { name: 'Sack' },
 ];
 
 const locations = [

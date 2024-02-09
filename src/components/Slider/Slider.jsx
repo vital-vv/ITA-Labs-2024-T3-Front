@@ -4,7 +4,7 @@ import { Slider as BaseSlider, sliderClasses } from '@mui/base/Slider';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeSliderValues } from '../../features/filter/filterSlice';
 
-export default function RangeSlider() {
+export default function RangeSlider({min, max}) {
   const valueSlider = useSelector((state) => state.filter.sliderDefaultValues);
   const dispatch = useDispatch();
 
