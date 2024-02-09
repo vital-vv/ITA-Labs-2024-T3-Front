@@ -14,16 +14,19 @@ const changeSliderByKeys = (state, action, index, maxSlider) => {
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    sliderDefaultValues: [200, 600],
-    sliderValuesCm: [5, 20],
-    minMaxSlider: [0, 1000],
+    sliderDefaultValues: {mm: [200, 600], cm: [5, 15]},
+    minMaxSlider: {mm: [0, 1000], cm: [0, 20]},
     quantityDefaultValues: [1, 1000],
     isValidFormSizing: [true, true],
     sizeMeasuresToMm: true,
   },
   reducers: {
     changeSliderValues(state, action) {
-      state.sliderDefaultValues = action.payload.newValue;
+      if (state.sizeMeasuresToMm) {
+        state.sliderDefaultValues.mm = action.payload.newValue;
+      } else {
+        state.sliderDefaultValues.cm = action.payload.newValue;
+      }
     },
     changeSliderByKeysFrom(state, action) {
       changeSliderByKeys(state, action, 0, minMaxSlider[1]);
