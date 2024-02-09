@@ -1,0 +1,27 @@
+@mixin fontStyle($weight, $size, $lineHeight, $letter) {
+  font-weight: $weight;
+  font-size: $size;
+  line-height: $lineHeight;
+  letter-spacing: $letter;
+}
+
+.locationSelector {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  select {
+    width: 20%;
+    padding: 10px 12px;
+    @include fontStyle(400, 16px, 24px, 0.2px);
+    color: #798787;
+    border-color: #798787;
+    border-radius: 2px;
+    option {
+      color: black;
+    }
+  }
+  input {
+    margin-top: 0 !important;
+    width: 48% !important;
+  }
+}

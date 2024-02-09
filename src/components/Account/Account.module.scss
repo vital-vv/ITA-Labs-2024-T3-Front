@@ -1,0 +1,104 @@
+@mixin fontStyle($weight, $size, $lineHeight, $letter) {
+  font-weight: $weight;
+  font-size: $size;
+  line-height: $lineHeight;
+  letter-spacing: $letter;
+}
+
+.userInfo {
+  padding: 24px 40px;
+  p {
+    @include fontStyle(500, 18px, 28px, 0.4px);
+  }
+}
+
+.userForm {
+  display: flex;
+  margin-top: 24px;
+}
+
+.circle {
+  position: relative;
+  margin-right: 40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-color: #f87e25;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  @include fontStyle(300, 64px, 72px, -0.5px);
+  color: white;
+}
+
+.takePhoto {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #BCC3C3;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  gap: 16px;
+  :first-child {
+    color: #38999b;
+    border: 1px solid #38999b;
+    cursor: pointer;
+  }
+  :last-child {
+    display: flex;
+    background-color: #38999b;
+    color: white;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  div {
+    padding: 8px 16px;
+    @include fontStyle(500, 16px, 24px, 0.3px);
+    border-radius: 2px;
+  }
+}
+
+.security {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  > p {
+    margin-bottom: 24px;
+  }
+  > div {
+    @include fontStyle(500, 16px, 24px, 0.3px);
+    display: flex;
+    color: #38999b;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #38999b;
+    padding: 8px 16px;
+    align-self: flex-start;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+}
+
+.settings {
+  padding: 24px 0;
+  >p:first-child {
+    @include fontStyle(500, 18px, 28px, 0.4px);
+    margin-bottom: 24px;
+  }
+  p {
+    @include fontStyle(400, 18px, 28px, 0.4px);
+  }
+}
