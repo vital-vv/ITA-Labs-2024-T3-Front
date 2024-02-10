@@ -21,7 +21,7 @@ import {
   changeSliderByKeysUntil,
   toogleMeasures,
 } from '../../features/filter/filterSlice';
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 
 const Filter = () => {
   const fillContainer = (array) => {
@@ -32,26 +32,12 @@ const Filter = () => {
 
   const filterState = useSelector(state => state.filter);
 
-  const minMaxSliderMm = filterState.minMaxSlider.mm;
-  const minMaxSliderCm = filterState.minMaxSlider.cm;
+  const sliderCurrentLimit = filterState.sliderCurrentLimit;
   const [fromQuantity, untilQuantity] = filterState.quantityDefaultValues;
-  const [isValidFrom, isValidUntil] = filterState.isValidFormSizing
-  const sizeMeasuresToMm = filterState.sizeMeasuresToMm
-  const { mm, cm } = useMemo(() => filterState.sliderDefaultValues, [filterState]) 
-  const [minMaxMeasure, setMinMaxMeasure] = useState(minMaxSliderMm);
-
-  const [defaultValue, setDefaultValueSlider] = useState(mm);
-
-  useEffect(() => {
-    if (sizeMeasuresToMm) {
-      setDefaultValueSlider(mm);
-      setMinMaxMeasure(minMaxSliderMm);
-    } else {
-      setDefaultValueSlider(cm);
-      setMinMaxMeasure(minMaxSliderCm);
-    }
-  }, [sizeMeasuresToMm, mm, cm]);
-
+  const [isValidFrom, isValidUntil] = filterState.isValidFormSizing;
+  const sizeMeasuresToMm = filterState.sizeMeasuresToMm;
+  const sliderCurrentValues = filterState.sliderCurrentValues;
+  
   const dispatch = useDispatch();
 
   
@@ -82,13 +68,13 @@ const Filter = () => {
           quantityMeasure={sizeMeasuresToMm ? 'mm' : 'cm'}
         />
         <RSlider
-          min={minMaxMeasure[0]}
-          max={minMaxMeasure[1]}
-          currentValue={defaultValue}
+          min={sliderCurrentLimit[0]}
+          max={sliderCurrentLimit[1]}
+          currentValue={sliderCurrentValues}
         />
         <NumberInput
-          from={defaultValue[0]}
-          until={defaultValue[1]}
+          from={sliderCurrentValues[0]}
+          until={sliderCurrentValues[1]}
           changeFrom={handleChangeFrom}
           changeUntil={handleChangeUntil}
           isValidFrom={isValidFrom}
