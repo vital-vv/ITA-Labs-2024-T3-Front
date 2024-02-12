@@ -4,7 +4,7 @@ import {AdminLayout} from '../../views/AdminLayout/AdminLayout.jsx';
 import {UserTable} from '../TableOfUsers/UserTable.jsx';
 import {UserEditor} from '../UserData/UserEditor/UserEditor.jsx';
 import {AllBets} from '../AllBets/AllBets.jsx';
-import {Account} from '../Account/Account.jsx';
+import Account from '../Account/Account.jsx';
 import LotsList from '../Lotslist/Lotslist.jsx';
 import LotView from '../LotView/LotView.jsx';
 import { ROUTES } from '../../utils/routes.js';
