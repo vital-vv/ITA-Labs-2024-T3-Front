@@ -4,9 +4,9 @@ import axios from 'axios';
 
 export const getUsers = createAsyncThunk(
     'users/getUsers',
-    async (_, thunkAPI) => { // eslint-disable-line
+    async (page, thunkAPI) => {
         try {
-            const res = await axios(`${BASE_URL}/users`);
+            const res = await axios(`${BASE_URL}/users?_page=${page}`);
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err)

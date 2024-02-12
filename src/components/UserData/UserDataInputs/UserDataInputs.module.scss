@@ -1,0 +1,83 @@
+$blueColor: #38999B;
+$redColor: #D72C00;
+
+.userBox {
+  padding: 25px;
+
+  .title {
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      color: $blueColor;
+      margin: 0 4px
+    }
+  }
+
+  .userData {
+    display: flex;
+    width: 576px;
+    margin: 25px 0 0 0;
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      border-radius: 100px;
+      background-color: #F87E25;
+      text-align: center;
+      margin: 0 40px 0 0;
+
+      .nickname {
+        color: white;
+        font-weight: 400;
+        font-size: 70px;
+        margin: 30px auto;
+      }
+    }
+
+    select {
+      width: 120px;
+      height: 100%;
+      border-radius: 4px;
+      padding: 0 0 0 5px;
+      border: 1px solid #ababab;
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-direction: column;
+      width: 376px;
+      height: 300px;
+      justify-content: space-between;
+
+      input {
+        height: 50px;
+        padding: 0 0 0 5px;
+
+        &:disabled {
+          background-color: #f8f8f8;
+        }
+      }
+
+      .numberContainer {
+        display: flex;
+        justify-content: space-between;
+
+        .phoneNumber {
+          width: 60%;
+        }
+      }
+
+      .editInput {
+        width: 100%;
+      }
+    }
+
+    .groupBtn {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

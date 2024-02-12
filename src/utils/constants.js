@@ -1,5 +1,4 @@
-export const BASE_URL = 'https://api.escuelajs.co/api/v1';
-// export const BASE_URL = 'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api';
+export const BASE_URL = 'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api';
 
 import cabbage from '../assets/images/cabbage.png'
 import cucumber from '../assets/images/cucumber.png'
