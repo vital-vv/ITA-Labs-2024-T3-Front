@@ -5,53 +5,114 @@ import NumberInput from '../NumberInput/NumberInput';
 import LabelForFilter from '../LabelForFilter/LabelForFilter';
 import MoreFilter from '../MoreFilter/MoreFilter';
 import FilterSizing from '../FilterSizing/FilterSizing';
-import {
-  apples,
-  packages,
-  locations,
-  sizing,
-  quantity,
-  valutes,
-} from '../dataoffilter';
+import { sizing } from '../dataoffilter';
 import Buttonfilter from '../ButtonFilter/ButtonFilter';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeSliderByKeysFrom,
   changeSliderByKeysUntil,
-  toogleMeasures,
+  toggleMeasures,
+  toggleMeasuresQuantity,
+  changeInputQuantityFrom,
+  changeInputQuantityUntil,
+  changeMeasuresValutes,
+  changeInputSumFrom,
+  changeInputSumUntil,
 } from '../../features/filter/filterSlice';
 import { useMemo } from 'react';
 
 const Filter = () => {
   const fillContainer = (array) => {
     return array.map((item) => (
-      <ElementForFilter name={item.name} key={uuidv4()} />
+      <ElementForFilter name={item.name} key={uuidv4()} id={item.id}/>
     ));
   };
 
-  const filterState = useSelector(state => state.filter);
+  const filterState = useSelector((state) => state.filter);
 
   const sliderCurrentLimit = filterState.sliderCurrentLimit;
-  const [fromQuantity, untilQuantity] = filterState.quantityDefaultValues;
+  const [fromQuantity, untilQuantity] = filterState.quantityValues;
   const [isValidFrom, isValidUntil] = filterState.isValidFormSizing;
   const sizeMeasuresToMm = filterState.sizeMeasuresToMm;
   const sliderCurrentValues = filterState.sliderCurrentValues;
-  
+  const quantity = filterState.valuesOfQuantity;
+  const currentQuantity = filterState.valueOfQuantityCurrent;
+  const [isValidFromQuantity, isValidUntilQuantity] =
+    filterState.isValidFormQuantity;
+  const valutes = filterState.valuesOfValutes;
+  const currentValute = filterState.currentValute;
+  const [currentSumFrom, currentSumUntil] = filterState.sumCurrent;
+  const [isValidFromSum, isValidUntilSum] = filterState.isValidFormSum;
+  const apples = filterState.apples;
+  const packages = filterState.packages;
+  const locations = filterState.locations;
+  const sizing = filterState.sizing;
+
   const dispatch = useDispatch();
 
-  
-  const handleChangeFrom = useMemo(() => (event) => {
-    dispatch(changeSliderByKeysFrom(event.target.value));
-  }, [dispatch]);
+  const handleChangeFrom = useMemo(
+    () => (event) => {
+      dispatch(changeSliderByKeysFrom(event.target.value));
+    },
+    [dispatch]
+  );
 
-  const handleChangeUntil = useMemo(() => (event) => {
-    dispatch(changeSliderByKeysUntil(event.target.value));
-  }, [dispatch]);
+  const handleChangeUntil = useMemo(
+    () => (event) => {
+      dispatch(changeSliderByKeysUntil(event.target.value));
+    },
+    [dispatch]
+  );
 
-  const toggleMeasures = useMemo(() => (event) => {
-    dispatch(toogleMeasures(event.target.id));
-  }, [dispatch]);
+  const handleToggleMeasures = useMemo(
+    () => (event) => {
+      dispatch(toggleMeasures(event.target.id));
+    },
+    [dispatch]
+  );
+
+  const handleToggleMeasuresQuantity = useMemo(
+    () => (event) => {
+      dispatch(toggleMeasuresQuantity(event.target.id));
+    },
+    [dispatch]
+  );
+
+  const handleChangeFromQuantity = useMemo(
+    () => (event) => {
+      dispatch(changeInputQuantityFrom(event.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleChangeUntilQuantity = useMemo(
+    () => (event) => {
+      dispatch(changeInputQuantityUntil(event.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleToggleValutes = useMemo(
+    () => (event) => {
+      dispatch(changeMeasuresValutes(event.target.id));
+    },
+    [dispatch]
+  );
+
+  const handleChangeFromSum = useMemo(
+    () => (event) => {
+      dispatch(changeInputSumFrom(event.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleChangeUntilSum = useMemo(
+    () => (event) => {
+      dispatch(changeInputSumUntil(event.target.value));
+    },
+    [dispatch]
+  );
 
   return (
     <div>
@@ -64,7 +125,7 @@ const Filter = () => {
         <FilterSizing
           values={'Size, '}
           measures={sizing}
-          toogleMeasures={toggleMeasures}
+          toggleMeasures={handleToggleMeasures}
           quantityMeasure={sizeMeasuresToMm ? 'mm' : 'cm'}
         />
         <RSlider
@@ -85,15 +146,32 @@ const Filter = () => {
         <LabelForFilter name={'Location'} />
         {fillContainer(locations)}
         <MoreFilter options={14} />
-        <FilterSizing values={'Quantity, ton'} measures={quantity} />
+        <FilterSizing
+          values={`Quantity, ${currentQuantity}`}
+          measures={quantity}
+          toggleMeasures={handleToggleMeasuresQuantity}
+        />
         <NumberInput
           from={fromQuantity}
           until={untilQuantity}
-          isValidFrom={true}
-          isValidUntil={true}
+          isValidFrom={isValidFromQuantity}
+          isValidUntil={isValidUntilQuantity}
+          changeFrom={handleChangeFromQuantity}
+          changeUntil={handleChangeUntilQuantity}
         />
-        <FilterSizing values={'Price, USD'} measures={valutes} />
-        <NumberInput from={'from'} until={'to'} />
+        <FilterSizing
+          values={`Price, ${currentValute}`}
+          measures={valutes}
+          toggleMeasures={handleToggleValutes}
+        />
+        <NumberInput
+          from={currentSumFrom}
+          until={currentSumUntil}
+          isValidFrom={isValidFromSum}
+          isValidUntil={isValidUntilSum}
+          changeFrom={handleChangeFromSum}
+          changeUntil={handleChangeUntilSum}
+        />
       </div>
       <div className={classes.filterUse}>
         <Buttonfilter />
