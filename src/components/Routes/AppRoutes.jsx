@@ -9,6 +9,7 @@ import LotsList from '../Lotslist/Lotslist.jsx';
 import LotView from '../LotView/LotView.jsx';
 import { ROUTES } from '../../utils/routes.js';
 import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
+import AddLot from '../AddLot/AddLot.jsx';
 
 function AppRoutes() {
 
@@ -17,6 +18,7 @@ function AppRoutes() {
             <Route index element={<HomePage/>}/>
             <Route path={ROUTES.LOTSLIST} element={<LotsList />} />
             <Route path={ROUTES.LOTVIEW} element={<LotView />} />
+            <Route path={ROUTES.ADDLOT} element={<AddLot />} />
             <Route path="/admin/*" element={<AdminLayout/>}>
                 <Route path="users" element={<UserTable/>}/>
                 <Route path="users/create" element={<UserCreator/>}/>
@@ -28,6 +30,4 @@ function AppRoutes() {
     )
 }
 
-export {
-    AppRoutes
-}
+export { AppRoutes };

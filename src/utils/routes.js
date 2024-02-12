@@ -9,4 +9,5 @@ export const ROUTES = {
     ADMINBETS: '/admin/bets',
     ADMINACCOUNT: '/admin/account',
     USERINFO: '/admin/users/:id',
+    ADDLOT: '/addlot',
 }

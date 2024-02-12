@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   font-weight: 400;
-  width: 15%;
+  width: 33%;
   p{
     font-weight: 500;
     margin: auto 8px;
@@ -17,4 +17,16 @@
     height: 21px;
     margin: 2px;
   }
+}
+
+.newAd {
+  display: flex;
+  padding: 10px 20px;
+  background-color: #38999B;
+  color: white;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  align-items: center;
 }

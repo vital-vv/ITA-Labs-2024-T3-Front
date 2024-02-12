@@ -1,0 +1,32 @@
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    width: 376px;
+    gap: 25px;
+    justify-content: space-between;
+
+    input {
+      height: 44px;
+      padding: 0 0 0 5px;
+    }
+
+    .numberContainer {
+      display: flex;
+      justify-content: space-between;
+
+      .phoneNumber {
+        width: 60%;
+      }
+    }
+
+    .editInput {
+      width: 100%;
+    }
+
+    select {
+        width: 120px;
+        border-radius: 4px;
+        border-color: #a2a2a2;
+        padding: 0 0 0 5px;
+      }
+  }
