@@ -2,10 +2,11 @@ $blueColor: #38999B;
 
 .adminPanel {
   height: 100%;
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   display: flex;
   background-color: white;
+  border-top: 1px solid #f6f6f6;
 }
 
 .navigation{
@@ -15,6 +16,7 @@ $blueColor: #38999B;
   flex-direction: column;
   padding: 88px 0;
   min-height: 100%;
+  border-right: 1px solid #f6f6f6;
   a{
     text-decoration: none;
     font-weight: 500;
@@ -24,11 +26,10 @@ $blueColor: #38999B;
     height: 64px;
   }
   img{
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     margin: 0 20px;
   }
-
 }
 
 .active{

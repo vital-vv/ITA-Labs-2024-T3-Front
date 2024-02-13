@@ -25,7 +25,6 @@ function AdminHeaderBar() {
           <img src={badgeIcon} alt={badgeIcon} />
         </Badge>
       </div>
-
       <BasicMenu />
     </div>
   );

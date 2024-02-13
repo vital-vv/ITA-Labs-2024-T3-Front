@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400&display=swap');
+
+$greenColor: #38999B;
+$blackColor: #131314;
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    border: none;
+    width: 200px;
+    border-bottom: 1px solid #ececec;
+    border-radius: 0;
+    color: $blackColor;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: none;
+    transition: none;
+
+    &[aria-pressed=true] {
+      border-bottom: 2px solid $greenColor;
+      background-color: inherit;
+      color: $blackColor;
+    }
+  }
+}

@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 38vw;
+  width: 25vw;
 }
 
 .labelOfGood {
@@ -130,13 +130,14 @@
     border-radius: 2px;
     border: 1px solid #38999b;
     border-radius: 2px;
+    cursor: pointer;
   }
   svg {
     display: block;
   }
   div:first-child {
     color: #38999b;
-    padding-right: 0 10px;
+    padding-right: 10px;
   }
   div:nth-child(2) {
     background-color: #38999b;
