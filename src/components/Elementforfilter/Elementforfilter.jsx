@@ -6,19 +6,19 @@ import { useDispatch } from 'react-redux';
 import { choseCheckbox } from '../../features/filter/filterSlice';
 
 const ElementForFilter = (props) => {
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   
   const toogleCheckbox = (event) => {
-    setIsChecked(!isChecked);
-    dispatch(choseCheckbox({id: event.currentTarget.id, name: props.name, isChecked:isChecked}));
+    // setIsChecked(!isChecked);
+    dispatch(choseCheckbox({id: event.currentTarget.id, name: props.name, isChecked: !props.isChecked}));
   };
 
   
   return (
       <p className={classes.allElement} onClick={toogleCheckbox} id={props.id}>
         <div className={classes.boxInput}>
-          {isChecked ? (
+          {props.isChecked ? (
             <CheckBoxEnable/>
           ) : (
             <CheckBoxDisable/>

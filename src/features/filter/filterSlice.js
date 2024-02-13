@@ -2,7 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const payloadToNumber = (string) => Number(string);
 
-const changeInputsByKeys = (state, action, index, currentLimit, formValidation, currentForm) => {
+const changeInputsByKeys = (
+  state,
+  action,
+  index,
+  currentLimit,
+  formValidation,
+  currentForm
+) => {
   action.payload = payloadToNumber(action.payload);
   if (
     isNaN(action.payload) ||
@@ -23,7 +30,12 @@ const toogleSlider = (store, measure, boolean) => {
   store.sliderCurrentLimit = store.minMaxSlider[measure];
 };
 
-const toggleMeasuresQuantityAndValutes = (state, action, currentMeasure, initialMeasure) => {
+const toggleMeasuresQuantityAndValutes = (
+  state,
+  action,
+  currentMeasure,
+  initialMeasure
+) => {
   action.payload = payloadToNumber(action.payload);
   switch (action.payload) {
     case 1:
@@ -36,6 +48,23 @@ const toggleMeasuresQuantityAndValutes = (state, action, currentMeasure, initial
       state[currentMeasure] = state[initialMeasure][0];
       break;
   }
+};
+
+const findAndToggleElement = (array, findParameter) => {
+  const elementIndex = array.findIndex((item) => item.id === findParameter);
+  if (elementIndex !== -1) {
+    array[elementIndex].isChecked = !array[elementIndex].isChecked;
+  }
+};
+
+const toggleElementsAllArrays = (firstArray, secondArray, thirdArray, findParameter) => {
+  findAndToggleElement(firstArray, findParameter);
+  findAndToggleElement(secondArray, findParameter);
+  findAndToggleElement(thirdArray, findParameter);
+};
+
+const filterArray = (array, deletedElement) => {
+  return (array = array.filter((item) => Number(item.id) !== deletedElement));
 };
 
 const filterSlice = createSlice({
@@ -60,32 +89,32 @@ const filterSlice = createSlice({
     isValidFormSum: [true, true],
     chosenOptions: [],
     apples: [
-      { name: 'alwa', id:1, isChecked: false },
-      { name: 'antonowka', id:2, isChecked: false },
-      { name: 'boiken', id:3, isChecked: false },
-      { name: 'boskoop', id:4,  isChecked: false },
-      { name: 'braeburn', id:5, isChecked: false },
-      { name: 'champion', id:6, isChecked: false },
+      { name: 'alwa', id: 1, isChecked: false },
+      { name: 'antonowka', id: 2, isChecked: false },
+      { name: 'boiken', id: 3, isChecked: false },
+      { name: 'boskoop', id: 4, isChecked: false },
+      { name: 'braeburn', id: 5, isChecked: false },
+      { name: 'champion', id: 6, isChecked: false },
     ],
-    
+
     packages: [
-      { name: 'Box', id:7, isChecked: false },
-      { name: 'Basket', id:8, isChecked: false },
-      { name: 'Carton', id:9, isChecked: false },
-      { name: 'Bag', id:10, isChecked: false },
-      { name: 'Crate', id:11, isChecked: false },
-      { name: 'Bottle', id:12, isChecked: false },
+      { name: 'Box', id: 7, isChecked: false },
+      { name: 'Basket', id: 8, isChecked: false },
+      { name: 'Carton', id: 9, isChecked: false },
+      { name: 'Bag', id: 10, isChecked: false },
+      { name: 'Crate', id: 11, isChecked: false },
+      { name: 'Bottle', id: 12, isChecked: false },
       { name: 'Bunch', id: 13, isChecked: false },
-      { name: 'Sack', id:14, isChecked: false },
+      { name: 'Sack', id: 14, isChecked: false },
     ],
-    
+
     locations: [
-      { name: 'Andijan region', id:15, isChecked: false },
-      { name: 'Bukhara region', id:16, isChecked: false },
-      { name: 'Republic of Karakalpakstan', id:17, isChecked: false },
-      { name: 'Namangan region', id:18, isChecked: false },
-      { name: 'Navoiy region', id:19, isChecked: false },
-      { name: 'Qashqadaryo region', id:20, isChecked: false },
+      { name: 'Andijan region', id: 15, isChecked: false },
+      { name: 'Bukhara region', id: 16, isChecked: false },
+      { name: 'Republic of Karakalpakstan', id: 17, isChecked: false },
+      { name: 'Namangan region', id: 18, isChecked: false },
+      { name: 'Navoiy region', id: 19, isChecked: false },
+      { name: 'Qashqadaryo region', id: 20, isChecked: false },
     ],
   },
   reducers: {
@@ -93,10 +122,24 @@ const filterSlice = createSlice({
       state.sliderCurrentValues = action.payload.newValue;
     },
     changeSliderByKeysFrom(state, action) {
-      changeInputsByKeys(state, action, 0, 'sliderCurrentLimit', 'isValidFormSizing', 'sliderCurrentValues');
+      changeInputsByKeys(
+        state,
+        action,
+        0,
+        'sliderCurrentLimit',
+        'isValidFormSizing',
+        'sliderCurrentValues'
+      );
     },
     changeSliderByKeysUntil(state, action) {
-      changeInputsByKeys(state, action, 1, 'sliderCurrentLimit', 'isValidFormSizing', 'sliderCurrentValues');
+      changeInputsByKeys(
+        state,
+        action,
+        1,
+        'sliderCurrentLimit',
+        'isValidFormSizing',
+        'sliderCurrentValues'
+      );
     },
     toggleMeasures(state, action) {
       action.payload = payloadToNumber(action.payload);
@@ -107,25 +150,92 @@ const filterSlice = createSlice({
       }
     },
     toggleMeasuresQuantity(state, action) {
-      toggleMeasuresQuantityAndValutes(state, action, 'valueOfQuantityCurrent', 'valuesOfQuantity');
+      toggleMeasuresQuantityAndValutes(
+        state,
+        action,
+        'valueOfQuantityCurrent',
+        'valuesOfQuantity'
+      );
     },
     changeInputQuantityFrom(state, action) {
-      changeInputsByKeys(state, action, 0, 'quantityLimits', 'isValidFormQuantity', 'quantityValues');
+      changeInputsByKeys(
+        state,
+        action,
+        0,
+        'quantityLimits',
+        'isValidFormQuantity',
+        'quantityValues'
+      );
     },
     changeInputQuantityUntil(state, action) {
-      changeInputsByKeys(state, action, 1, 'quantityLimits', 'isValidFormQuantity', 'quantityValues');
+      changeInputsByKeys(
+        state,
+        action,
+        1,
+        'quantityLimits',
+        'isValidFormQuantity',
+        'quantityValues'
+      );
     },
     changeMeasuresValutes(state, action) {
-      toggleMeasuresQuantityAndValutes(state, action, 'currentValute', 'valuesOfValutes');
+      toggleMeasuresQuantityAndValutes(
+        state,
+        action,
+        'currentValute',
+        'valuesOfValutes'
+      );
     },
     changeInputSumFrom(state, action) {
-      changeInputsByKeys(state, action, 0, 'sumLimits', 'isValidFormSum', 'sumCurrent');
+      changeInputsByKeys(
+        state,
+        action,
+        0,
+        'sumLimits',
+        'isValidFormSum',
+        'sumCurrent'
+      );
     },
     changeInputSumUntil(state, action) {
-      changeInputsByKeys(state, action, 1, 'sumLimits', 'isValidFormSum', 'sumCurrent');
+      changeInputsByKeys(
+        state,
+        action,
+        1,
+        'sumLimits',
+        'isValidFormSum',
+        'sumCurrent'
+      );
     },
     choseCheckbox(state, action) {
-      state.chosenOptions = [...state.chosenOptions, action.payload];
+      const elementId = payloadToNumber(action.payload.id);
+      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+      const sumArray = [...state.apples, ...state.packages, ...state.locations];
+      const foundElement = sumArray.find((item) => item.id === elementId);
+      if (
+        !state.chosenOptions.some((item) => Number(item.id) === elementId) &&
+        foundElement.isChecked
+      ) {
+        state.chosenOptions.push(action.payload);
+      }
+      if (!foundElement.isChecked) {
+        state.chosenOptions = filterArray(state.chosenOptions, elementId);
+      }
+    },
+    deleteOption(state, action) {
+      const elementId = payloadToNumber(action.payload);
+      state.chosenOptions = filterArray(state.chosenOptions, elementId);
+      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+    },
+    clearAllParameters(state, {}) {
+      const sumArray = [...state.apples, ...state.packages, ...state.locations];
+      sumArray.forEach(item => {item.isChecked = false});
+      state.chosenOptions = [];
+      state.sizeMeasuresToMm = true;
+      state.sliderCurrentValues = [200, 600];
+      state.sliderCurrentLimit = [0, 1000],
+      state.valueOfQuantityCurrent = 'ton';
+      state.currentValute = 'USD';
+      state.quantityValues = [1, 10000];
+      state.sumCurrent = [1, 1000000]
     }
   },
 });
@@ -141,7 +251,9 @@ export const {
   changeMeasuresValutes,
   changeInputSumFrom,
   changeInputSumUntil,
-  choseCheckbox
+  choseCheckbox,
+  deleteOption,
+  clearAllParameters
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

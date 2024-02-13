@@ -1,21 +1,29 @@
 .chosenOptions {
   display: flex;
-  padding: 20px 8px;
+  padding: 8px 8px;
   justify-content: space-between;
-  height: 24px;
   border-radius: 2px;
   align-items: center;
+
   :first-child {
+    padding-left: 8px;
+  }
+  svg {
+    padding: 2px 8px;
+    box-sizing: content-box;
+  }
+}
+
+.dynamicOptions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  div {
     display: flex;
     align-items: center;
     background-color: #f2f5f5;
-    
-    :first-child {
-      padding-left: 8px;
-    }
-    svg {
-      padding: 2px 8px;
-      box-sizing: content-box;
+    :last-child {
+      cursor: pointer;
     }
   }
 }

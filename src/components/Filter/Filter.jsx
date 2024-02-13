@@ -25,7 +25,7 @@ import { useMemo } from 'react';
 const Filter = () => {
   const fillContainer = (array) => {
     return array.map((item) => (
-      <ElementForFilter name={item.name} key={uuidv4()} id={item.id}/>
+      <ElementForFilter name={item.name} key={uuidv4()} id={item.id} isChecked={item.isChecked}/>
     ));
   };
 
