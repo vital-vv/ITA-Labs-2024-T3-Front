@@ -1,26 +1,30 @@
 const apples = [
-  { name: 'alwa' },
-  { name: 'antonowka' },
-  { name: 'boiken' },
-  { name: 'boskoop' },
-  { name: 'braeburn' },
-  { name: 'champion' },
+  { name: 'alwa', id:1 },
+  { name: 'antonowka', id:2 },
+  { name: 'boiken', id:3 },
+  { name: 'boskoop', id:4 },
+  { name: 'braeburn', id:5 },
+  { name: 'champion', id:6 },
 ];
 
 const packages = [
-  { name: 'bins' },
-  { name: 'plastic bag' },
-  { name: 'plastic box' },
-  { name: 'wooden box' },
+  { name: 'Box', id:7 },
+  { name: 'Basket', id:8 },
+  { name: 'Carton', id:9 },
+  { name: 'Bag', id:10 },
+  { name: 'Crate', id:11 },
+  { name: 'Bottle', id:12 },
+  { name: 'Bunch', id: 13 },
+  { name: 'Sack', id:14 },
 ];
 
 const locations = [
-  { name: 'Andijan region' },
-  { name: 'Bukhara region' },
-  { name: 'Republic of Karakalpakstan' },
-  { name: 'Namangan region' },
-  { name: 'Navoiy region' },
-  { name: 'Qashqadaryo region' },
+  { name: 'Andijan region', id:15 },
+  { name: 'Bukhara region', id:16 },
+  { name: 'Republic of Karakalpakstan', id:17 },
+  { name: 'Namangan region', id:18 },
+  { name: 'Navoiy region', id:19 },
+  { name: 'Qashqadaryo region', id:20 },
 ];
 
 const sizing = ['mm', 'cm'];

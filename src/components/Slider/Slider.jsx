@@ -4,10 +4,9 @@ import { Slider as BaseSlider, sliderClasses } from '@mui/base/Slider';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeSliderValues } from '../../features/filter/filterSlice';
 
-export default function RangeSlider() {
-  const valueSlider = useSelector((state) => state.filter.sliderDefaultValues);
+export default function RangeSlider({min, max, currentValue}) {
   const dispatch = useDispatch();
-
+  
   return (
     <Box
       sx={{
@@ -15,14 +14,14 @@ export default function RangeSlider() {
       }}
     >
       <Slider
-        value={valueSlider}
+        value={currentValue}
         onChange={(event, newValue) =>
           dispatch(changeSliderValues({ newValue }))
         }
         getAriaLabel={() => 'Neccessary weight'}
         getAriaValueText={valuetext}
-        min={0}
-        max={1000}
+        min={min}
+        max={max}
         disableSwap={true}
       />
     </Box>

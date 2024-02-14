@@ -16,7 +16,6 @@ function AddLot() {
   const goBack = () => navigate(-1);
 
   const handleFileInputClick = () => {
-    setShowFileInput(true);
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -105,17 +104,16 @@ function AddLot() {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
-            <span onClick={handleFileInputClick}>Choose a files</span>or drag
-            and drop it here
-            {showFileInput && (
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: 'none' }}
-                multiple
-              />
-            )}
+            <span onClick={handleFileInputClick}>Choose a files</span>
+            or drag and drop it here
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ visibility: 'hidden', position: 'absolute' }}
+              multiple
+            />
           </div>
           <p className={classes.comment}>{files.length} of 9 images</p>
         </div>
