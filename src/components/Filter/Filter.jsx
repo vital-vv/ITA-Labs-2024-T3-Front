@@ -5,7 +5,6 @@ import NumberInput from '../NumberInput/NumberInput';
 import LabelForFilter from '../LabelForFilter/LabelForFilter';
 import MoreFilter from '../MoreFilter/MoreFilter';
 import FilterSizing from '../FilterSizing/FilterSizing';
-import { sizing } from '../dataoffilter';
 import Buttonfilter from '../ButtonFilter/ButtonFilter';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,94 +24,69 @@ import { useMemo } from 'react';
 const Filter = () => {
   const fillContainer = (array) => {
     return array.map((item) => (
-      <ElementForFilter name={item.name} key={uuidv4()} id={item.id} isChecked={item.isChecked}/>
+      <ElementForFilter
+        name={item.name}
+        key={uuidv4()}
+        id={item.id}
+        isChecked={item.isChecked}
+      />
     ));
   };
 
-  const filterState = useSelector((state) => state.filter);
-
-  const sliderCurrentLimit = filterState.sliderCurrentLimit;
-  const [fromQuantity, untilQuantity] = filterState.quantityValues;
-  const [isValidFrom, isValidUntil] = filterState.isValidFormSizing;
-  const sizeMeasuresToMm = filterState.sizeMeasuresToMm;
-  const sliderCurrentValues = filterState.sliderCurrentValues;
-  const quantity = filterState.valuesOfQuantity;
-  const currentQuantity = filterState.valueOfQuantityCurrent;
-  const [isValidFromQuantity, isValidUntilQuantity] =
-    filterState.isValidFormQuantity;
-  const valutes = filterState.valuesOfValutes;
-  const currentValute = filterState.currentValute;
-  const [currentSumFrom, currentSumUntil] = filterState.sumCurrent;
-  const [isValidFromSum, isValidUntilSum] = filterState.isValidFormSum;
-  const apples = filterState.apples;
-  const packages = filterState.packages;
-  const locations = filterState.locations;
-  const sizing = filterState.sizing;
+  const {
+    sliderCurrentLimit,
+    quantityValues: [fromQuantity, untilQuantity],
+    isValidFormSizing: [isValidFrom, isValidUntil],
+    sizeMeasuresToMm,
+    sliderCurrentValues,
+    valuesOfQuantity,
+    valueOfQuantityCurrent,
+    isValidFormQuantity: [isValidFromQuantity, isValidUntilQuantity],
+    valuesOfValutes,
+    currentValute,
+    sumCurrent: [currentSumFrom, currentSumUntil],
+    isValidFormSum: [isValidFromSum, isValidUntilSum],
+    apples,
+    packages,
+    locations,
+    sizing,
+  } = useSelector((state) => state.filter);
 
   const dispatch = useDispatch();
 
-  const handleChangeFrom = useMemo(
-    () => (event) => {
-      dispatch(changeSliderByKeysFrom(event.target.value));
-    },
-    [dispatch]
-  );
+  const createInputChangeHandler = (actionCreator) => {
+    return useMemo(
+      () => (event) => {
+        dispatch(actionCreator(event.target.value));
+      },
+      [dispatch]
+    );
+  };
 
-  const handleChangeUntil = useMemo(
-    () => (event) => {
-      dispatch(changeSliderByKeysUntil(event.target.value));
-    },
-    [dispatch]
-  );
+  const createToggleHandler = (actionCreator) => {
+    return useMemo(
+      () => (event) => {
+        dispatch(actionCreator(event.target.id));
+      },
+      [dispatch]
+    );
+  };
 
-  const handleToggleMeasures = useMemo(
-    () => (event) => {
-      dispatch(toggleMeasures(event.target.id));
-    },
-    [dispatch]
+  const handleChangeFrom = createInputChangeHandler(changeSliderByKeysFrom);
+  const handleChangeUntil = createInputChangeHandler(changeSliderByKeysUntil);
+  const handleChangeFromQuantity = createInputChangeHandler(
+    changeInputQuantityFrom
   );
-
-  const handleToggleMeasuresQuantity = useMemo(
-    () => (event) => {
-      dispatch(toggleMeasuresQuantity(event.target.id));
-    },
-    [dispatch]
+  const handleChangeUntilQuantity = createInputChangeHandler(
+    changeInputQuantityUntil
   );
-
-  const handleChangeFromQuantity = useMemo(
-    () => (event) => {
-      dispatch(changeInputQuantityFrom(event.target.value));
-    },
-    [dispatch]
+  const handleChangeFromSum = createInputChangeHandler(changeInputSumFrom);
+  const handleChangeUntilSum = createInputChangeHandler(changeInputSumUntil);
+  const handleToggleMeasures = createToggleHandler(toggleMeasures);
+  const handleToggleMeasuresQuantity = createToggleHandler(
+    toggleMeasuresQuantity
   );
-
-  const handleChangeUntilQuantity = useMemo(
-    () => (event) => {
-      dispatch(changeInputQuantityUntil(event.target.value));
-    },
-    [dispatch]
-  );
-
-  const handleToggleValutes = useMemo(
-    () => (event) => {
-      dispatch(changeMeasuresValutes(event.target.id));
-    },
-    [dispatch]
-  );
-
-  const handleChangeFromSum = useMemo(
-    () => (event) => {
-      dispatch(changeInputSumFrom(event.target.value));
-    },
-    [dispatch]
-  );
-
-  const handleChangeUntilSum = useMemo(
-    () => (event) => {
-      dispatch(changeInputSumUntil(event.target.value));
-    },
-    [dispatch]
-  );
+  const handleToggleValutes = createToggleHandler(changeMeasuresValutes);
 
   return (
     <div>
@@ -147,8 +121,8 @@ const Filter = () => {
         {fillContainer(locations)}
         <MoreFilter options={14} />
         <FilterSizing
-          values={`Quantity, ${currentQuantity}`}
-          measures={quantity}
+          values={`Quantity, ${valueOfQuantityCurrent}`}
+          measures={valuesOfQuantity}
           toggleMeasures={handleToggleMeasuresQuantity}
         />
         <NumberInput
@@ -161,7 +135,7 @@ const Filter = () => {
         />
         <FilterSizing
           values={`Price, ${currentValute}`}
-          measures={valutes}
+          measures={valuesOfValutes}
           toggleMeasures={handleToggleValutes}
         />
         <NumberInput
