@@ -1,34 +1,42 @@
 import { v4 as uuidv4 } from 'uuid';
 import classes from './SelectorForAddLot.module.scss';
+import { useDispatch } from 'react-redux';
+
 
 function SelectorForAddLot({
   firstSelector,
   secondSelector,
   firstPlaceholder,
   secondPlaceholder,
-  label
-}) {
-  const fillSelectors = (array) => {
+  label,
+  changeFirstOption,
+  subcategoryKey,
+  chosenFirstOption,
+  chosenSecondOption,
+  changeSecondOption
+})
+{
+    const fillSelectors = (array, subcategoryKey) => {
     return array.map((item) => {
-      return <option key={uuidv4()}>{item}</option>;
+      return <option key={uuidv4()} value={item.name} data-subcategory={item[subcategoryKey]}>{item.name}</option>;
     });
   };
-
+  
   return (
     <div>
       <p>{label}</p>
       <div className={classes.locationSelector}>
-        <select>
-          <option value="" disabled selected>
+        <select onChange={changeFirstOption} value={chosenFirstOption || ''}>
+          <option  disabled value='' selected>
             {firstPlaceholder}
           </option>
-          {fillSelectors(firstSelector)}
+          {fillSelectors(firstSelector, subcategoryKey)}
         </select>
-        <select>
-          <option value="" disabled selected>
+        <select disabled = {!secondSelector} value={chosenSecondOption || ''} onChange={changeSecondOption}>
+          <option disabled value='' selected>
             {secondPlaceholder}
           </option>
-          {fillSelectors(secondSelector)}
+          {secondSelector ? (fillSelectors(secondSelector)) : (null)}
         </select>
       </div>
     </div>
