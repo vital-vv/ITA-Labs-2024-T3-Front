@@ -1,17 +1,20 @@
 import styles from './SideBar.module.scss';
-import {subCategories} from '../../utils/constants.js';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ROUTES } from '../../utils/routes.js';
+import {useSelector} from "react-redux";
 
 function SideBar() {
-    const filtredCategory = subCategories.filter(product => product.category === 'Vegetables');
+
+    let { list } = useSelector(({ subcategories }) => subcategories);
+    console.log(list)
+
     return (
         <div className={styles.sideBar}>
-            <NavLink to={ROUTES.LOTSLIST}>
-            {filtredCategory.map((item) => (
-                <p key={item.id}>{item.name}</p>
-            ))}
-            </NavLink>
+            {/*<NavLink to={ROUTES.LOTSLIST}>*/}
+            {/*{list != null ? list.map((item) => (*/}
+            {/*    <p key={item.category_id}>{item.name}</p>*/}
+            {/*)) : null}*/}
+            {/*</NavLink>*/}
         </div>
     )
 }

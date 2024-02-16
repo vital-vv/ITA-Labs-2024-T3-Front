@@ -24,11 +24,11 @@ table {
   }
 
   tbody {
-    height: 448px;
+    //height: 448px;
     overflow: auto;
 
     tr {
-      height: 60px;
+      height: 75px;
       position: relative;
 
       &:nth-child(2n+1) {
@@ -36,7 +36,7 @@ table {
       }
 
       & td:not(:first-child, :last-child) {
-        width: 28%;
+        width: 20%;
       }
     }
 
@@ -51,8 +51,8 @@ table {
       width: 20px;
       height: 20px;
       position: absolute;
-      right: 55px;
-      bottom: 15px;
+      right: 35px;
+      bottom: 25px;
     }
   }
 }

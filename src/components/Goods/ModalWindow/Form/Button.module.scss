@@ -1,0 +1,17 @@
+.button{
+  margin: 57px 0 0 0;
+  padding: 12px 30px;
+  background-color: #efefef;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  font-size: 18px;
+  color: grey;
+  &:hover{
+    background-color: #eaeaea;
+  }
+  &:disabled{
+    background-color: #eaeaea;
+    cursor: default;
+  }
+}

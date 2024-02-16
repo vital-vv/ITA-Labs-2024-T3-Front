@@ -1,0 +1,11 @@
+.modalTitle{
+  display: flex;
+  justify-content: space-between;
+  font-size: 25px;
+  margin: 0 0 20px 0;
+  button{
+    background-color: inherit;
+    cursor: pointer;
+    border: none;
+  }
+}

@@ -2,11 +2,13 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {BASE_URL} from '../../utils/constants.js';
 import axios from 'axios';
 
+const limitOfUsers = 5;
+
 export const getUsers = createAsyncThunk(
     'users/getUsers',
     async (page, thunkAPI) => {
         try {
-            const res = await axios(`${BASE_URL}/users?_page=${page}`);
+            const res = await axios(`${BASE_URL}/users?page=${page}&limit=${limitOfUsers}`);
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err)

@@ -10,12 +10,16 @@ import LotView from '../LotView/LotView.jsx';
 import { ROUTES } from '../../utils/routes.js';
 import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
 import AddLot from '../AddLot/AddLot.jsx';
+import {CategoriesContent} from "../Categories/CategoriesContent/CatgoriesContent.jsx";
 
 function AppRoutes() {
 
     return (
         <Routes>
-            <Route index element={<HomePage/>}/>
+            <Route path={ROUTES.HOME} element={<HomePage/>}>
+                <Route index element={<CategoriesContent/>} />
+                <Route path="/:category" element={<CategoriesContent/>} />
+            </Route>
             <Route path={ROUTES.LOTSLIST} element={<LotsList />} />
             <Route path={ROUTES.LOTVIEW} element={<LotView />} />
             <Route path={ROUTES.ADDLOT} element={<AddLot />} />

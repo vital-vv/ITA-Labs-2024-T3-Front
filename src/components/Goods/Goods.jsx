@@ -5,8 +5,18 @@ import Hammer from '../../assets/svg/Hammer';
 import Cart from '../../assets/svg/Cart';
 import Trash from '../../assets/svg/Trash';
 
+import {ModalWindow} from "./ModalWindow/ModalWindow.jsx";
+
+import {useState} from "react";
+
 function Goods() {
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
   return (
+      <>
     <div className={classes.goods}>
       <div className={classes.picture}>
         <img src={photo} alt="Photo of goods" />
@@ -44,7 +54,7 @@ function Goods() {
           </div>
         </div>
         <div className={classes.purchasing}>
-          <div>
+          <div onClick={handleOpen}>
            <Hammer/>
             My bet
           </div>
@@ -58,6 +68,8 @@ function Goods() {
         </div>
       </div>
     </div>
+  <ModalWindow open={open} handleClose={handleClose}/>
+  </>
   );
 }
 
