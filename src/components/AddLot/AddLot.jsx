@@ -9,44 +9,143 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMainData } from '../../features/main/mainSlice';
 import { getCategories } from '../../features/categories/categoriesSlice';
-import { changeFirstOption, changeFirstOptionCat, changeRegion, changeSubcategory } from '../../features/lots/lotsSlice';
+import {
+  changeFirstOption,
+  changeFirstOptionCat,
+  changeRegion,
+  changeSubcategory,
+  changeTitle,
+  changeWeight,
+  changePrice,
+  changeValidationAfterTimeWeight,
+  changeValidationAfterTimePrice,
+  changeQuantity,
+  changeCurrency,
+  changeValidity,
+  changeValidationAfterTimeValidity,
+} from '../../features/lots/lotsSlice';
 
 function AddLot() {
   const dispatch = useDispatch();
   const { currency, countries } = useSelector((state) => state.main);
-  const categories = useSelector(state => (state.categories.list.map(item => ({name: item.name, id: item.category_id, subcategories: item.subcategories.map(item => item.name)}))));
-  const {regions, subcategories, currentCountry, currentRegion, currentCategory, currentSubcategory} = useSelector((state) => state.lots);
+  const categories = useSelector((state) =>
+    state.categories.list.map((item) => ({
+      name: item.name,
+      id: item.category_id,
+      subcategories: item.subcategories.map((item) => item.name),
+    }))
+  );
+  const {
+    regions,
+    subcategories,
+    currentCountry,
+    currentRegion,
+    currentCategory,
+    currentSubcategory,
+    title,
+    inputTitleValid,
+    currentWeight,
+    currentPrice,
+    inputWeightValid,
+    inputPriceValid,
+    currentWeightMeasure,
+    currentPricingMeasure,
+    isValidValidity,
+    currentValidity,
+  } = useSelector((state) => state.lots);
 
-  const handleShangeFirstSelector = (event, sendingFunction) => {
-    const selectedSubcategory = event.target.options[event.target.selectedIndex].dataset.subcategory;
+  const handleChangeFirstSelector = (event, sendingFunction) => {
+    const selectedSubcategory =
+      event.target.options[event.target.selectedIndex].dataset.subcategory;
     const chosenOption = event.target.value;
-    dispatch(sendingFunction({selectedSubcategory, chosenOption}));
-  }
+    dispatch(sendingFunction({ selectedSubcategory, chosenOption }));
+  };
 
-  const handleShangeSecondSelector = (event, sendingFunction) => {
-    dispatch(sendingFunction(event.target.value))
-  }
-  
+  const handleChangeInputs = (event, sendingFunction) => {
+    dispatch(sendingFunction(event.target.value));
+  };
+
   const handleChangeFirstOptionCountry = (event) => {
-    handleShangeFirstSelector(event, changeFirstOption);
+    handleChangeFirstSelector(event, changeFirstOption);
   };
-  
+
   const handleChangeFirstOptionCategory = (event) => {
-    handleShangeFirstSelector(event, changeFirstOptionCat);
+    handleChangeFirstSelector(event, changeFirstOptionCat);
   };
 
-  const handleChangeRegion = event => {
-    handleShangeSecondSelector(event, changeRegion);
-  }
+  const handleChangeRegion = (event) => {
+    handleChangeInputs(event, changeRegion);
+  };
 
-  const handleChangeSubcategory = event => {
-    handleShangeSecondSelector(event, changeSubcategory);
-  }
+  const handleChangeSubcategory = (event) => {
+    handleChangeInputs(event, changeSubcategory);
+  };
+
+  const handleChangeTitle = (event) => {
+    handleChangeInputs(event, changeTitle);
+  };
+
+  const handleChangeQuantity = (event) => {
+    handleChangeInputs(event, changeWeight);
+  };
+
+  const handleChangePrice = (event) => {
+    handleChangeInputs(event, changePrice);
+  };
+
+  const handleChangeSelectorQuantity = (event) => {
+    handleChangeInputs(event, changeQuantity);
+  };
+
+  const handleChangeSelectorCurrency = (event) => {
+    handleChangeInputs(event, changeCurrency);
+  };
+
+  const handleChangeValidity = (event) => {
+    handleChangeInputs(event, changeValidity);
+  };
 
   useEffect(() => {
     dispatch(fetchMainData());
     dispatch(getCategories());
   }, [dispatch]);
+
+  function useValidationTimer(isValid, dispatch, action, currentValue) {
+    useEffect(() => {
+      let timer;
+      if (!isValid) {
+        timer = setTimeout(() => {
+          dispatch(action());
+        }, 1500);
+      }
+      return () => {
+        if (timer) {
+          clearTimeout(timer);
+        }
+      };
+    }, [dispatch, isValid, currentValue]);
+  }
+
+  useValidationTimer(
+    inputWeightValid,
+    dispatch,
+    changeValidationAfterTimeWeight,
+    currentWeight
+  );
+
+  useValidationTimer(
+    inputPriceValid,
+    dispatch,
+    changeValidationAfterTimePrice,
+    currentPrice
+  );
+
+  useValidationTimer(
+    isValidValidity,
+    dispatch,
+    changeValidationAfterTimeValidity,
+    currentValidity
+  );
 
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
@@ -109,8 +208,15 @@ function AddLot() {
               <InputForNewLot
                 title={'Title'}
                 placeholder={'For example: My apples'}
+                value={title}
+                handleChangeInput={handleChangeTitle}
+                isValid={inputTitleValid}
               />
-              <p className={classes.comment}>No more 40 characters</p>
+              <p className={classes.comment}>
+                No more{' '}
+                <span className={inputTitleValid ? null : classes.red}>40</span>{' '}
+                characters
+              </p>
             </div>
 
             <SelectorForAddLot
@@ -119,8 +225,8 @@ function AddLot() {
               firstPlaceholder={'Select a country'}
               secondPlaceholder={'Select a region'}
               label={'Location'}
-              changeFirstOption = {handleChangeFirstOptionCountry}
-              subcategoryKey='regions'
+              changeFirstOption={handleChangeFirstOptionCountry}
+              subcategoryKey="regions"
               chosenFirstOption={currentCountry}
               chosenSecondOption={currentRegion}
               changeSecondOption={handleChangeRegion}
@@ -132,8 +238,8 @@ function AddLot() {
               firstPlaceholder={'Select a category'}
               secondPlaceholder={'Select a product type'}
               label={'Category'}
-              changeFirstOption = {handleChangeFirstOptionCategory}
-              subcategoryKey='subcategories'
+              changeFirstOption={handleChangeFirstOptionCategory}
+              subcategoryKey="subcategories"
               chosenFirstOption={currentCategory}
               chosenSecondOption={currentSubcategory}
               changeSecondOption={handleChangeSubcategory}
@@ -143,18 +249,33 @@ function AddLot() {
               label={'Quantity'}
               placeholder={'Enter the quantity'}
               options={quantity}
+              changeInput={handleChangeQuantity}
+              inputValue={currentWeight}
+              isValid={inputWeightValid}
+              changeSelector={handleChangeSelectorQuantity}
+              selectorValue={currentWeightMeasure}
             />
             <SelectorAndInputForAddLot
               label={'Price'}
               placeholder={'Enter the price'}
               options={currency}
+              changeInput={handleChangePrice}
+              inputValue={currentPrice}
+              isValid={inputPriceValid}
+              changeSelector={handleChangeSelectorCurrency}
+              selectorValue={currentPricingMeasure}
             />
             <div>
               <InputForNewLot
                 title={'Validity'}
                 placeholder={'Validity of ad мах 30 days'}
+                isValid={isValidValidity}
+                value={currentValidity}
+                handleChangeInput={handleChangeValidity}
               />
-              <p className={classes.comment}>If field stays empty, terms of validity of ad 30 days</p>
+              <p className={classes.comment}>
+                Default terms of validity of ad no more 30 days
+              </p>
             </div>
             <div>
               <p>Product Images</p>
@@ -182,8 +303,7 @@ function AddLot() {
             <button>Place an advertisment</button>
           </div>
           <p className={classes.comment}>
-            This ad will placed on the site after review the moderator and will
-            be valid for the next 30 days.
+            This ad will placed on the site after review the moderator.
           </p>
         </>
       ) : (
