@@ -35,6 +35,12 @@ const changeValidationAfterTime = (state, validationAdress) => {
   state[validationAdress] = !state[validationAdress];
 };
 
+const checkValidationForm = state => {
+    const valuesChecked = Object.values(state);
+    valuesChecked.pop();
+    valuesChecked.every(item => item) ? state.fullValidationForm = true : state.fullValidationForm = false;
+}
+
 const lotsSlice = createSlice({
   name: 'lots',
   initialState: {
@@ -54,19 +60,24 @@ const lotsSlice = createSlice({
     currentWeightMeasure: 'USD',
     currentValidity: 30,
     isValidValidity: true,
+    fullValidationForm: false,
   },
   reducers: {
     changeFirstOption(state, action) {
       changeFirstSelector(state, action, 'regions', 'currentCountry');
+      checkValidationForm(state);
     },
     changeFirstOptionCat(state, action) {
       changeFirstSelector(state, action, 'subcategories', 'currentCategory');
+      checkValidationForm(state);
     },
     changeRegion(state, action) {
       changeInputs(state, action, 'currentRegion');
+      checkValidationForm(state);
     },
     changeSubcategory(state, action) {
       changeInputs(state, action, 'currentSubcategory');
+      checkValidationForm(state);
     },
     changeTitle(state, action) {
       changeInputs(state, action, 'title');
@@ -75,6 +86,7 @@ const lotsSlice = createSlice({
       } else {
         state.inputTitleValid = true;
       }
+      checkValidationForm(state);
     },
     changeWeight(state, action) {
       changeAndValidationInputs(
@@ -83,6 +95,7 @@ const lotsSlice = createSlice({
         'currentWeight',
         'inputWeightValid'
       );
+      checkValidationForm(state);
     },
     changePrice(state, action) {
       changeAndValidationInputs(
@@ -91,18 +104,23 @@ const lotsSlice = createSlice({
         'currentPrice',
         'inputPriceValid'
       );
+      checkValidationForm(state);
     },
     changeValidationAfterTimeWeight(state) {
       changeValidationAfterTime(state, 'inputWeightValid');
+      checkValidationForm(state)
     },
     changeValidationAfterTimePrice(state) {
       changeValidationAfterTime(state, 'inputPriceValid');
+      checkValidationForm(state)
     },
     changeQuantity(state, action) {
       changeInputs(state, action, 'currentWeightMeasure');
+      checkValidationForm(state);
     },
     changeCurrency(state, action) {
       changeInputs(state, action, 'currentPricingMeasure');
+      checkValidationForm(state);
     },
     changeValidity(state, action) {
       action.payload = +action.payload;
@@ -113,9 +131,11 @@ const lotsSlice = createSlice({
       }
         changeInputs(state, action, 'currentValidity');
         state.isValidValidity = true;
+        checkValidationForm(state);
     },
     changeValidationAfterTimeValidity(state) {
         changeValidationAfterTime(state, 'isValidValidity');
+        checkValidationForm(state);
     }
   },
 });

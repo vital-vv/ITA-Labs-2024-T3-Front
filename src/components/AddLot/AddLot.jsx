@@ -52,6 +52,7 @@ function AddLot() {
     currentPricingMeasure,
     isValidValidity,
     currentValidity,
+    fullValidationForm
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -299,8 +300,8 @@ function AddLot() {
           </div>
 
           <div className={classes.buttons}>
-            <button>Preview</button>
-            <button>Place an advertisment</button>
+            <button disabled={!fullValidationForm} className={fullValidationForm ? classes.validButton : null}>Preview</button>
+            <button disabled={!fullValidationForm} className={fullValidationForm ? classes.validButton : null}>Place an advertisment</button>
           </div>
           <p className={classes.comment}>
             This ad will placed on the site after review the moderator.
