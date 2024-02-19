@@ -1,17 +1,17 @@
 .button{
-  margin: 57px 0 0 0;
+  margin: 45px 0 0 0;
   padding: 12px 30px;
-  background-color: #efefef;
+  background-color: #38999B;
+  color: white;
   cursor: pointer;
-  width: 100%;
+  width: 328px;
+  bottom: 30px;
   border: none;
   font-size: 18px;
-  color: grey;
-  &:hover{
-    background-color: #eaeaea;
-  }
+  position: absolute;
   &:disabled{
-    background-color: #eaeaea;
+    background-color: #E6E6E6;
     cursor: default;
+    color: #BCC3C3;
   }
 }

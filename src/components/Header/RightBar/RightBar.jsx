@@ -1,6 +1,5 @@
-import styles from './AdminHeader.module.scss';
 import Badge from '@mui/material/Badge';
-
+import styles from './RightBar.module.scss';
 import badgeIcon from '../../../assets/images/badgeIcon.png';
 import langIcon from '../../../assets/images/langIcon.png';
 import usdIcon from '../../../assets/images/usdIcon.png';
@@ -10,7 +9,7 @@ import BasicMenu from '../BasicMenu/BasicMenu.jsx';
 import {NavLink} from 'react-router-dom';
 import {ROUTES} from '../../../utils/routes.js';
 
-function AdminHeaderBar() {
+function RightBar() {
     return (
         <div className={styles.rightBar}>
             <div>
@@ -21,7 +20,7 @@ function AdminHeaderBar() {
                 <p>ENG</p>
                 <img alt={langIcon} src={langIcon}/>
             </div>
-            <NavLink to={ROUTES.ADDLOT}>
+            <NavLink to={ROUTES.ADDLOT} className={styles.newAdBtn}>
                 <div className={styles.newAd}>
                     <Plus/>
                     Advertisement
@@ -37,4 +36,4 @@ function AdminHeaderBar() {
     );
 }
 
-export {AdminHeaderBar};
+export {RightBar};

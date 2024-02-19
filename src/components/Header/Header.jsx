@@ -3,8 +3,7 @@ import logo from '../../assets/images/logoIcon.png';
 import searchIcon from '../../assets/images/searchIcon.png';
 import {NavLink} from 'react-router-dom';
 import {ROUTES} from '../../utils/routes.js';
-// import {GuestHeaderBar} from './GuestHeaderBar/GuestHeaderBar.jsx';
-import {AdminHeaderBar} from './AdminHeaderBar/AdminHeaderBar.jsx';
+import {RightBar} from './RightBar/RightBar.jsx';
 
 function Header() {
 
@@ -19,8 +18,7 @@ function Header() {
                 <input type="search" name="search" autoComplete="off" onChange={() => {
                 }} value="" placeholder="Search"/>
             </div>
-            {/*<GuestHeaderBar/>*/}
-            <AdminHeaderBar/>
+            <RightBar/>
         </header>
     )
 }

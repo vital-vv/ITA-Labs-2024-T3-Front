@@ -15,6 +15,9 @@ function Goods() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const minValue = 1.1;
+    const maxValue = 1.2;
+
   return (
       <>
     <div className={classes.goods}>
@@ -46,11 +49,11 @@ function Goods() {
         <div>
           <div className={classes.cost}>
             <p>$11,000.00</p>
-            <p>$1.1/kg</p>
+            <p>$<span>{minValue}</span>/kg</p>
           </div>
           <div className={classes.perKg}>
             <p>$12,000.00</p>
-            <p>$1.2/kg</p>
+            <p>$<span>{maxValue}</span>/kg</p>
           </div>
         </div>
         <div className={classes.purchasing}>
@@ -68,7 +71,7 @@ function Goods() {
         </div>
       </div>
     </div>
-  <ModalWindow open={open} handleClose={handleClose}/>
+  <ModalWindow minValue={minValue} maxValue={maxValue} open={open} handleClose={handleClose}/>
   </>
   );
 }

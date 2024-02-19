@@ -10,10 +10,6 @@ import {getSubcategories} from "../../../features/categories/subcategoriesSlice.
 
 function CategoriesContent() {
 
-    // const location = useLocation();
-    // console.log(location)
-    // const categoryId = location.state.category_id;
-
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getSubcategories(1))

@@ -17,7 +17,7 @@ const style = {
     p: 4,
 };
 
-function ModalWindow({handleClose, open}) {
+function ModalWindow({handleClose, open, maxValue, minValue}) {
     return (
         <div>
             <Modal
@@ -31,7 +31,7 @@ function ModalWindow({handleClose, open}) {
                         <p>Place a bet</p>
                         <button onClick={handleClose}><img src={exitIcon} alt={exitIcon}/></button>
                     </div>
-                    <ModalForm/>
+                    <ModalForm minValue={minValue} maxValue={maxValue}/>
                 </Box>
             </Modal>
         </div>
