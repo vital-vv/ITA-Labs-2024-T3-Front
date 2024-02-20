@@ -18,6 +18,7 @@ import {
   changeMeasuresValutes,
   changeInputSumFrom,
   changeInputSumUntil,
+  changeSliderValues,
 } from '../../features/filter/filterSlice';
 import { useMemo } from 'react';
 
@@ -88,6 +89,9 @@ const Filter = () => {
   );
   const handleToggleValutes = createToggleHandler(changeMeasuresValutes);
 
+  const handleChangeSlider = (event, newValue) =>
+    dispatch(changeSliderValues({ newValue }));
+
   return (
     <div>
       <div className={classes.filter}>
@@ -106,6 +110,7 @@ const Filter = () => {
           min={sliderCurrentLimit[0]}
           max={sliderCurrentLimit[1]}
           currentValue={sliderCurrentValues}
+          changeSlider={handleChangeSlider}
         />
         <NumberInput
           from={sliderCurrentValues[0]}

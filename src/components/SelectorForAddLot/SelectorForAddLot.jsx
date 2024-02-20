@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import classes from './SelectorForAddLot.module.scss';
-import { useDispatch } from 'react-redux';
 
 function SelectorForAddLot({
   firstSelector,

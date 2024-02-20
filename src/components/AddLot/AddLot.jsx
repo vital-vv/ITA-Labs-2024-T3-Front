@@ -5,7 +5,7 @@ import classes from './AddLot.module.scss';
 import { quantity } from '../dataoffilter';
 import SelectorAndInputForAddLot from '../SelectorAndInputForAddLot/SelectorAndInputForAddLot';
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMainData } from '../../features/main/mainSlice';
 import { getCategories } from '../../features/categories/categoriesSlice';
@@ -23,16 +23,32 @@ import {
   changeCurrency,
   changeValidity,
   changeValidationAfterTimeValidity,
+  fileTransfer,
+  fileChange,
+  changeVariety,
+  changeSliderValues,
+  changeSliderFromByKeys,
+  changeSliderUntilByKeys,
+  changeMeasure,
+  changeMinimalBet,
+  changeValidationAfterTimeMinimalBet,
+  changePackaging,
 } from '../../features/lots/lotsSlice';
+import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
+import Slider from '../Slider/Slider';
+import NumberInput from '../NumberInput/NumberInput';
+import { ROUTES } from '../../utils/routes';
 
 function AddLot() {
   const dispatch = useDispatch();
-  const { currency, countries } = useSelector((state) => state.main);
+  const { currency, countries, apples, packaging, sizing } = useSelector(
+    (state) => state.main
+  );
   const categories = useSelector((state) =>
     state.categories.list.map((item) => ({
       name: item.name,
       id: item.category_id,
-      subcategories: item.subcategories.map((item) => item.name),
+      // subcategories: item.subcategories.map((item) => item.name),
     }))
   );
   const {
@@ -52,7 +68,17 @@ function AddLot() {
     currentPricingMeasure,
     isValidValidity,
     currentValidity,
-    fullValidationForm
+    fullValidationForm,
+    picturesFiles,
+    currentVariety,
+    sliderCurrent,
+    sliderLimitCurrent,
+    validSliderFrom,
+    validSliderUntil,
+    currentMeasure,
+    minimalBet,
+    inputMinimalBetValid,
+    currentPackages
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -106,6 +132,34 @@ function AddLot() {
     handleChangeInputs(event, changeValidity);
   };
 
+  const handleChangeVariety = (event) => {
+    handleChangeInputs(event, changeVariety);
+  };
+
+  const handleChangeSlider = (event, newValue) => {
+    dispatch(changeSliderValues({ newValue }));
+  };
+
+  const handleChangeFromSlider = (event) => {
+    handleChangeInputs(event, changeSliderFromByKeys);
+  };
+
+  const handleChangeUntilSlider = (event) => {
+    handleChangeInputs(event, changeSliderUntilByKeys);
+  };
+
+  const handleChangeMeasure = (event) => {
+    handleChangeInputs(event, changeMeasure);
+  };
+
+  const handleChangeMinimalBet = (event) => {
+    handleChangeInputs(event, changeMinimalBet);
+  };
+
+  const handleChangePackaging = (event) => {
+    handleChangeInputs(event, changePackaging);
+  };
+
   useEffect(() => {
     dispatch(fetchMainData());
     dispatch(getCategories());
@@ -148,7 +202,13 @@ function AddLot() {
     currentValidity
   );
 
-  const [files, setFiles] = useState([]);
+  useValidationTimer(
+    inputMinimalBetValid,
+    dispatch,
+    changeValidationAfterTimeMinimalBet,
+    minimalBet
+  );
+
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -161,14 +221,13 @@ function AddLot() {
   };
 
   const handleFileChange = (event) => {
-    const selectedFiles = event.target.files;
-    for (let i = 0; i < selectedFiles.length; i++) {
-      if (selectedFiles[i].size > 1024 * 1024 * 5) {
-        alert('Your file is too large');
-        return;
-      }
-    }
-    setFiles([...files, ...event.target.files]);
+    const files = Array.from(event.target.files);
+    const serializableFiles = files.map((file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    }));
+    dispatch(fileChange({ payload: serializableFiles }));
   };
 
   const handleDragOver = (event) => {
@@ -177,22 +236,17 @@ function AddLot() {
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const droppedFiles = Array.from(event.dataTransfer.files);
-    const validFiles = [];
-    let invalidFileFound = false;
-
-    droppedFiles.forEach((file) => {
-      if (file.size > 1024 * 1024 * 5) {
-        alert('Your file is too large');
-        invalidFileFound = true;
-      } else {
-        validFiles.push(file);
-      }
-    });
-    if (!invalidFileFound) {
-      setFiles([...files, ...validFiles]);
-    }
+    const files = Array.from(event.dataTransfer.files);
+    const serializableFiles = files.map((file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    }));
+    dispatch(fileTransfer({ payload: serializableFiles }));
   };
+
+  const [showPreview, setShowPreview] = useState(false);
+
   return (
     <div className={classes.addlot}>
       {currency ? (
@@ -246,6 +300,47 @@ function AddLot() {
               changeSecondOption={handleChangeSubcategory}
             />
 
+            <SingleSelectorForAddLot
+              label={'Variety'}
+              categories={apples}
+              changeOption={handleChangeVariety}
+              chosenOption={currentVariety}
+            />
+            <div>Size</div>
+            <div className={classes.slider}>
+              <Slider
+                min={sliderLimitCurrent[0]}
+                max={sliderLimitCurrent[1]}
+                currentValue={sliderCurrent}
+                changeSlider={handleChangeSlider}
+              />
+            </div>
+
+            <div className={classes.numberInputs}>
+              <div>
+                <NumberInput
+                  from={sliderCurrent[0]}
+                  until={sliderCurrent[1]}
+                  isValidFrom={validSliderFrom}
+                  isValidUntil={validSliderUntil}
+                  changeFrom={handleChangeFromSlider}
+                  changeUntil={handleChangeUntilSlider}
+                />
+              </div>
+              <SingleSelectorForAddLot
+                categories={sizing}
+                chosenOption={currentMeasure}
+                changeOption={handleChangeMeasure}
+              />
+            </div>
+
+            <SingleSelectorForAddLot
+              label={'Packaging'}
+              categories={packaging}
+              changeOption={handleChangePackaging}
+              chosenOption={currentPackages}
+            />
+
             <SelectorAndInputForAddLot
               label={'Quantity'}
               placeholder={'Enter the quantity'}
@@ -266,6 +361,17 @@ function AddLot() {
               changeSelector={handleChangeSelectorCurrency}
               selectorValue={currentPricingMeasure}
             />
+            <SelectorAndInputForAddLot
+              label={'Minimal bet'}
+              placeholder={'Enter the minimal bet'}
+              options={currency}
+              changeInput={handleChangeMinimalBet}
+              inputValue={minimalBet}
+              isValid={inputMinimalBetValid}
+              changeSelector={handleChangeSelectorCurrency}
+              selectorValue={currentPricingMeasure}
+            />
+            
             <div>
               <InputForNewLot
                 title={'Validity'}
@@ -295,13 +401,28 @@ function AddLot() {
                   multiple
                 />
               </div>
-              <p className={classes.comment}>{files.length} of 9 images</p>
+              <p className={classes.comment}>
+                {picturesFiles.length} of 9 images
+              </p>
             </div>
           </div>
 
           <div className={classes.buttons}>
-            <button disabled={!fullValidationForm} className={fullValidationForm ? classes.validButton : null}>Preview</button>
-            <button disabled={!fullValidationForm} className={fullValidationForm ? classes.validButton : null}>Place an advertisment</button>
+          <NavLink to={ROUTES.PREVIEW}>
+            <button 
+              disabled={!fullValidationForm}
+              className={fullValidationForm ? classes.validButton : null}
+            
+            >
+              Preview
+            </button>
+            </NavLink>
+            <button
+              disabled={!fullValidationForm}
+              className={fullValidationForm ? classes.validButton : null}
+            >
+              Place an advertisment
+            </button>
           </div>
           <p className={classes.comment}>
             This ad will placed on the site after review the moderator.
