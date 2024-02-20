@@ -5,8 +5,21 @@ import Hammer from '../../assets/svg/Hammer';
 import Cart from '../../assets/svg/Cart';
 import Trash from '../../assets/svg/Trash';
 
+import {ModalWindow} from "./ModalWindow/ModalWindow.jsx";
+
+import {useState} from "react";
+
 function Goods() {
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const minValue = 1.1;
+    const maxValue = 1.2;
+
   return (
+      <>
     <div className={classes.goods}>
       <div className={classes.picture}>
         <img src={photo} alt="Photo of goods" />
@@ -36,15 +49,15 @@ function Goods() {
         <div>
           <div className={classes.cost}>
             <p>$11,000.00</p>
-            <p>$1.1/kg</p>
+            <p>$<span>{minValue}</span>/kg</p>
           </div>
           <div className={classes.perKg}>
             <p>$12,000.00</p>
-            <p>$1.2/kg</p>
+            <p>$<span>{maxValue}</span>/kg</p>
           </div>
         </div>
         <div className={classes.purchasing}>
-          <div>
+          <div onClick={handleOpen}>
            <Hammer/>
             My bet
           </div>
@@ -58,6 +71,8 @@ function Goods() {
         </div>
       </div>
     </div>
+  <ModalWindow minValue={minValue} maxValue={maxValue} open={open} handleClose={handleClose}/>
+  </>
   );
 }
 
