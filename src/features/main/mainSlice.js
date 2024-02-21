@@ -58,8 +58,8 @@ const mainSlice = createSlice({
       .addCase(fetchMainData.fulfilled, (state, action) => {
         state.mainDataStatus = 'succeeded';
         state.packaging = action.payload.packaging;
-        state.packaging = state.packaging.map((item) => {
-          return { name: item, isChecked: false };
+        state.packaging = state.packaging.map((item, index) => {
+          return { name: item, isChecked: false, id: index+50 };
         });
         state.currency = action.payload.currency;
         state.quantity = action.payload.weight;

@@ -44,17 +44,17 @@ function Goods() {
           </div>
         </div>
         <div className={classes.purchasing}>
-          <div>
+          <button>
            <Hammer/>
             My bet
-          </div>
-          <div>
+          </button>
+          <button>
             <Cart/>
             Buy now
-          </div>
-          <div>
+          </button>
+          <button>
             <Trash/>
-          </div>
+          </button>
         </div>
       </div>
     </div>

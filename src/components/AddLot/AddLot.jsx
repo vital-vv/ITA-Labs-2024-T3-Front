@@ -33,26 +33,26 @@ import {
   changePackaging,
   fetchSubcategories,
   addSubscribe,
+  postNewLot,
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
 import NumberInput from '../NumberInput/NumberInput';
 import { ROUTES } from '../../utils/routes';
 import OneStepBack from '../OneStepBack/OneStepBack';
-
+import Loader from '../../hoc/Loader';
 
 function AddLot() {
   const dispatch = useDispatch();
-  const { currency, countries, apples, packaging, sizing, quantity } = useSelector(
-    (state) => state.main
-  );
+  const { currency, countries, apples, packaging, sizing, quantity } =
+    useSelector((state) => state.main);
   const categories = useSelector((state) =>
     state.categories.list.map((item) => ({
       name: item.name,
       id: item.category_id,
     }))
   );
-  
+
   const {
     regions,
     subcategories,
@@ -82,6 +82,8 @@ function AddLot() {
     inputMinimalBetValid,
     currentPackages,
     isDescriptionValid,
+    currentIdCategory,
+    description
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -102,8 +104,10 @@ function AddLot() {
   const handleChangeFirstOptionCategory = (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     const selectedId = selectedOption.id;
-    dispatch(fetchSubcategories(selectedId))
-    dispatch(changeFirstOptionCat(event.target.value))
+    dispatch(fetchSubcategories(selectedId));
+    dispatch(
+      changeFirstOptionCat({ category: event.target.value, id: selectedId })
+    );
   };
 
   const handleChangeRegion = (event) => {
@@ -168,7 +172,7 @@ function AddLot() {
 
   const handleAddSubscribe = (event) => {
     handleChangeInputs(event, addSubscribe);
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchMainData());
@@ -220,7 +224,7 @@ function AddLot() {
   );
 
   const fileInputRef = useRef(null);
- 
+
   const handleFileInputClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -252,12 +256,31 @@ function AddLot() {
     dispatch(fileTransfer({ payload: serializableFiles }));
   };
 
+  const handleAddLot = () => {
+    const newLot = {
+      category_id: currentIdCategory,
+      price_per_unit: Number((currentPrice/currentWeight).toFixed(2)),
+      title: title,
+      quantity: currentWeight,
+      weight: currentWeightMeasure,
+      location: {
+        country: currentCountry,
+        region: currentRegion,
+      },
+      description: description,
+      variety: currentVariety,
+      size: sliderCurrent[0],
+      packaging: currentPackages,
+    };
+    dispatch(postNewLot(newLot));
+  };
+
   return (
     <div className={classes.addlot}>
       {currency ? (
         <>
           <div className={classes.labelNewLot}>
-            <OneStepBack/>
+            <OneStepBack />
             <p>New advertisment</p>
           </div>
 
@@ -374,7 +397,7 @@ function AddLot() {
               changeSelector={handleChangeSelectorCurrency}
               selectorValue={currentPricingMeasure}
             />
-            
+
             <div>
               <InputForNewLot
                 title={'Validity'}
@@ -388,11 +411,21 @@ function AddLot() {
               </p>
             </div>
             <div className={classes.describing}>
-                <div>Description production</div>
-                <textarea cols="40" rows="5" placeholder="Enter your describing here" onChange={handleAddSubscribe} className={isDescriptionValid ? null : classes.pink}></textarea>
-                <p className={classes.comment}>
-                Max <span className={isDescriptionValid ? null : classes.red}>200</span> symbols
-                </p>  
+              <div>Description production</div>
+              <textarea
+                cols="40"
+                rows="5"
+                placeholder="Enter your describing here"
+                onChange={handleAddSubscribe}
+                className={isDescriptionValid ? null : classes.pink}
+              ></textarea>
+              <p className={classes.comment}>
+                Max{' '}
+                <span className={isDescriptionValid ? null : classes.red}>
+                  200
+                </span>{' '}
+                symbols
+              </p>
             </div>
             <div>
               <p>Product Images</p>
@@ -418,18 +451,18 @@ function AddLot() {
           </div>
 
           <div className={classes.buttons}>
-          <NavLink to={ROUTES.PREVIEW}>
-            <button 
-              disabled={!fullValidationForm}
-              className={fullValidationForm ? classes.validButton : null}
-            
-            >
-              Preview
-            </button>
+            <NavLink to={ROUTES.PREVIEW}>
+              <button
+                disabled={!fullValidationForm}
+                className={fullValidationForm ? classes.validButton : null}
+              >
+                Preview
+              </button>
             </NavLink>
             <button
               disabled={!fullValidationForm}
               className={fullValidationForm ? classes.validButton : null}
+              onClick={handleAddLot}
             >
               Place an advertisment
             </button>
@@ -439,7 +472,7 @@ function AddLot() {
           </p>
         </>
       ) : (
-        <img src="https://rb.ru/media/upload_tmp/2018/d3.gif"></img>
+        <Loader/>
       )}
     </div>
   );

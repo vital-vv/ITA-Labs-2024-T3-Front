@@ -8,7 +8,6 @@ export const fetchSubcategories = createAsyncThunk(
       const response = await axios.get(
         `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/categories/${id}`
       );
-      console.log(response);
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -18,6 +17,24 @@ export const fetchSubcategories = createAsyncThunk(
     }
   }
 );
+
+export const postNewLot = createAsyncThunk(
+  'lots/addNewLot',
+  async (lotData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/lots`, lotData
+      );
+      console.log(response)
+      // if (response.status !== 200) {
+      //   throw new Error('Something went wrong');
+      // }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
 
 
 const changeFirstSelector = (
@@ -111,6 +128,7 @@ const lotsSlice = createSlice({
     currentCountry: '',
     currentRegion: '',
     currentCategory: '',
+    currentIdCategory: 0,
     currentSubcategory: '',
     title: '',
     inputTitleValid: true,
@@ -146,7 +164,8 @@ const lotsSlice = createSlice({
       checkValidationForm(state);
     },
     changeFirstOptionCat(state, action) {
-      changeInputs(state, action, 'currentCategory');
+      state.currentCategory = action.payload.category;
+      state.currentIdCategory = action.payload.id
       checkValidationForm(state);
     },
     changeRegion(state, action) {

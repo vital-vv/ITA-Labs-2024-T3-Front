@@ -15,10 +15,10 @@ function AdminHeaderBar() {
         <img alt={langIcon} src={langIcon} />
       </div>
       <NavLink to={ROUTES.ADDLOT}>
-        <div className={styles.newAd}>
+        <button className={styles.newAd}>
           <Plus />
           Advertisement
-        </div>
+        </button>
       </NavLink>
       <div>
         <Badge className={styles.badge} color="error" variant="dot">
