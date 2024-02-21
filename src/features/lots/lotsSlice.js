@@ -1,4 +1,24 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchSubcategories = createAsyncThunk(
+  'lots/fetchSubcategories',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/categories/${id}`
+      );
+      console.log(response);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 const changeFirstSelector = (
   state,
@@ -75,6 +95,14 @@ const replacingCurrentMeasure = (state, targetMeasure, limitMeasure) => {
   state.sliderLimitCurrent = state[limitMeasure];
 };
 
+const checkOnMaxSymbols = (state, checkedBranchState, maxSymbols, resultBranchState) => {
+  if (state[checkedBranchState].length > maxSymbols) {
+    state[resultBranchState] = false;
+  } else {
+    state[resultBranchState] = true;
+  }
+}
+
 const lotsSlice = createSlice({
   name: 'lots',
   initialState: {
@@ -108,6 +136,8 @@ const lotsSlice = createSlice({
     minimalBet: '',
     inputMinimalBetValid: true,
     currentPackages: 'Box',
+    description: ' ',
+    isDescriptionValid: true,
     fullValidationForm: false,
   },
   reducers: {
@@ -116,7 +146,7 @@ const lotsSlice = createSlice({
       checkValidationForm(state);
     },
     changeFirstOptionCat(state, action) {
-      changeFirstSelector(state, action, 'subcategories', 'currentCategory');
+      changeInputs(state, action, 'currentCategory');
       checkValidationForm(state);
     },
     changeRegion(state, action) {
@@ -129,11 +159,7 @@ const lotsSlice = createSlice({
     },
     changeTitle(state, action) {
       changeInputs(state, action, 'title');
-      if (state.title.length > 40) {
-        state.inputTitleValid = false;
-      } else {
-        state.inputTitleValid = true;
-      }
+      checkOnMaxSymbols(state,'title', 40, 'inputTitleValid');
       checkValidationForm(state);
     },
     changeWeight(state, action) {
@@ -229,7 +255,18 @@ const lotsSlice = createSlice({
     changePackaging (state, action) {
       changeInputs(state, action, 'currentPackages');
       checkValidationForm(state);
+    },
+    addSubscribe (state, action) {
+      changeInputs(state, action, 'description');
+      checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
+      checkValidationForm(state);
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSubcategories.fulfilled, (state, action) => {
+        state.subcategories = action.payload.subcategories;   
+      })
   },
 });
 
@@ -257,6 +294,7 @@ export const {
   changeMinimalBet,
   changeValidationAfterTimeMinimalBet,
   changePackaging,
+  addSubscribe
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

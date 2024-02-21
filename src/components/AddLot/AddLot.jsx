@@ -1,11 +1,9 @@
-import ArrowLeft from '../../assets/svg/ArrowLeft';
 import InputForNewLot from '../InputForNewLot/InputForNewLot';
 import SelectorForAddLot from '../SelectorForAddLot/SelectorForAddLot';
 import classes from './AddLot.module.scss';
-import { quantity } from '../dataoffilter';
 import SelectorAndInputForAddLot from '../SelectorAndInputForAddLot/SelectorAndInputForAddLot';
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useRef, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMainData } from '../../features/main/mainSlice';
 import { getCategories } from '../../features/categories/categoriesSlice';
@@ -33,24 +31,28 @@ import {
   changeMinimalBet,
   changeValidationAfterTimeMinimalBet,
   changePackaging,
+  fetchSubcategories,
+  addSubscribe,
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
 import NumberInput from '../NumberInput/NumberInput';
 import { ROUTES } from '../../utils/routes';
+import OneStepBack from '../OneStepBack/OneStepBack';
+
 
 function AddLot() {
   const dispatch = useDispatch();
-  const { currency, countries, apples, packaging, sizing } = useSelector(
+  const { currency, countries, apples, packaging, sizing, quantity } = useSelector(
     (state) => state.main
   );
   const categories = useSelector((state) =>
     state.categories.list.map((item) => ({
       name: item.name,
       id: item.category_id,
-      // subcategories: item.subcategories.map((item) => item.name),
     }))
   );
+  
   const {
     regions,
     subcategories,
@@ -78,7 +80,8 @@ function AddLot() {
     currentMeasure,
     minimalBet,
     inputMinimalBetValid,
-    currentPackages
+    currentPackages,
+    isDescriptionValid,
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -97,7 +100,10 @@ function AddLot() {
   };
 
   const handleChangeFirstOptionCategory = (event) => {
-    handleChangeFirstSelector(event, changeFirstOptionCat);
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    const selectedId = selectedOption.id;
+    dispatch(fetchSubcategories(selectedId))
+    dispatch(changeFirstOptionCat(event.target.value))
   };
 
   const handleChangeRegion = (event) => {
@@ -160,6 +166,10 @@ function AddLot() {
     handleChangeInputs(event, changePackaging);
   };
 
+  const handleAddSubscribe = (event) => {
+    handleChangeInputs(event, addSubscribe);
+  }
+
   useEffect(() => {
     dispatch(fetchMainData());
     dispatch(getCategories());
@@ -210,10 +220,7 @@ function AddLot() {
   );
 
   const fileInputRef = useRef(null);
-  const navigate = useNavigate();
-
-  const goBack = () => navigate(-1);
-
+ 
   const handleFileInputClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -245,16 +252,12 @@ function AddLot() {
     dispatch(fileTransfer({ payload: serializableFiles }));
   };
 
-  const [showPreview, setShowPreview] = useState(false);
-
   return (
     <div className={classes.addlot}>
       {currency ? (
         <>
           <div className={classes.labelNewLot}>
-            <div onClick={goBack}>
-              <ArrowLeft />
-            </div>
+            <OneStepBack/>
             <p>New advertisment</p>
           </div>
 
@@ -383,6 +386,13 @@ function AddLot() {
               <p className={classes.comment}>
                 Default terms of validity of ad no more 30 days
               </p>
+            </div>
+            <div className={classes.describing}>
+                <div>Description production</div>
+                <textarea cols="40" rows="5" placeholder="Enter your describing here" onChange={handleAddSubscribe} className={isDescriptionValid ? null : classes.pink}></textarea>
+                <p className={classes.comment}>
+                Max <span className={isDescriptionValid ? null : classes.red}>200</span> symbols
+                </p>  
             </div>
             <div>
               <p>Product Images</p>

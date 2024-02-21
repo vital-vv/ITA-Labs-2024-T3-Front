@@ -19,6 +19,7 @@ function SelectorForAddLot({
         <option
           key={uuidv4()}
           value={item.name}
+          id={item.id}
           data-subcategory={item[subcategoryKey]}
         >
           {item.name}
@@ -26,6 +27,7 @@ function SelectorForAddLot({
       );
     });
   };
+
 
   return (
     <div>

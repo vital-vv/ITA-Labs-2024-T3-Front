@@ -26,6 +26,7 @@ const mainSlice = createSlice({
     mainDataStatus: 'idle',
     error: null,
     countries: [{ id: 1, name: 'Belarus', regions: ['The Grodno region', 'The Minsk region', 'The Brest region', 'The Gomel region', 'The Vitebsk region', 'The Mogilev region'] }],
+    quantity: null,
     apples: [
       { name: 'alwa', id: 1, isChecked: false },
       { name: 'antonowka', id: 2, isChecked: false },
@@ -61,6 +62,7 @@ const mainSlice = createSlice({
           return { name: item, isChecked: false };
         });
         state.currency = action.payload.currency;
+        state.quantity = action.payload.weight;
       })
       .addCase(fetchMainData.rejected, (state, action) => {
         state.mainDataStatus = 'failed';

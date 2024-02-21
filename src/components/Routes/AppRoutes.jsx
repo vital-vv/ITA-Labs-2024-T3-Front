@@ -10,7 +10,7 @@ import LotView from '../LotView/LotView.jsx';
 import { ROUTES } from '../../utils/routes.js';
 import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
 import AddLot from '../AddLot/AddLot.jsx';
-import Preview from '../Preview/Preview.jsx';
+import Preview from '../../hoc/Preview.jsx';
 
 function AppRoutes() {
 
