@@ -5,7 +5,7 @@ import {useEffect} from 'react';
 import {getCategories} from '../../features/categories/categoriesSlice.js';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 function Categories() {
     const dispatch = useDispatch();

@@ -11,11 +11,13 @@ import { ROUTES } from '../../utils/routes.js';
 import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
 import AddLot from '../AddLot/AddLot.jsx';
 import {CategoriesContent} from "../Categories/CategoriesContent/CatgoriesContent.jsx";
+import {SignInApp} from "../SignIn/SignInApp.jsx";
 
 function AppRoutes() {
 
     return (
         <Routes>
+            <Route path={ROUTES.LOGIN} element={<SignInApp/>}/>
             <Route path={ROUTES.HOME} element={<HomePage/>}>
                 <Route index element={<CategoriesContent/>} />
                 <Route path="/:category" element={<CategoriesContent/>} />
