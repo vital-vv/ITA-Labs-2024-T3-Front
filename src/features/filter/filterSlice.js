@@ -1,4 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+export const applyFilters = createAsyncThunk(
+  'filters/applyFilters',
+  async (_, { rejectWithValue, dispatch, getState }) => {
+    const {
+      sliderCurrentValues,
+      valueOfQuantityCurrent,
+      quantityValues,
+      chosenOptions,
+      sizeMeasuresToMm,
+    } = getState().filter;
+    if (!sizeMeasuresToMm) {
+      sliderCurrentValues = sliderCurrentValues.map((item) => item * 10);
+    }
+    const stringOfRequest = {
+      fromSize: sliderCurrentValues[0],
+      toSize: sliderCurrentValues[1],
+    };
+    try {
+      const response = await axios
+        .get
+        // 'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/data-selection'
+        ();
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const payloadToNumber = (string) => Number(string);
 
@@ -57,7 +89,12 @@ const findAndToggleElement = (array, findParameter) => {
   }
 };
 
-const toggleElementsAllArrays = (firstArray, secondArray, thirdArray, findParameter) => {
+const toggleElementsAllArrays = (
+  firstArray,
+  secondArray,
+  thirdArray,
+  findParameter
+) => {
   findAndToggleElement(firstArray, findParameter);
   findAndToggleElement(secondArray, findParameter);
   findAndToggleElement(thirdArray, findParameter);
@@ -67,9 +104,14 @@ const filterArray = (array, deletedElement) => {
   return (array = array.filter((item) => Number(item.id) !== deletedElement));
 };
 
+const toogleModal = (state, targetProperty) => {
+  state[targetProperty] = !state[targetProperty];
+};
+
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
+    currentCategoryId: 0,
     sliderDefaultValues: { mm: [200, 600], cm: [5, 15] },
     minMaxSlider: { mm: [0, 1000], cm: [0, 20] },
     sizing: ['mm', 'cm'],
@@ -97,14 +139,7 @@ const filterSlice = createSlice({
       { name: 'champion', id: 6, isChecked: false },
     ],
     packages: null,
-    locations: [
-      { name: 'Andijan region', id: 15, isChecked: false },
-      { name: 'Bukhara region', id: 16, isChecked: false },
-      { name: 'Republic of Karakalpakstan', id: 17, isChecked: false },
-      { name: 'Namangan region', id: 18, isChecked: false },
-      { name: 'Navoiy region', id: 19, isChecked: false },
-      { name: 'Qashqadaryo region', id: 20, isChecked: false },
-    ],
+    locations: [],
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -196,7 +231,12 @@ const filterSlice = createSlice({
     },
     choseCheckbox(state, action) {
       const elementId = payloadToNumber(action.payload.id);
-      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+      toggleElementsAllArrays(
+        state.apples,
+        state.packages,
+        state.locations,
+        elementId
+      );
       const sumArray = [...state.apples, ...state.packages, ...state.locations];
       const foundElement = sumArray.find((item) => item.id === elementId);
       if (
@@ -212,25 +252,47 @@ const filterSlice = createSlice({
     deleteOption(state, action) {
       const elementId = payloadToNumber(action.payload);
       state.chosenOptions = filterArray(state.chosenOptions, elementId);
-      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+      toggleElementsAllArrays(
+        state.apples,
+        state.packages,
+        state.locations,
+        elementId
+      );
     },
     clearAllParameters(state, {}) {
       const sumArray = [...state.apples, ...state.packages, ...state.locations];
-      sumArray.forEach(item => {item.isChecked = false});
+      sumArray.forEach((item) => {
+        item.isChecked = false;
+      });
       state.chosenOptions = [];
       state.sizeMeasuresToMm = true;
       state.sliderCurrentValues = [200, 600];
-      state.sliderCurrentLimit = [0, 1000],
-      state.valueOfQuantityCurrent = 'ton';
+      (state.sliderCurrentLimit = [0, 1000]),
+        (state.valueOfQuantityCurrent = 'ton');
       state.currentValute = 'USD';
       state.quantityValues = [1, 10000];
-      state.sumCurrent = [1, 1000000]
+      state.sumCurrent = [1, 1000000];
+      state.isOpenModalVariety = false;
+      state.isOpenModalRegions = false;
     },
     getDataFormated(state, action) {
       state.packages = action.payload.packages;
       state.valuesOfValutes = action.payload.valutes;
-      state.valuesOfQuantity = action.payload.quantity
-    }
+      state.valuesOfQuantity = action.payload.quantity;
+      state.locations = action.payload.countries.flatMap((item) =>
+        item.regions.map((item, index) => ({
+          name: item,
+          id: index + 60,
+          isChecked: false,
+        }))
+      );
+    },
+    toogleOpenModalVariety(state) {
+      toogleModal(state, 'isOpenModalVariety');
+    },
+    toogleOpenModalRegions(state) {
+      toogleModal(state, 'isOpenModalRegions');
+    },
   },
 });
 
@@ -248,7 +310,9 @@ export const {
   choseCheckbox,
   deleteOption,
   clearAllParameters,
-  getDataFormated
+  getDataFormated,
+  toogleOpenModalVariety,
+  toogleOpenModalRegions,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

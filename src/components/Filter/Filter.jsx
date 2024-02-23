@@ -19,10 +19,12 @@ import {
   changeInputSumFrom,
   changeInputSumUntil,
   changeSliderValues,
-  getDataFormated
+  getDataFormated,
+  toogleOpenModalVariety,
+  toogleOpenModalRegions
 } from '../../features/filter/filterSlice';
-import { useMemo } from 'react';
-import Loader from '../../hoc/Loader';
+import { useMemo, useState } from 'react';
+import Loader from '../../hoc/Loader/Loader';
 import { fetchMainData } from '../../features/main/mainSlice';
 import { useEffect } from 'react';
 
@@ -39,7 +41,7 @@ const Filter = () => {
   };
 
   const dispatch = useDispatch();
-  const { currency, quantity, packaging } = useSelector((state) => state.main);
+  const { currency, quantity, packaging, countries } = useSelector((state) => state.main);
 
   const {
     sliderCurrentLimit,
@@ -56,6 +58,8 @@ const Filter = () => {
     packages,
     locations,
     sizing,
+    isOpenModalVariety,
+    isOpenModalRegions,
   } = useSelector((state) => state.filter);
 
   useEffect(() => {
@@ -63,8 +67,8 @@ const Filter = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getDataFormated({packages: packaging, valutes: currency, quantity: quantity}));
-  }, [dispatch, packaging]);
+    dispatch(getDataFormated({packages: packaging, valutes: currency, quantity: quantity, countries: countries}));
+  }, [dispatch, packaging, countries]);
 
   const createInputChangeHandler = (actionCreator) => {
     return useMemo(
@@ -103,6 +107,15 @@ const Filter = () => {
   const handleChangeSlider = (event, newValue) =>
     dispatch(changeSliderValues({ newValue }));
 
+  const handleChangeOpenModalVariety = () => {
+    dispatch(toogleOpenModalVariety());
+  }
+
+  const handleChangeOpenModalRegions = () => {
+    dispatch(toogleOpenModalRegions());
+  }
+
+
   return (
     <div>
       {packages ? (
@@ -111,7 +124,7 @@ const Filter = () => {
             <div>
               <LabelForFilter name={'Variety'} />
               {fillContainer(apples)}
-              <MoreFilter options={33} />
+              <MoreFilter options={apples.length} isOpenModal={isOpenModalVariety} setOpenModal={handleChangeOpenModalVariety} arrayForShowModal={apples}/>
             </div>
             <FilterSizing
               values={'Size, '}
@@ -137,7 +150,7 @@ const Filter = () => {
             {fillContainer(packages)}
             <LabelForFilter name={'Location'} />
             {fillContainer(locations)}
-            <MoreFilter options={14} />
+            <MoreFilter options={locations.length} isOpenModal={isOpenModalRegions} setOpenModal={handleChangeOpenModalRegions} arrayForShowModal={locations}/>
             <FilterSizing
               values={`Quantity, ${valueOfQuantityCurrent}`}
               measures={quantity}

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import LotView from '../components/LotView/LotView';
+import LotView from '../../components/LotView/LotView';
 import { Navigate, useLocation } from 'react-router-dom';
 
 function Preview() {

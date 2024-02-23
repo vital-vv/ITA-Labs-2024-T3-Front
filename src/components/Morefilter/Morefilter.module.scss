@@ -6,4 +6,33 @@
     padding: 9px 12px;
     border: 1px solid  #BCC3C3;
     border-radius: 2px;
+    
+        position: relative;
+        
+   
+}
+
+.modal {
+    position: absolute;
+    padding: 20px 20px;
+    background-color: white;
+    z-index: 5;
+    top: -17.2vh;
+    left: 12.4vw;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: max-content;
+}
+
+.hidden {
+    display: none;
+} 
+
+.closeModal {
+    background-color: red;
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 3px;
 }

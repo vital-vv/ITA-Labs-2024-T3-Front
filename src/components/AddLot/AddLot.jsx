@@ -40,7 +40,7 @@ import Slider from '../Slider/Slider';
 import NumberInput from '../NumberInput/NumberInput';
 import { ROUTES } from '../../utils/routes';
 import OneStepBack from '../OneStepBack/OneStepBack';
-import Loader from '../../hoc/Loader';
+import Loader from '../../hoc/Loader/Loader';
 
 function AddLot() {
   const dispatch = useDispatch();

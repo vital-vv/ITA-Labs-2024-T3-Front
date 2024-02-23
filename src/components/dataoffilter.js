@@ -28,8 +28,6 @@ const locations = [
 ];
 
 const sizing = ['mm', 'cm'];
-
-
 const settings = ['Notify me of new messages', 'Hide my presence on the site', 'Show me Email to everyone', 'Receive promotinal notifications'];
 const countries = ['Belarus'];
 const regions = ['The Grodno region', 'The Minsk region', 'The Brest region', 'The Mogilev region', 'The Gomel region', 'The Vitebsk region' ]

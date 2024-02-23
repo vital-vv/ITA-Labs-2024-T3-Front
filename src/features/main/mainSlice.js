@@ -35,18 +35,6 @@ const mainSlice = createSlice({
       { name: 'braeburn', id: 5, isChecked: false },
       { name: 'champion', id: 6, isChecked: false },
     ],
-
-    packages: [
-      { name: 'Box', id: 7, isChecked: false },
-      { name: 'Basket', id: 8, isChecked: false },
-      { name: 'Carton', id: 9, isChecked: false },
-      { name: 'Bag', id: 10, isChecked: false },
-      { name: 'Crate', id: 11, isChecked: false },
-      { name: 'Bottle', id: 12, isChecked: false },
-      { name: 'Bunch', id: 13, isChecked: false },
-      { name: 'Sack', id: 14, isChecked: false },
-    ],
-
     sizing: [{ name: 'mm' }, {name: 'cm' }]
   },
   reducers: {},
