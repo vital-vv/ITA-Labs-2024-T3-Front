@@ -23,7 +23,7 @@ import {
   toogleOpenModalVariety,
   toogleOpenModalRegions
 } from '../../features/filter/filterSlice';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Loader from '../../hoc/Loader/Loader';
 import { fetchMainData } from '../../features/main/mainSlice';
 import { useEffect } from 'react';

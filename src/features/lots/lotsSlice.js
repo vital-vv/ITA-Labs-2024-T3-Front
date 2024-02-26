@@ -6,7 +6,7 @@ export const fetchSubcategories = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/categories/${id}`
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/${id}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
@@ -23,9 +23,8 @@ export const postNewLot = createAsyncThunk(
   async (lotData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/lots`, lotData
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots`, lotData
       );
-      console.log(response)
       // if (response.status !== 200) {
       //   throw new Error('Something went wrong');
       // }

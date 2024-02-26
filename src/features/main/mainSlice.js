@@ -6,7 +6,7 @@ export const fetchMainData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/data-selection'
+        'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/data-selection'
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');

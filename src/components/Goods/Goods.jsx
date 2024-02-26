@@ -5,7 +5,7 @@ import Hammer from '../../assets/svg/Hammer';
 import Cart from '../../assets/svg/Cart';
 import Trash from '../../assets/svg/Trash';
 
-function Goods() {
+function Goods({title, id, category, variety, quantity, size, packaging, country, region, dateCreated, daysRest, hoursRest}) {
   return (
     <div className={classes.goods}>
       <div className={classes.picture}>
@@ -13,23 +13,23 @@ function Goods() {
       </div>
       <div className={classes.info}>
         <div>
-          <p className={classes.labelOfGood}>Apple idared</p>
+          <p className={classes.labelOfGood}>{title}</p>
           <p className={classes.data}>
             <p>
               <span>
                 <Clock/>
               </span>
-              <span>2d 23h</span>
+              <span>{daysRest}d {hoursRest}h</span>
             </p>
-            <p>ID423-09325</p>
+            <p>ID{id}</p>
           </p>
         </div>
         <div className={classes.more}>
           <p className={classes.description}>
-            Apple, idared, 10 ton, 70+, bins
+            {`${category}, ${variety}, ${quantity} ton, ${size} mm, ${packaging}`}
           </p>
-          <p className={classes.region}>Uzbekistan, Bukhara region</p>
-          <p className={classes.dataOfAd}>25.06.2022, 12:15</p>
+          <p className={classes.region}>{country}, {region}</p>
+          <p className={classes.dataOfAd}>{dateCreated}</p>
         </div>
       </div>
       <div className={classes.bet}>

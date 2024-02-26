@@ -257,9 +257,26 @@ function AddLot() {
   };
 
   const handleAddLot = () => {
+    let priceToByn = currentPrice;
+    let sizeToMm = sliderCurrent[0]
+    switch (currentPricingMeasure) {
+      case 'USD':
+        priceToByn = currentPrice/3.10;
+        break;
+      case 'EUR':
+        priceToByn = currentPrice/3.39;
+        break;
+    }
+
+    switch (currentMeasure) {
+      case 'cm':
+        sizeToMm = sizeToMm*10;
+        break;
+    }
+
     const newLot = {
       category_id: currentIdCategory,
-      price_per_unit: Number((currentPrice/currentWeight).toFixed(2)),
+      price_per_unit: Number((priceToByn/currentWeight).toFixed(2)),
       title: title,
       quantity: currentWeight,
       weight: currentWeightMeasure,
@@ -269,7 +286,7 @@ function AddLot() {
       },
       description: description,
       variety: currentVariety,
-      size: sliderCurrent[0],
+      size: sizeToMm,
       packaging: currentPackages,
     };
     dispatch(postNewLot(newLot));

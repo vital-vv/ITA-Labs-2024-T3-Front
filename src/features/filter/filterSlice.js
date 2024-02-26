@@ -3,17 +3,17 @@ import axios from 'axios';
 
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
-  async (requestString, { rejectWithValue}) => {
+  async (_, { rejectWithValue, getState }) => {
+    const { stringFilter, sortField } = getState().filter;
+    console.log(stringFilter);
     try {
-      const response = await axios
-        .get(
-          `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/lots?page=1&limit=10&${requestString}`
-        );
-        console.log(response);
+      const response = await axios.get(
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots?page=1&limit=5${stringFilter}${sortField}`
+      );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
-      return response.data;
+      return response.data.content;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -128,7 +128,10 @@ const filterSlice = createSlice({
     ],
     packages: null,
     locations: [],
-    sortField: 'sortField=CREATED_AT&sortOrder=DESC',
+    sortField: '&sortField=CREATED_AT&sortOrder=DESC',
+    stringFilter: '',
+    currentLots: [],
+    error: null,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -284,33 +287,51 @@ const filterSlice = createSlice({
       toogleModal(state, 'isOpenModalRegions');
     },
     sortBySelector(state, action) {
+      const created = 'CREATED_AT';
+      const descOrder = 'DESC';
+      const ascOrder = 'ASC';
+      const quantity = 'QUANTITY';
+      const expDate = 'EXPIRATION_DATE';
+      const size = 'SIZE';
       switch (Number(action.payload)) {
-        case 1: 
-        state.sortField = 'sortField=CREATED_AT&sortOrder=DESC';
-        break;
+        case 1:
+          state.sortField = `&sortField=${created}&sortOrder=${descOrder}`;
+          break;
         case 2:
-        state.sortField = 'sortField=CREATED_AT&sortOrder=ASC';
-        break;
+          state.sortField = `&sortField=${created}&sortOrder=${ascOrder}`;
+          break;
         case 3:
-        state.sortField = 'sortField=QUANTITY&sortOrder=DESC';
-        break;
+          state.sortField = `&sortField=${quantity}&sortOrder=${descOrder}`;
+          break;
         case 4:
-        state.sortField = 'sortField=QUANTITY&sortOrder=ASC';
-        break;
+          state.sortField = `&sortField=${quantity}&sortOrder=${ascOrder}`;
+          break;
         case 5:
-        state.sortField = 'sortField=EXPIRATION_DATE&sortOrder=DESC';
-        break;
+          state.sortField = `&sortField=${expDate}&sortOrder=${descOrder}`;
+          break;
         case 6:
-        state.sortField = 'sortField=EXPIRATION_DATE&sortOrder=ASC';
-        break;
+          state.sortField = `&sortField=${expDate}&sortOrder=${ascOrder}`;
+          break;
         case 7:
-        state.sortField = 'sortField=SIZE&sortOrder=DESC';
-        break;
+          state.sortField = `&sortField=${size}&sortOrder=${descOrder}`;
+          break;
         case 8:
-        state.sortField = 'sortField=SIZE&sortOrder=ASC';
-        break;
+          state.sortField = `&sortField=${size}&sortOrder=${ascOrder}`;
+          break;
       }
-    }
+    },
+    sendFiltersSting(state, action) {
+      state.stringFilter = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(applyFilters.fulfilled, (state, action) => {
+       state.currentLots = action.payload;
+      })
+      .addCase(applyFilters.rejected, (state, action) => {
+        state.error = action.error.message;
+      });
   },
 });
 
@@ -332,6 +353,7 @@ export const {
   toogleOpenModalVariety,
   toogleOpenModalRegions,
   sortBySelector,
+  sendFiltersSting,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

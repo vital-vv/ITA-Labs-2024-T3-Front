@@ -1,7 +1,7 @@
 import classes from './ButtonFilter.module.scss';
 import Close from '../../assets/svg/Close.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearAllParameters, applyFilters } from '../../features/filter/filterSlice.js';
+import { clearAllParameters, sendFiltersSting } from '../../features/filter/filterSlice.js';
 
 const ButtonFilter = () => {
   const dispatch = useDispatch();
@@ -54,10 +54,10 @@ const ButtonFilter = () => {
       item[1] = item[1].join();
     }
   });
-  let requestString = arrayUnique.map(item => item.join('=')).join('&');
+  let requestString = '&' + arrayUnique.map(item => item.join('=')).join('&');
 
   const handleApplyFilters = () => {
-    dispatch(applyFilters(requestString));
+    dispatch(sendFiltersSting(requestString));
   }
 
   return (
