@@ -36,6 +36,7 @@ const Filter = () => {
         key={uuidv4()}
         id={item.id}
         isChecked={item.isChecked}
+        categoryName = {item.categoryName}
       />
     ));
   };

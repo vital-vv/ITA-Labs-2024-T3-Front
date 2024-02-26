@@ -1,27 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
-  async (_, { rejectWithValue, dispatch, getState }) => {
-    const {
-      sliderCurrentValues,
-      valueOfQuantityCurrent,
-      quantityValues,
-      chosenOptions,
-      sizeMeasuresToMm,
-    } = getState().filter;
-    if (!sizeMeasuresToMm) {
-      sliderCurrentValues = sliderCurrentValues.map((item) => item * 10);
-    }
-    const stringOfRequest = {
-      fromSize: sliderCurrentValues[0],
-      toSize: sliderCurrentValues[1],
-    };
+  async (requestString, { rejectWithValue}) => {
     try {
       const response = await axios
-        .get
-        // 'http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/data-selection'
-        ();
+        .get(
+          `http://ita-labs-2024-t3-730676977.us-east-1.elb.amazonaws.com/api/lots?page=1&limit=10&${requestString}`
+        );
+        console.log(response);
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -112,11 +100,11 @@ const filterSlice = createSlice({
   name: 'filter',
   initialState: {
     currentCategoryId: 0,
-    sliderDefaultValues: { mm: [200, 600], cm: [5, 15] },
-    minMaxSlider: { mm: [0, 1000], cm: [0, 20] },
+    sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
+    minMaxSlider: { mm: [0, 200], cm: [0, 20] },
     sizing: ['mm', 'cm'],
-    sliderCurrentValues: [200, 600],
-    sliderCurrentLimit: [0, 1000],
+    sliderCurrentValues: [50, 150],
+    sliderCurrentLimit: [0, 200],
     quantityValues: [1, 10000],
     quantityLimits: [1, 10000],
     isValidFormSizing: [true, true],
@@ -131,15 +119,16 @@ const filterSlice = createSlice({
     isValidFormSum: [true, true],
     chosenOptions: [],
     apples: [
-      { name: 'alwa', id: 1, isChecked: false },
-      { name: 'antonowka', id: 2, isChecked: false },
-      { name: 'boiken', id: 3, isChecked: false },
-      { name: 'boskoop', id: 4, isChecked: false },
-      { name: 'braeburn', id: 5, isChecked: false },
-      { name: 'champion', id: 6, isChecked: false },
+      { name: 'alwa', id: 1, isChecked: false, categoryName: 'variety' },
+      { name: 'antonowka', id: 2, isChecked: false, categoryName: 'variety' },
+      { name: 'boiken', id: 3, isChecked: false, categoryName: 'variety' },
+      { name: 'boskoop', id: 4, isChecked: false, categoryName: 'variety' },
+      { name: 'braeburn', id: 5, isChecked: false, categoryName: 'variety' },
+      { name: 'champion', id: 6, isChecked: false, categoryName: 'variety' },
     ],
     packages: null,
     locations: [],
+    sortField: 'sortField=CREATED_AT&sortOrder=DESC',
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -284,6 +273,7 @@ const filterSlice = createSlice({
           name: item,
           id: index + 60,
           isChecked: false,
+          categoryName: 'locations',
         }))
       );
     },
@@ -293,6 +283,34 @@ const filterSlice = createSlice({
     toogleOpenModalRegions(state) {
       toogleModal(state, 'isOpenModalRegions');
     },
+    sortBySelector(state, action) {
+      switch (Number(action.payload)) {
+        case 1: 
+        state.sortField = 'sortField=CREATED_AT&sortOrder=DESC';
+        break;
+        case 2:
+        state.sortField = 'sortField=CREATED_AT&sortOrder=ASC';
+        break;
+        case 3:
+        state.sortField = 'sortField=QUANTITY&sortOrder=DESC';
+        break;
+        case 4:
+        state.sortField = 'sortField=QUANTITY&sortOrder=ASC';
+        break;
+        case 5:
+        state.sortField = 'sortField=EXPIRATION_DATE&sortOrder=DESC';
+        break;
+        case 6:
+        state.sortField = 'sortField=EXPIRATION_DATE&sortOrder=ASC';
+        break;
+        case 7:
+        state.sortField = 'sortField=SIZE&sortOrder=DESC';
+        break;
+        case 8:
+        state.sortField = 'sortField=SIZE&sortOrder=ASC';
+        break;
+      }
+    }
   },
 });
 
@@ -313,6 +331,7 @@ export const {
   getDataFormated,
   toogleOpenModalVariety,
   toogleOpenModalRegions,
+  sortBySelector,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
