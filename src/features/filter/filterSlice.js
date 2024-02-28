@@ -4,11 +4,10 @@ import axios from 'axios';
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
   async (_, { rejectWithValue, getState }) => {
-    const { stringFilter, sortField } = getState().filter;
-    console.log(stringFilter);
+    const { stringFilter, sortField, currentPage } = getState().filter;
     try {
       const response = await axios.get(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots?page=1&limit=5${stringFilter}${sortField}`
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
@@ -96,6 +95,9 @@ const toogleModal = (state, targetProperty) => {
   state[targetProperty] = !state[targetProperty];
 };
 
+const findAllFromCategory = (array, categoryName) =>
+  array.filter((item) => item.categoryName === categoryName);
+
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
@@ -132,6 +134,8 @@ const filterSlice = createSlice({
     stringFilter: '',
     currentLots: [],
     error: null,
+    currentPage: 1,
+    isPagination: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -240,6 +244,9 @@ const filterSlice = createSlice({
       if (!foundElement.isChecked) {
         state.chosenOptions = filterArray(state.chosenOptions, elementId);
       }
+      if (state.chosenOptions.length === 0) {
+        state.stringFilter = '';
+      }
     },
     deleteOption(state, action) {
       const elementId = payloadToNumber(action.payload);
@@ -250,6 +257,9 @@ const filterSlice = createSlice({
         state.locations,
         elementId
       );
+      if (state.chosenOptions.length === 0) {
+        state.stringFilter = '';
+      }
     },
     clearAllParameters(state, {}) {
       const sumArray = [...state.apples, ...state.packages, ...state.locations];
@@ -266,6 +276,7 @@ const filterSlice = createSlice({
       state.sumCurrent = [1, 1000000];
       state.isOpenModalVariety = false;
       state.isOpenModalRegions = false;
+      state.stringFilter = '';
     },
     getDataFormated(state, action) {
       state.packages = action.payload.packages;
@@ -320,14 +331,60 @@ const filterSlice = createSlice({
           break;
       }
     },
-    sendFiltersSting(state, action) {
-      state.stringFilter = action.payload;
+    sendFiltersString(state) {
+      const variety = findAllFromCategory(state.chosenOptions, 'variety');
+      const packaging = findAllFromCategory(state.chosenOptions, 'packaging');
+      const regions = findAllFromCategory(state.chosenOptions, 'region');
+      let currentValues;
+      if (!state.sizeMeasuresToMm) {
+        currentValues = state.sliderCurrentValues.map((item) => item * 10);
+      } else {
+        currentValues = state.sliderCurrentValues;
+      }
+      let objectOfRequest = {
+        fromSize: currentValues[0],
+        toSize: currentValues[1],
+        fromQuantity: state.quantityValues[0],
+        toQuantity: state.quantityValues[1],
+        // weights: state.valueOfQuantityCurrent.toUpperCase(),
+        varieties: variety,
+        packaging: packaging,
+      };
+      if (objectOfRequest.weights === 'KG') {
+        objectOfRequest.weights = 'KILOGRAM';
+      }
+      const arrayUnique = Object.entries(objectOfRequest).filter(
+        (item) => item[1].length !== 0
+      );
+      arrayUnique.forEach((item, _, array) => {
+        if (Array.isArray(item[1])) {   // check array if there is arrays there.
+          item[1] = item[1].map((item) => item.name.toUpperCase());
+          while (item[1].length > 1) {  // if array consists more than 1 element need to make format [key, value] for adding in string request
+            array.push([item[0], item[1][item[1].length - 1]]);
+            item[1].pop();
+          }
+          item[1] = item[1].join();
+        }
+      });
+      let requestString =
+        '&' + arrayUnique.map((item) => item.join('=')).join('&');
+      state.stringFilter = requestString;
+    },
+    loadNewPage(state) {
+      state.currentPage = state.currentPage + 1;
+      state.isPagination = true;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(applyFilters.fulfilled, (state, action) => {
-       state.currentLots = action.payload;
+        if (state.isPagination) {
+          state.currentLots = [...state.currentLots, ...action.payload];
+          state.isPagination = false;
+        } else {
+          state.currentPage = 1;
+          state.currentLots = action.payload;
+        }
       })
       .addCase(applyFilters.rejected, (state, action) => {
         state.error = action.error.message;
@@ -353,7 +410,8 @@ export const {
   toogleOpenModalVariety,
   toogleOpenModalRegions,
   sortBySelector,
-  sendFiltersSting,
+  sendFiltersString,
+  loadNewPage,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

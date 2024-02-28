@@ -21,7 +21,8 @@ import {
   changeSliderValues,
   getDataFormated,
   toogleOpenModalVariety,
-  toogleOpenModalRegions
+  toogleOpenModalRegions, 
+  loadNewPage,
 } from '../../features/filter/filterSlice';
 import { useMemo } from 'react';
 import Loader from '../../hoc/Loader/Loader';
@@ -116,6 +117,20 @@ const Filter = () => {
     dispatch(toogleOpenModalRegions());
   }
 
+  useEffect(() => {
+      document.addEventListener('scroll', scrollHandler);
+    return function () {
+      document.removeEventListener('scroll', scrollHandler);   
+    }
+  }, [])
+
+  const scrollHandler = () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    const isBottom = scrollTop + clientHeight >= scrollHeight;
+    if (isBottom) {
+      dispatch(loadNewPage());
+    }
+  }
 
   return (
     <div>

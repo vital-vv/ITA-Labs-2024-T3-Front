@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 function LotsList() {
   const dispatch = useDispatch();
 
-  const { stringFilter, sortField, chosenOptions } = useSelector((state) => state.filter);
+  const { stringFilter, sortField, currentPage, chosenOptions } = useSelector((state) => state.filter);
 
   useEffect(() => {
     dispatch(applyFilters());
-  }, [dispatch, stringFilter, sortField, chosenOptions.length]);
+  }, [dispatch, stringFilter, sortField, currentPage, chosenOptions.length]);
 
   return (
     <div className={classes.lotsList}>

@@ -38,7 +38,7 @@ const MainLotsList = () => {
   return (
     <div>
       <ChoseOptions />
-      {lots.length ? lots : <h1>Nothing was found</h1>}
+      {lots.length ? lots : <img src='https://i.pinimg.com/originals/40/fd/d2/40fdd2c61203798836ab2c55583726aa.png'></img>}
     </div>
   );
 };

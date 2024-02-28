@@ -5,13 +5,10 @@ import LoadMore from '../LoadMore/LoadMore';
 
 const Content = () => {
   return (
-    <div>
-      <main>
-        <Filter classname={classes.filter} />
-        <MainLotsList classname={classes.content} />
-      </main>
-      <LoadMore />
-    </div>
+    <main>
+      <Filter classname={classes.filter} />
+      <MainLotsList classname={classes.content} />
+    </main>
   );
 };
 

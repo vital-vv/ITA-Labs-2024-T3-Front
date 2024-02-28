@@ -3,14 +3,14 @@ import Selector from '../Selector/Selector';
 import DeleteOption from '../../assets/svg/DeleteOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { deleteOption, applyFilters } from '../../features/filter/filterSlice';
+import { deleteOption, applyFilters, sendFiltersString } from '../../features/filter/filterSlice';
 
 function ChoseOptions() {
   const dispatch = useDispatch();
   const chosenOptions = useSelector((state) => state.filter.chosenOptions);
   const handleDeleteOption = (event) => {
     dispatch(deleteOption(event.currentTarget.id));
-    dispatch(applyFilters())
+    dispatch(applyFilters());
   };
   return (
     <div className={classes.chosenOptions}>
