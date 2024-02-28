@@ -19,7 +19,7 @@ function ChoseOptions() {
           return (
             <div key={uuidv4()}>
               <p>{item.name}</p>
-              <p onClick={handleDeleteOption} id={item.id}>
+              <p onClick={handleDeleteOption} id={item.id} className={classes.delete}>
                 <DeleteOption />
               </p>
             </div>

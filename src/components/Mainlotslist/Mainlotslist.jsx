@@ -4,6 +4,7 @@ import Goods from '../Goods/Goods';
 import { ROUTES } from '../../utils/routes';
 import { useSelector } from 'react-redux';
 import { differenceInDays, differenceInHours } from 'date-fns';
+import classes from './MainLotsList.module.scss'
 
 const MainLotsList = () => {
   const { currentLots } = useSelector((state) => state.filter);
@@ -36,7 +37,7 @@ const MainLotsList = () => {
   });
 
   return (
-    <div>
+    <div className={classes.mainLotsList}>
       <ChoseOptions />
       {lots.length ? lots : <img src='https://i.pinimg.com/originals/40/fd/d2/40fdd2c61203798836ab2c55583726aa.png'></img>}
     </div>

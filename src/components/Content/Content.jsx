@@ -1,7 +1,6 @@
 import Filter from '../Filter/Filter';
 import MainLotsList from '../MainLotsList/MainLotsList';
 import classes from './Content.module.scss';
-import LoadMore from '../LoadMore/LoadMore';
 
 const Content = () => {
   return (

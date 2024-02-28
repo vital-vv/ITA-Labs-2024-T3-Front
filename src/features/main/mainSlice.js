@@ -35,26 +35,27 @@ const mainSlice = createSlice({
       { name: 'braeburn', id: 5, isChecked: false },
       { name: 'champion', id: 6, isChecked: false },
     ],
-    sizing: [{ name: 'mm' }, {name: 'cm' }]
+    sizing: [{ name: 'mm' }, {name: 'cm' }],
+    isLoadingMain: false,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchMainData.pending, (state) => {
-        state.mainDataStatus = 'loading';
+        state.isLoadingMain = true;
       })
       .addCase(fetchMainData.fulfilled, (state, action) => {
-        state.mainDataStatus = 'succeeded';
         state.packaging = action.payload.packaging;
         state.packaging = state.packaging.map((item, index) => {
           return { name: item, isChecked: false, id: index+50, categoryName: 'packaging' };
         });
         state.currency = action.payload.currency;
         state.quantity = action.payload.weight;
+        state.isLoadingMain = false;
       })
       .addCase(fetchMainData.rejected, (state, action) => {
-        state.mainDataStatus = 'failed';
         state.error = action.error.message;
+        state.isLoadingMain = false;
       });
   },
 });

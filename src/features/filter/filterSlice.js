@@ -136,6 +136,7 @@ const filterSlice = createSlice({
     error: null,
     currentPage: 1,
     isPagination: false,
+    isLoading: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -377,6 +378,9 @@ const filterSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(applyFilters.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(applyFilters.fulfilled, (state, action) => {
         if (state.isPagination) {
           state.currentLots = [...state.currentLots, ...action.payload];
@@ -385,9 +389,11 @@ const filterSlice = createSlice({
           state.currentPage = 1;
           state.currentLots = action.payload;
         }
+        state.isLoading = false;
       })
       .addCase(applyFilters.rejected, (state, action) => {
         state.error = action.error.message;
+        state.isLoading = false;
       });
   },
 });

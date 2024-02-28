@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 function LotsList() {
   const dispatch = useDispatch();
 
-  const { stringFilter, sortField, currentPage, chosenOptions } = useSelector((state) => state.filter);
+  const { stringFilter, sortField, currentPage, chosenOptions, isLoading } =
+    useSelector((state) => state.filter);
+  const { isLoadingMain } = useSelector((state) => state.main);
+  console.log(isLoading, isLoadingMain);
 
   useEffect(() => {
     dispatch(applyFilters());
