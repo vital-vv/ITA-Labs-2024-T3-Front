@@ -5,10 +5,17 @@ import styles from './BasicMenu.module.scss';
 import menuIcon from '../../../assets/images/menuIcon.png';
 import {ROUTES} from '../../../utils/routes.js';
 
-import {NavLink} from 'react-router-dom';
-import {useState} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {signOut} from "@aws-amplify/auth";
+import {useDispatch, useSelector} from "react-redux";
+import {clearUserData, selectUserData} from "../../../features/currentUser/currentUserSlice.js";
 
 export default function BasicMenu() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -17,6 +24,13 @@ export default function BasicMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    function  signOutApp(){
+        signOut();
+        handleClose();
+        navigate('/');
+        dispatch(clearUserData());
+    }
 
     return (
         <div>
@@ -41,7 +55,8 @@ export default function BasicMenu() {
             >
                 <NavLink to={ROUTES.HOME} onClick={handleClose}>Profile</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={handleClose}>My account</NavLink>
-                <NavLink to={ROUTES.HOME} onClick={handleClose}>Logout</NavLink>
+                <NavLink to={ROUTES.HOME} onClick={signOutApp}>Logout</NavLink>
+                <NavLink to={ROUTES.LOGIN} onClick={handleClose}>LogIn</NavLink>
             </Menu>
         </div>
     );
