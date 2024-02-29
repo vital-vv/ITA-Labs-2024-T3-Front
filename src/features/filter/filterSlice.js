@@ -7,7 +7,7 @@ export const applyFilters = createAsyncThunk(
     const { stringFilter, sortField, currentPage } = getState().filter;
     try {
       const response = await axios.get(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/1/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
@@ -347,7 +347,7 @@ const filterSlice = createSlice({
         toSize: currentValues[1],
         fromQuantity: state.quantityValues[0],
         toQuantity: state.quantityValues[1],
-        // weights: state.valueOfQuantityCurrent.toUpperCase(),
+        weights: state.valueOfQuantityCurrent.toUpperCase(),
         varieties: variety,
         packaging: packaging,
       };

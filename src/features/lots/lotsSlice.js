@@ -23,18 +23,19 @@ export const postNewLot = createAsyncThunk(
   async (lotData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots`, lotData
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots`,
+        lotData
       );
-      // if (response.status !== 200) {
-      //   throw new Error('Something went wrong');
-      // }
-      return response.data;
+      console.log(response.status);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.status;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
-)
-
+);
 
 const changeFirstSelector = (
   state,
@@ -73,7 +74,7 @@ const changeValidationAfterTime = (state, validationAdress) => {
 
 const checkValidationForm = (state) => {
   const valuesChecked = Object.values(state);
-  valuesChecked.pop();
+  valuesChecked.splice(33);
   valuesChecked.every((item) => item)
     ? (state.fullValidationForm = true)
     : (state.fullValidationForm = false);
@@ -111,13 +112,18 @@ const replacingCurrentMeasure = (state, targetMeasure, limitMeasure) => {
   state.sliderLimitCurrent = state[limitMeasure];
 };
 
-const checkOnMaxSymbols = (state, checkedBranchState, maxSymbols, resultBranchState) => {
+const checkOnMaxSymbols = (
+  state,
+  checkedBranchState,
+  maxSymbols,
+  resultBranchState
+) => {
   if (state[checkedBranchState].length > maxSymbols) {
     state[resultBranchState] = false;
   } else {
     state[resultBranchState] = true;
   }
-}
+};
 
 const lotsSlice = createSlice({
   name: 'lots',
@@ -126,7 +132,7 @@ const lotsSlice = createSlice({
     subcategories: null,
     currentCountry: '',
     currentRegion: '',
-    currentCategory: '',
+    currentCategory: 'aiwa', //point out the first elem of categories' array
     currentIdCategory: 0,
     currentSubcategory: '',
     title: '',
@@ -156,6 +162,8 @@ const lotsSlice = createSlice({
     description: ' ',
     isDescriptionValid: true,
     fullValidationForm: false,
+    isSuccessAdding: false,
+    isProcess: false,
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -164,7 +172,7 @@ const lotsSlice = createSlice({
     },
     changeFirstOptionCat(state, action) {
       state.currentCategory = action.payload.category;
-      state.currentIdCategory = action.payload.id
+      state.currentIdCategory = action.payload.id;
       checkValidationForm(state);
     },
     changeRegion(state, action) {
@@ -177,7 +185,7 @@ const lotsSlice = createSlice({
     },
     changeTitle(state, action) {
       changeInputs(state, action, 'title');
-      checkOnMaxSymbols(state,'title', 40, 'inputTitleValid');
+      checkOnMaxSymbols(state, 'title', 40, 'inputTitleValid');
       checkValidationForm(state);
     },
     changeWeight(state, action) {
@@ -270,21 +278,33 @@ const lotsSlice = createSlice({
       changeValidationAfterTime(state, 'inputMinimalBetValid');
       checkValidationForm(state);
     },
-    changePackaging (state, action) {
+    changePackaging(state, action) {
       changeInputs(state, action, 'currentPackages');
       checkValidationForm(state);
     },
-    addSubscribe (state, action) {
+    addSubscribe(state, action) {
       changeInputs(state, action, 'description');
       checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
       checkValidationForm(state);
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSubcategories.fulfilled, (state, action) => {
-        state.subcategories = action.payload.subcategories;   
+        state.subcategories = action.payload.subcategories;
       })
+      .addCase(postNewLot.pending, (state) => {
+        state.isSuccessAdding = false;
+        state.isProcess = true;
+      })
+      .addCase(postNewLot.fulfilled, (state, action) => {
+        if (Number(action.payload) === 200) {
+          state.isSuccessAdding = true;
+        } else {
+          state.isSuccessAdding = false;
+        }
+        state.isProcess = false;
+      });
   },
 });
 
@@ -306,13 +326,13 @@ export const {
   fileChange,
   changeVariety,
   changeSliderValues,
-  changeSliderFromByKeys, 
+  changeSliderFromByKeys,
   changeSliderUntilByKeys,
   changeMeasure,
   changeMinimalBet,
   changeValidationAfterTimeMinimalBet,
   changePackaging,
-  addSubscribe
+  addSubscribe,
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

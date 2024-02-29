@@ -83,7 +83,8 @@ function AddLot() {
     currentPackages,
     isDescriptionValid,
     currentIdCategory,
-    description
+    description,
+    isSuccessAdding
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -258,7 +259,6 @@ function AddLot() {
 
   const handleAddLot = () => {
     let priceToByn = currentPrice;
-    let sizeToMm = sliderCurrent[0]
     switch (currentPricingMeasure) {
       case 'USD':
         priceToByn = currentPrice/3.10;
@@ -268,15 +268,10 @@ function AddLot() {
         break;
     }
 
-    switch (currentMeasure) {
-      case 'cm':
-        sizeToMm = sizeToMm*10;
-        break;
-    }
-
     const newLot = {
       category_id: currentIdCategory,
       price_per_unit: Number((priceToByn/currentWeight).toFixed(2)),
+      length_unit: currentMeasure,
       title: title,
       quantity: currentWeight,
       weight: currentWeightMeasure,
@@ -286,8 +281,10 @@ function AddLot() {
       },
       description: description,
       variety: currentVariety,
-      size: sizeToMm,
+      size: sliderCurrent[0],
       packaging: currentPackages,
+      status: 'active' // delete this string after realization by back
+      // add string for lifecycle for new lot
     };
     dispatch(postNewLot(newLot));
   };
@@ -317,6 +314,7 @@ function AddLot() {
               </p>
             </div>
 
+            {/* These categories have to download dynamicly */}
             <SelectorForAddLot
               firstSelector={countries}
               secondSelector={regions}
@@ -476,6 +474,7 @@ function AddLot() {
                 Preview
               </button>
             </NavLink>
+            <NavLink to={ROUTES.FINISHADD}>
             <button
               disabled={!fullValidationForm}
               className={fullValidationForm ? classes.validButton : null}
@@ -483,6 +482,7 @@ function AddLot() {
             >
               Place an advertisment
             </button>
+            </NavLink>
           </div>
           <p className={classes.comment}>
             This ad will placed on the site after review the moderator.
