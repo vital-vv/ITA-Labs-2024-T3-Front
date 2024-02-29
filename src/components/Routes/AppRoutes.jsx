@@ -1,4 +1,5 @@
 import {Routes, Route} from 'react-router-dom';
+import { ROUTES } from '../../utils/routes.js';
 import {HomePage} from '../../views/HomePage/HomePage.jsx';
 import {AdminLayout} from '../../views/AdminLayout/AdminLayout.jsx';
 import {UserTable} from '../TableOfUsers/UserTable.jsx';
@@ -7,15 +8,18 @@ import {AllBets} from '../AllBets/AllBets.jsx';
 import Account from '../Account/Account.jsx';
 import LotsList from '../Lotslist/Lotslist.jsx';
 import LotView from '../LotView/LotView.jsx';
-import { ROUTES } from '../../utils/routes.js';
 import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
 import AddLot from '../AddLot/AddLot.jsx';
 import {CategoriesContent} from "../Categories/CategoriesContent/CatgoriesContent.jsx";
+import {Onboarding} from "../Onboarding/Onboarding.jsx";
+import {Registration} from "../Onboarding/Registration/Registration.jsx";
 
 function AppRoutes() {
 
     return (
         <Routes>
+            <Route path={ROUTES.ONBOARDING} element={<Onboarding/>}/>
+            <Route path={ROUTES.REGISTRATION} element={<Registration/>}/>
             <Route path={ROUTES.HOME} element={<HomePage/>}>
                 <Route index element={<CategoriesContent/>} />
                 <Route path="/:category" element={<CategoriesContent/>} />

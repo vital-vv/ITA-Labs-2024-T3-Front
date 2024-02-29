@@ -1,0 +1,95 @@
+.registration {
+  display: flex;
+}
+
+.formContainer {
+  width: 90%;
+  background-color: white;
+  margin: 0 auto;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  justify-content: space-between;
+  margin: 20px 0;
+
+  input:not([type="file"]), select {
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid #d2d2d2;
+  }
+
+  .countryCode {
+    width: 120px;
+  }
+
+  input {
+    margin-right: 0;
+  }
+
+  .downloadBtn {
+    margin: 10px 0 35px 10px;
+    cursor: pointer;
+    display: block;
+    padding: 5px 10px;
+    border: 1px solid #38999B;
+    color: #38999B;
+    width: 90px;
+    input[type="file"] {
+      display: none;
+    }
+  }
+
+  span {
+    color: #d20000;
+    font-size: 12px;
+    margin: -15px 0 0 0;
+  }
+
+  .phoneNumberContainer {
+    display: flex;
+  }
+
+  .avatarContainer {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    border-radius: 50%;
+
+    .removeIcon {
+      cursor: pointer;
+    }
+  }
+
+  .avatarImage {
+    border-radius: 50%;
+  }
+
+  .avatarPlaceholder {
+    width: 100px;
+    height: 100px;
+    background-color: #F87E25;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: white;
+  }
+
+  .confirmBtn {
+    width: 200px;
+    background-color: #38999B;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+}

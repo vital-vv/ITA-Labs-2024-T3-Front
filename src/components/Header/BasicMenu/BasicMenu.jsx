@@ -42,6 +42,7 @@ export default function BasicMenu() {
                 <NavLink to={ROUTES.HOME} onClick={handleClose}>Profile</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={handleClose}>My account</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={handleClose}>Logout</NavLink>
+                <NavLink to={ROUTES.ONBOARDING} onClick={handleClose}>To onboarding</NavLink>
             </Menu>
         </div>
     );
