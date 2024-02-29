@@ -22,7 +22,8 @@
         background-color: red;
         border: none;
         @include fontDeclaration(18px, 500, 28px, 0.4px, white);
-        padding: 10px 8vw;
+        padding: 10px 3vw;
+        width: inherit;
         cursor: pointer;
     }
 }

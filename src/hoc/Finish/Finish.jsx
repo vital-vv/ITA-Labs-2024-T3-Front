@@ -5,10 +5,9 @@ import { ROUTES } from '../../utils/routes.js';
 
 function Finish() {
   const {isProcess, isSuccessAdding} = useSelector((state) => state.lots);
-  const location = useLocation();
 
   if (!isProcess) {
-    return <Navigate to={isSuccessAdding ? ROUTES.SUCCESSADD : ROUTES.FAILEDADD} state={{ from: location }} />;
+    return <Navigate to={isSuccessAdding ? ROUTES.SUCCESSADD : ROUTES.FAILEDADD}/>;
   }
   return <Loader />;
 }

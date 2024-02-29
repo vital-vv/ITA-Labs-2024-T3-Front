@@ -132,7 +132,7 @@ const lotsSlice = createSlice({
     subcategories: null,
     currentCountry: '',
     currentRegion: '',
-    currentCategory: 'aiwa', //point out the first elem of categories' array
+    currentCategory: '',
     currentIdCategory: 0,
     currentSubcategory: '',
     title: '',
@@ -146,7 +146,7 @@ const lotsSlice = createSlice({
     currentValidity: 30,
     isValidValidity: true,
     picturesFiles: [],
-    currentVariety: '',
+    currentVariety: 'aiwa',  //point out the first elem of categories' array
     sliderLimitCurrent: [40, 100],
     sliderLimitMm: [40, 100],
     sliderLimitCm: [4, 10],
