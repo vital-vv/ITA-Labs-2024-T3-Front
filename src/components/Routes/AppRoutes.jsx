@@ -16,16 +16,8 @@ import Success from '../../hoc/Success/Success.jsx';
 import StateAdd from '../../hoc/StateAdd/StateAdd.jsx';
 import Failed from '../../hoc/Failed/Failed.jsx';
 import { ROUTES } from '../../utils/routes.js';
-import {UserCreator} from '../UserData/UserCreator/UserCreator.jsx';
-import AddLot from '../AddLot/AddLot.jsx';
 import {CategoriesContent} from "../Categories/CategoriesContent/CatgoriesContent.jsx";
 import {SignInApp} from "../SignIn/SignInApp.jsx";
-import Preview from '../../hoc/Preview/Preview.jsx';
-import Lots from '../../hoc/Lots/Lots.jsx';
-import Finish from '../../hoc/Finish/Finish.jsx';
-import Success from '../../hoc/Success/Success.jsx';
-import StateAdd from '../../hoc/StateAdd/StateAdd.jsx';
-import Failed from '../../hoc/Failed/Failed.jsx';
 
 function AppRoutes() {
   return (
