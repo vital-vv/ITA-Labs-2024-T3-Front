@@ -26,7 +26,6 @@ export const postNewLot = createAsyncThunk(
         `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots`,
         lotData
       );
-      console.log(response.status);
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
