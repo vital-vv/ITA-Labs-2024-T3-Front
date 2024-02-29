@@ -1,31 +1,31 @@
-import { useDispatch, useSelector } from 'react-redux';
-import categoryIcon from '../../assets/images/categoryIcon.png';
 import styles from './Categories.module.scss';
-import { useEffect } from 'react';
-import { getCategories } from '../../features/categories/categoriesSlice.js';
-import { NavLink } from 'react-router-dom';
-import { ROUTES } from '../../utils/routes.js';
-// import {NavItem} from "../NavItem/NavItem.jsx";
+
+import {useEffect} from 'react';
+import {getCategories} from '../../features/categories/categoriesSlice.js';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {CategoriesNav} from "./CategoriesNav/CategoriesNav.jsx";
 
 function Categories() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(getCategories());
+    }, [dispatch]);
 
-  const { list } = useSelector(({ categories }) => categories);
+    const {list} = useSelector(({categories}) => categories);
+
+    function changeRoute(route) {
+        return `/${route.toLowerCase()}`
+    }
 
     if (list.length !== 0) {
         return (
             <>
                 <nav>
                     {
-                        list.map((_,index) => (
-                            <div id={index} key={list[index].id} className={styles.category}>
-                                <img src={categoryIcon}
-                                     alt={categoryIcon}/>
-                                <p> {list[index].name}</p></div>
+                        list.map((item, index) => (
+                              <CategoriesNav changeRoute={changeRoute} key={item.category_id} index={index} item={item}></CategoriesNav>
                         ))}
                 </nav>
             </>
@@ -33,4 +33,4 @@ function Categories() {
     }
 }
 
-export { Categories };
+export {Categories};

@@ -1,19 +1,16 @@
-import styles from './HomePage.module.scss';
-import {SideBar} from '../../components/SideBar/SideBar.jsx';
 import {Categories} from '../../components/Categories/Categories.jsx';
-import {SubcategoryItem} from '../../components/SubcategoryItem/SubcategoryItem.jsx';
+import {Outlet} from "react-router-dom";
+import {Header} from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
 
 function HomePage() {
 
     return (
         <>
+            <Header/>
             <Categories/>
-            <div className={styles.homeContent}>
-                <SideBar/>
-                <main className={styles.categories}>
-                    <SubcategoryItem/>
-                </main>
-            </div>
+            <Outlet/>
+            <Footer/>
         </>
     )
 }
