@@ -28,10 +28,18 @@ const locations = [
 ];
 
 const sizing = ['mm', 'cm'];
-const quantity = ['ton', 'kg', 'pcs'];
-const valutes = ['EUR', 'UZS', 'RUB'];
 const settings = ['Notify me of new messages', 'Hide my presence on the site', 'Show me Email to everyone', 'Receive promotinal notifications'];
-const countries = ['Belarus', 'Uzbekistan', 'Poland'];
-const regions = ['Bukhara', 'Warshawa', 'Vertelishki']
+const countries = ['Belarus'];
+const options = [
+  { value: 1, label: 'New ones first' },
+  { value: 2, label: 'Old ones first' },
+  { value: 3, label: 'Biggers quantity first' },
+  { value: 4, label: 'Smaller quantity first' },
+  { value: 5, label: 'Bigger remaining deadlines ones first' },
+  { value: 6, label: 'Smaller remaining deadlines ones first' },
+  { value: 7, label: 'Bigger size first' },
+  { value: 8, label: 'Smaller size first' },
+];
+const regions = ['The Grodno region', 'The Minsk region', 'The Brest region', 'The Mogilev region', 'The Gomel region', 'The Vitebsk region' ]
 
-export { apples, packages, locations, sizing, quantity, valutes, settings, countries, regions };
+export { apples, packages, locations, sizing, settings, countries, regions, options };
