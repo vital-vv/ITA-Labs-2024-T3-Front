@@ -1,18 +1,31 @@
+@mixin whiteBorder() {
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+@mixin borderForLink() {
+  border-bottom: 1px solid #38999b;
+}
+
 .bredCrumbs {
-    padding: 24px 40px;
-    border-bottom: 1px solid #DDE7E7;
-    border-top: 1px solid #DDE7E7;
+  padding: 24px 40px;
+  border-bottom: 1px solid #dde7e7;
+  border-top: 1px solid #dde7e7;
 }
 
-span { 
-    display: inline-block;
-}
-
-.firstCategory {
-    margin-right: 16px;
-    color: #38999B;
+span {
+  display: inline-block;
 }
 
 .nextCategory {
-    margin: 0 16px;
+  margin: 0 16px;
+  @include whiteBorder();
+  &:hover {
+    @include borderForLink();
+    color: #38999b;
+  }
+}
+
+.hidden {
+  visibility: hidden;
 }

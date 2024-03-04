@@ -119,12 +119,11 @@
   gap: 8px;
   width: 100%;
   visibility: hidden;
-  > div {
+  > button {
     @include fontStyle(14px, 500, 20px , 0.3px );
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
     gap: 10px;
     padding: 6px 12px;
     border-radius: 2px;
@@ -135,15 +134,17 @@
   svg {
     display: block;
   }
-  div:first-child {
+  button:first-child {
     color: #38999b;
     padding-right: 10px;
+    flex-grow: 1;
   }
-  div:nth-child(2) {
+  button:nth-child(2) {
     background-color: #38999b;
     color: white;
+    flex-grow: 1;
   }
-  div:last-child {
+  button:last-child {
     background-color: #D40000;
     color: white;
     border: none;

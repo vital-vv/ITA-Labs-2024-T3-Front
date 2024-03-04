@@ -12,4 +12,8 @@ export const ROUTES = {
     ADMINACCOUNT: '/admin/account',
     USERINFO: '/admin/users/:id',
     ADDLOT: '/addlot',
+    PREVIEW: '/addlot/preview',
+    SUCCESSADD: '/addlot/success',
+    FAILEDADD: '/addlot/failed',
+    FINISHADD: '/addlot/finish'
 }

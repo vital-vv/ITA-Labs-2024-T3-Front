@@ -1,4 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const applyFilters = createAsyncThunk(
+  'filters/applyFilters',
+  async (_, { rejectWithValue, getState }) => {
+    const { stringFilter, sortField, currentPage } = getState().filter;
+    try {
+      const response = await axios.get(
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/1/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
+      );
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data.content;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const payloadToNumber = (string) => Number(string);
 
@@ -57,7 +76,12 @@ const findAndToggleElement = (array, findParameter) => {
   }
 };
 
-const toggleElementsAllArrays = (firstArray, secondArray, thirdArray, findParameter) => {
+const toggleElementsAllArrays = (
+  firstArray,
+  secondArray,
+  thirdArray,
+  findParameter
+) => {
   findAndToggleElement(firstArray, findParameter);
   findAndToggleElement(secondArray, findParameter);
   findAndToggleElement(thirdArray, findParameter);
@@ -67,55 +91,52 @@ const filterArray = (array, deletedElement) => {
   return (array = array.filter((item) => Number(item.id) !== deletedElement));
 };
 
+const toogleModal = (state, targetProperty) => {
+  state[targetProperty] = !state[targetProperty];
+};
+
+const findAllFromCategory = (array, categoryName) =>
+  array.filter((item) => item.categoryName === categoryName);
+
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    sliderDefaultValues: { mm: [200, 600], cm: [5, 15] },
-    minMaxSlider: { mm: [0, 1000], cm: [0, 20] },
+    currentCategoryId: 0,
+    sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
+    minMaxSlider: { mm: [0, 200], cm: [0, 20] },
     sizing: ['mm', 'cm'],
-    sliderCurrentValues: [200, 600],
-    sliderCurrentLimit: [0, 1000],
+    sliderCurrentValues: [50, 150],
+    sliderCurrentLimit: [0, 200],
     quantityValues: [1, 10000],
     quantityLimits: [1, 10000],
     isValidFormSizing: [true, true],
     sizeMeasuresToMm: true,
-    valuesOfQuantity: ['ton', 'kg', 'pcs'],
+    valuesOfQuantity: [],
     valueOfQuantityCurrent: 'ton',
     isValidFormQuantity: [true, true],
-    valuesOfValutes: ['USD', 'EUR', 'BYN'],
+    valuesOfValutes: [],
     currentValute: 'USD',
     sumCurrent: [1, 100000],
     sumLimits: [1, 1000000],
     isValidFormSum: [true, true],
     chosenOptions: [],
     apples: [
-      { name: 'alwa', id: 1, isChecked: false },
-      { name: 'antonowka', id: 2, isChecked: false },
-      { name: 'boiken', id: 3, isChecked: false },
-      { name: 'boskoop', id: 4, isChecked: false },
-      { name: 'braeburn', id: 5, isChecked: false },
-      { name: 'champion', id: 6, isChecked: false },
+      { name: 'alwa', id: 1, isChecked: false, categoryName: 'variety' },
+      { name: 'antonowka', id: 2, isChecked: false, categoryName: 'variety' },
+      { name: 'boiken', id: 3, isChecked: false, categoryName: 'variety' },
+      { name: 'boskoop', id: 4, isChecked: false, categoryName: 'variety' },
+      { name: 'braeburn', id: 5, isChecked: false, categoryName: 'variety' },
+      { name: 'champion', id: 6, isChecked: false, categoryName: 'variety' },
     ],
-
-    packages: [
-      { name: 'Box', id: 7, isChecked: false },
-      { name: 'Basket', id: 8, isChecked: false },
-      { name: 'Carton', id: 9, isChecked: false },
-      { name: 'Bag', id: 10, isChecked: false },
-      { name: 'Crate', id: 11, isChecked: false },
-      { name: 'Bottle', id: 12, isChecked: false },
-      { name: 'Bunch', id: 13, isChecked: false },
-      { name: 'Sack', id: 14, isChecked: false },
-    ],
-
-    locations: [
-      { name: 'Andijan region', id: 15, isChecked: false },
-      { name: 'Bukhara region', id: 16, isChecked: false },
-      { name: 'Republic of Karakalpakstan', id: 17, isChecked: false },
-      { name: 'Namangan region', id: 18, isChecked: false },
-      { name: 'Navoiy region', id: 19, isChecked: false },
-      { name: 'Qashqadaryo region', id: 20, isChecked: false },
-    ],
+    packages: null,
+    locations: [],
+    sortField: '&sortField=CREATED_AT&sortOrder=DESC',
+    stringFilter: '',
+    currentLots: [],
+    error: null,
+    currentPage: 1,
+    isPagination: false,
+    isLoading: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -207,7 +228,12 @@ const filterSlice = createSlice({
     },
     choseCheckbox(state, action) {
       const elementId = payloadToNumber(action.payload.id);
-      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+      toggleElementsAllArrays(
+        state.apples,
+        state.packages,
+        state.locations,
+        elementId
+      );
       const sumArray = [...state.apples, ...state.packages, ...state.locations];
       const foundElement = sumArray.find((item) => item.id === elementId);
       if (
@@ -219,24 +245,156 @@ const filterSlice = createSlice({
       if (!foundElement.isChecked) {
         state.chosenOptions = filterArray(state.chosenOptions, elementId);
       }
+      if (state.chosenOptions.length === 0) {
+        state.stringFilter = '';
+      }
     },
     deleteOption(state, action) {
       const elementId = payloadToNumber(action.payload);
       state.chosenOptions = filterArray(state.chosenOptions, elementId);
-      toggleElementsAllArrays(state.apples, state.packages, state.locations, elementId);
+      toggleElementsAllArrays(
+        state.apples,
+        state.packages,
+        state.locations,
+        elementId
+      );
+      if (state.chosenOptions.length === 0) {
+        state.stringFilter = '';
+      }
     },
     clearAllParameters(state, {}) {
       const sumArray = [...state.apples, ...state.packages, ...state.locations];
-      sumArray.forEach(item => {item.isChecked = false});
+      sumArray.forEach((item) => {
+        item.isChecked = false;
+      });
       state.chosenOptions = [];
       state.sizeMeasuresToMm = true;
       state.sliderCurrentValues = [200, 600];
-      state.sliderCurrentLimit = [0, 1000],
-      state.valueOfQuantityCurrent = 'ton';
+      (state.sliderCurrentLimit = [0, 1000]),
+        (state.valueOfQuantityCurrent = 'ton');
       state.currentValute = 'USD';
       state.quantityValues = [1, 10000];
-      state.sumCurrent = [1, 1000000]
-    }
+      state.sumCurrent = [1, 1000000];
+      state.isOpenModalVariety = false;
+      state.isOpenModalRegions = false;
+      state.stringFilter = '';
+    },
+    getDataFormated(state, action) {
+      state.packages = action.payload.packages;
+      state.valuesOfValutes = action.payload.valutes;
+      state.valuesOfQuantity = action.payload.quantity;
+      state.locations = action.payload.countries.flatMap((item) =>
+        item.regions.map((item, index) => ({
+          name: item,
+          id: index + 60,
+          isChecked: false,
+          categoryName: 'locations',
+        }))
+      );
+    },
+    toogleOpenModalVariety(state) {
+      toogleModal(state, 'isOpenModalVariety');
+    },
+    toogleOpenModalRegions(state) {
+      toogleModal(state, 'isOpenModalRegions');
+    },
+    sortBySelector(state, action) {
+      const created = 'CREATED_AT';
+      const descOrder = 'DESC';
+      const ascOrder = 'ASC';
+      const quantity = 'QUANTITY';
+      const expDate = 'EXPIRATION_DATE';
+      const size = 'SIZE';
+      switch (Number(action.payload)) {
+        case 1:
+          state.sortField = `&sortField=${created}&sortOrder=${descOrder}`;
+          break;
+        case 2:
+          state.sortField = `&sortField=${created}&sortOrder=${ascOrder}`;
+          break;
+        case 3:
+          state.sortField = `&sortField=${quantity}&sortOrder=${descOrder}`;
+          break;
+        case 4:
+          state.sortField = `&sortField=${quantity}&sortOrder=${ascOrder}`;
+          break;
+        case 5:
+          state.sortField = `&sortField=${expDate}&sortOrder=${descOrder}`;
+          break;
+        case 6:
+          state.sortField = `&sortField=${expDate}&sortOrder=${ascOrder}`;
+          break;
+        case 7:
+          state.sortField = `&sortField=${size}&sortOrder=${descOrder}`;
+          break;
+        case 8:
+          state.sortField = `&sortField=${size}&sortOrder=${ascOrder}`;
+          break;
+      }
+    },
+    sendFiltersString(state) {
+      const variety = findAllFromCategory(state.chosenOptions, 'variety');
+      const packaging = findAllFromCategory(state.chosenOptions, 'packaging');
+      const regions = findAllFromCategory(state.chosenOptions, 'region');
+      let currentValues;
+      if (!state.sizeMeasuresToMm) {
+        currentValues = state.sliderCurrentValues.map((item) => item * 10);
+      } else {
+        currentValues = state.sliderCurrentValues;
+      }
+      let objectOfRequest = {
+        fromSize: currentValues[0],
+        toSize: currentValues[1],
+        fromQuantity: state.quantityValues[0],
+        toQuantity: state.quantityValues[1],
+        weights: state.valueOfQuantityCurrent.toUpperCase(),
+        varieties: variety,
+        packaging: packaging,
+      };
+      if (objectOfRequest.weights === 'KG') {
+        objectOfRequest.weights = 'KILOGRAM';
+      }
+      const arrayUnique = Object.entries(objectOfRequest).filter(
+        (item) => item[1].length !== 0
+      );
+      arrayUnique.forEach((item, _, array) => {
+        if (Array.isArray(item[1])) {   // check array if there is arrays there.
+          item[1] = item[1].map((item) => item.name.toUpperCase());
+          while (item[1].length > 1) {  // if array consists more than 1 element need to make format [key, value] for adding in string request
+            array.push([item[0], item[1][item[1].length - 1]]);
+            item[1].pop();
+          }
+          item[1] = item[1].join();
+        }
+      });
+      let requestString =
+        '&' + arrayUnique.map((item) => item.join('=')).join('&');
+      state.stringFilter = requestString;
+    },
+    loadNewPage(state) {
+      state.currentPage = state.currentPage + 1;
+      state.isPagination = true;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(applyFilters.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(applyFilters.fulfilled, (state, action) => {
+        if (state.isPagination) {
+          state.currentLots = [...state.currentLots, ...action.payload];
+          state.isPagination = false;
+        } else {
+          state.currentPage = 1;
+          state.currentLots = action.payload;
+        }
+        state.isLoading = false;
+      })
+      .addCase(applyFilters.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.isLoading = false;
+      });
   },
 });
 
@@ -253,7 +411,13 @@ export const {
   changeInputSumUntil,
   choseCheckbox,
   deleteOption,
-  clearAllParameters
+  clearAllParameters,
+  getDataFormated,
+  toogleOpenModalVariety,
+  toogleOpenModalRegions,
+  sortBySelector,
+  sendFiltersString,
+  loadNewPage,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
