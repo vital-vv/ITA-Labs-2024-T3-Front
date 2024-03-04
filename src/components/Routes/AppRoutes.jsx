@@ -27,8 +27,8 @@ function AppRoutes() {
         <Route index element={<CategoriesContent/>} />
         <Route path="/:category" element={<CategoriesContent />}  />
       </Route>
-        <Route path="lotslist/*" element={<Lots />}>
-        <Route index element={<LotsList />} />
+      <Route path="/:category/:subcategory" element={<Lots />}  >
+        <Route path='*' element={<LotsList />} />
         <Route path="lotview" element={<LotView />} />
       </Route>
       <Route path="/addlot/*" element={<Lots />}>

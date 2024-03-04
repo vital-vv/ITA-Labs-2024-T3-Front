@@ -17,9 +17,9 @@ function ChoseOptions() {
       <div className={classes.dynamicOptions}>
         {chosenOptions.map((item) => {
           return (
-            <div>
+            <div key={uuidv4()}>
               <p>{item.name}</p>
-              <p onClick={handleDeleteOption} id={item.id} className={classes.delete} key={uuidv4()}>
+              <p onClick={handleDeleteOption} id={item.id} className={classes.delete}>
                 <DeleteOption />
               </p>
             </div>

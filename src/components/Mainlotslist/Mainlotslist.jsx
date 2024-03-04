@@ -19,15 +19,7 @@ const MainLotsList = () => {
     return (
       <NavLink key={index} to={ROUTES.LOTVIEW}>
         <Goods
-          title={lot.title}
-          id={lot.lot_id}
-          category={lot.category_name}
-          variety={lot.variety}
-          quantity={lot.quantity}
-          size={lot.size}
-          packaging={lot.packaging}
-          country={lot.location.country}
-          region={lot.location.region}
+          lotItem={lot}
           dateCreated={date}
           daysRest={differenceDays}
           hoursRest={differenceHours}

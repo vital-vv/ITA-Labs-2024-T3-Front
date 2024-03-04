@@ -8,15 +8,7 @@ import { ModalWindow } from './ModalWindow/ModalWindow.jsx';
 import { useState } from 'react';
 
 function Goods({
-  title,
-  id,
-  category,
-  variety,
-  quantity,
-  size,
-  packaging,
-  country,
-  region,
+  lotItem,
   dateCreated,
   daysRest,
   hoursRest,
@@ -37,7 +29,7 @@ function Goods({
         </div>
         <div className={classes.info}>
           <div>
-            <p className={classes.labelOfGood}>{title}</p>
+            <p className={classes.labelOfGood}>{lotItem.title}</p>
             <p className={classes.data}>
               <p>
                 <span>
@@ -47,15 +39,15 @@ function Goods({
                   {daysRest}d {hoursRest}h
                 </span>
               </p>
-              <p>ID{id}</p>
+              <p>ID{lotItem.lot_id}</p>
             </p>
           </div>
           <div className={classes.more}>
             <p className={classes.description}>
-              {`${category}, ${variety}, ${quantity} ton, ${size} mm, ${packaging}`}
+              {`${lotItem.category_name}, ${lotItem.variety}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
             </p>
             <p className={classes.region}>
-              {country}, {region}
+              {lotItem.location.country}, {lotItem.location.region}
             </p>
             <p className={classes.dataOfAd}>{dateCreated}</p>
           </div>
