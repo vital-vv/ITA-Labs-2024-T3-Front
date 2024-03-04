@@ -4,10 +4,10 @@ import axios from 'axios';
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
   async (_, { rejectWithValue, getState }) => {
-    const { stringFilter, sortField, currentPage } = getState().filter;
+    const { stringFilter, sortField, currentPage, currentCategoryId } = getState().filter;
     try {
       const response = await axios.get(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/1/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
@@ -101,7 +101,7 @@ const findAllFromCategory = (array, categoryName) =>
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    currentCategoryId: 0,
+    currentCategoryId: 1,
     sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
     minMaxSlider: { mm: [0, 200], cm: [0, 20] },
     sizing: ['mm', 'cm'],
@@ -137,6 +137,7 @@ const filterSlice = createSlice({
     currentPage: 1,
     isPagination: false,
     isLoading: false,
+    currentCategory: '',
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -375,6 +376,9 @@ const filterSlice = createSlice({
       state.currentPage = state.currentPage + 1;
       state.isPagination = true;
     },
+    getCurrentCategory(state, action) {
+      state.currentCategoryId = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -388,6 +392,7 @@ const filterSlice = createSlice({
         } else {
           state.currentPage = 1;
           state.currentLots = action.payload;
+          state.currentCategory = action.payload[0].category_name;
         }
         state.isLoading = false;
       })
@@ -418,6 +423,7 @@ export const {
   sortBySelector,
   sendFiltersString,
   loadNewPage,
+  getCurrentCategory,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

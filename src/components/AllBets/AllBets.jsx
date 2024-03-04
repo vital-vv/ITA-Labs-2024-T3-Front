@@ -12,9 +12,9 @@ function AllBets() {
         <div className={styles.bettingContainer}>
             <BetsNav alignmentState={'Active'} tabsName={tabsName}/>
             <BetsFilter filterName={filterName}/>
-            <Goods/>
-            <Goods/>
-            <Goods/>
+            <Goods />
+            <Goods />
+            <Goods />
         </div>
     )
 }

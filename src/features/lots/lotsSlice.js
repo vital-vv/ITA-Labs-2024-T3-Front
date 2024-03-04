@@ -36,6 +36,23 @@ export const postNewLot = createAsyncThunk(
   }
 );
 
+export const getOneLot = createAsyncThunk(
+  'lots/getOneLot',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots/${id}`
+      );
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const changeFirstSelector = (
   state,
   action,
@@ -163,6 +180,8 @@ const lotsSlice = createSlice({
     fullValidationForm: false,
     isSuccessAdding: false,
     isProcess: false,
+    expirationDate: '',
+    createdDate: '',
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -303,6 +322,20 @@ const lotsSlice = createSlice({
           state.isSuccessAdding = false;
         }
         state.isProcess = false;
+      })
+      .addCase(getOneLot.fulfilled, (state, action) => {
+        const data = action.payload;
+        state.fullValidationForm = false;
+        state.currentRegion = data.location.region;
+        state.currentCountry = data.location.country;
+        state.title = data.title;
+        state.currentWeight = data.weight;
+        state.currentPrice = data.price_per_unit*data.quantity;
+        state.currentVariety = data.variety;
+        state.currentPackages = data.packaging;
+        state.description = data.description;
+        state.expirationDate = data.expiration_date;
+        state.createdDate = data.created_at;
       });
   },
 });

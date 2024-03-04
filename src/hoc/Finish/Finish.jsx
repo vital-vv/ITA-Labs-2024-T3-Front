@@ -1,6 +1,6 @@
 import Loader from '../Loader/Loader';
 import { useSelector } from 'react-redux';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ROUTES } from '../../utils/routes.js';
 
 function Finish() {

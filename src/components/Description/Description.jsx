@@ -4,8 +4,12 @@ import InfoIcon from '../../assets/svg/InfoIcon';
 import Cart from '../../assets/svg/Cart';
 import HammerGray from '../../assets/svg/HammerGray';
 import Trash from '../../assets/svg/Trash';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import OneStepBack from '../OneStepBack/OneStepBack';
+import { differenceInDays } from 'date-fns';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getOneLot } from '../../features/lots/lotsSlice';
 
 function Description() {
   const {
@@ -23,16 +27,29 @@ function Description() {
     currentPricingMeasure,
     description,
     fullValidationForm,
+    expirationDate,
+    createdDate
   } = useSelector((state) => state.lots);
 
-  const date = new Date();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const currentId = location.pathname.split('/').pop();
 
+  useEffect(() => {
+    dispatch(getOneLot(currentId));
+  }, [dispatch]);
+
+  const date = new Date();
+  const createDateLocal = new Date(createdDate);
+  const targetDate = new Date(expirationDate);
+  const differenceDays = differenceInDays(targetDate, date);
+  
   return (
     <div className={classes.description}>
       <OneStepBack/>
       <div className={classes.wrapperPurchasing}>
         <p className={classes.labelOfDescription}>{title}</p>
-        <IdOfProduct currentValidity={currentValidity}/>
+        <IdOfProduct currentValidity={fullValidationForm ? currentValidity : differenceDays}/>
         <div className={classes.shortInfo}>
           <div>
             <InfoIcon />
@@ -104,7 +121,7 @@ function Description() {
         </div>
         <div>
           <p>Created</p>
-          <p>{date.toLocaleString()}</p>
+          <p>{fullValidationForm ? date.toLocaleString() : createDateLocal.toLocaleString()}</p>
         </div>
       </div>
     </div>
