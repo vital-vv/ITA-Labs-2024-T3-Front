@@ -1,6 +1,5 @@
 import styles from './SideBar.module.scss';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ROUTES } from '../../utils/routes.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getSubcategories } from '../../features/categories/subcategoriesSlice.js';
@@ -23,9 +22,9 @@ function SideBar() {
   };
 
   const location = useLocation();
-  let redirect = 'lotslist'
+    let redirect = location.pathname;
   if (location.pathname === '/') {
-    redirect = 'fruits/lotslist'
+    redirect = 'fruits'
   }
   
 

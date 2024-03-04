@@ -137,6 +137,7 @@ const filterSlice = createSlice({
     currentPage: 1,
     isPagination: false,
     isLoading: false,
+    currentCategory: '',
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -391,6 +392,7 @@ const filterSlice = createSlice({
         } else {
           state.currentPage = 1;
           state.currentLots = action.payload;
+          state.currentCategory = action.payload[0].category_name;
         }
         state.isLoading = false;
       })

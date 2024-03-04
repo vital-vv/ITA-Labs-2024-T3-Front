@@ -20,9 +20,9 @@ function SubcategoryItem() {
   };
 
   const location = useLocation();
-  let redirect = 'lotslist'
-  if (location.pathname === '/') {
-    redirect = 'fruits/lotslist'
+  let redirect = location.pathname;
+  if (redirect === '/') {
+    redirect = 'fruits'
   }
 
   return (

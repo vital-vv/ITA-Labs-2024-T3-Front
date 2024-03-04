@@ -28,8 +28,8 @@ function AppRoutes() {
         <Route path="/:category" element={<CategoriesContent />}  />
       </Route>
       <Route path="/:category/:subcategory" element={<Lots />}  >
-        <Route path='*' element={<LotsList />} />
-        <Route path="lotview" element={<LotView />} />
+        <Route index element={<LotsList />} />
+        <Route path=":id" element={<LotView />} />
       </Route>
       <Route path="/addlot/*" element={<Lots />}>
         <Route index element={<AddLot />} />
