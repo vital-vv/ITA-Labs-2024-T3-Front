@@ -1,7 +1,5 @@
 import styles from './SubcategoryItem.module.scss';
-
 import { subCategories } from '../../utils/constants.js';
-
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from '../../utils/routes.js';
 import {useSelector} from "react-redux";
