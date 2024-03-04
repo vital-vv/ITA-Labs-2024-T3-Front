@@ -10,8 +10,7 @@ function Registration() {
 
     const [avatarPreview, setAvatarPreview] = useState(null);
 
-    const handleSubmit = (values) => {
-        console.log(values);
+    const handleSubmit = () => {
         navigate('/')
     };
 
