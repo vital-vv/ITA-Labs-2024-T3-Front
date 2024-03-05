@@ -32,7 +32,7 @@ function SideBar() {
     <div className={styles.sideBar}>
       {list != null
         ? list.map((item) => (
-            <NavLink to={`${redirect}/${item.name.toLowerCase()}`}>
+            <NavLink key={item.category_id} to={`${redirect}/${item.name.toLowerCase()}`}>
               <p
                 key={item.category_id}
                 onClick={handleMoveToSubcategory}

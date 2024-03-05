@@ -1,6 +1,6 @@
-import {getCurrentUser, fetchAuthSession} from "aws-amplify/auth";
+import {fetchAuthSession} from "aws-amplify/auth";
 
-export async function currentSession() {
+export async function getTokens() {
     try {
         let {accessToken, idToken} = (await fetchAuthSession()).tokens ?? {};
         accessToken = accessToken.toString();
@@ -11,11 +11,13 @@ export async function currentSession() {
     }
 }
 
-export async function  getUser () {
-    try{
-        const user = await getCurrentUser();
-        console.log("user", user);
+export async function cognitoSession() {
+    try {
+        let log = await fetchAuthSession();
+        return (await fetchAuthSession()) ?? {};
     } catch (err) {
         console.log(err);
     }
 }
+
+export const accessToken = (await fetchAuthSession()).tokens?.accessToken?.toString();

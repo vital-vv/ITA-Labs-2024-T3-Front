@@ -1,0 +1,29 @@
+.loginContainer {
+  cursor: pointer;
+  display: flex;
+
+  .loginIcon {
+    margin: 2px 0 0 12px;
+  }
+}
+
+.newAdBtn {
+  display: flex;
+  justify-content: center;
+
+  .newAd {
+    display: flex;
+    padding: 10px 20px;
+    background-color: #38999B;
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.4px;
+    align-items: center;
+  }
+}
+
+.badge {
+  cursor: pointer;
+}
