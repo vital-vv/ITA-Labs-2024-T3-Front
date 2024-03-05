@@ -12,6 +12,8 @@ function Goods({
   dateCreated,
   daysRest,
   hoursRest,
+  buttonDelete,
+  id
 }) {
   const [open, setOpen] = useState(false);
   const toggleModal = () => {
@@ -39,7 +41,7 @@ function Goods({
                   {daysRest}d {hoursRest}h
                 </span>
               </p>
-              <p>ID{lotItem.lot_id}</p>
+              <p>ID{id}</p>
             </p>
           </div>
           <div className={classes.more}>
@@ -76,7 +78,7 @@ function Goods({
               <Cart />
               Buy now
             </button>
-            <button>
+            <button onClick={buttonDelete} id={id}>
               <Trash />
             </button>
           </div>

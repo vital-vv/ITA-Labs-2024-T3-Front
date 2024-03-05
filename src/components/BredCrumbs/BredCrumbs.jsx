@@ -15,7 +15,6 @@ function BredCrumbs() {
   quantityParams.pop();
   const findCategory = quantityParams[quantityParams.length-1];
   const lastStep = quantityParams.join('/');
-
   const currentCategory = useSelector(state => state.filter.currentCategory);
   const currentName = useSelector(state => state.lots.title);
 
@@ -25,7 +24,7 @@ function BredCrumbs() {
       <span className={classes.nextCategory}>Home</span>
       </NavLink>
       <span>&gt;</span>
-      <NavLink to={`/${lastStep}`}>
+      <NavLink to={isLastStep ? `/${lastStep}` : null}>
       <span className={classes.nextCategory}>{currentCategory || capitalizeFirstLetter(findCategory)}</span>
       </NavLink>
       <span className={!isLastStep ? classes.hidden : null}>

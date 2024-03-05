@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import OneStepBack from '../OneStepBack/OneStepBack';
 import { differenceInDays } from 'date-fns';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getOneLot } from '../../features/lots/lotsSlice';
+import { NavLink, useLocation } from 'react-router-dom';
+import { deleteLot, getOneLot, resetState } from '../../features/lots/lotsSlice';
 
 function Description() {
   const {
@@ -33,16 +33,24 @@ function Description() {
 
   const dispatch = useDispatch();
   const location = useLocation();
-  const currentId = location.pathname.split('/').pop();
-
-  useEffect(() => {
-    dispatch(getOneLot(currentId));
-  }, [dispatch]);
-
+  const currentId = +location.pathname.split('/').pop();
+    
+  if (!isNaN(currentId)) {
+    useEffect(() => {
+      dispatch(getOneLot(currentId));
+      return () => {
+        dispatch(resetState());
+      } 
+    }, [dispatch, currentId]);  
+  }
+  
   const date = new Date();
   const createDateLocal = new Date(createdDate);
   const targetDate = new Date(expirationDate);
   const differenceDays = differenceInDays(targetDate, date);
+  const handleDeleleLot = (event) => {
+    dispatch(deleteLot(event.currentTarget.id))
+  }
   
   return (
     <div className={classes.description}>
@@ -92,10 +100,13 @@ function Description() {
             Buy for $12,000
           </button>
           {/* This button won't render if it's user  */}
-          <button>
+          {/* CHECK IT!!! */}
+          <NavLink to={location-currentId}> 
+          <button onClick={handleDeleleLot} id={currentId}>
             <Trash />
             Delete
           </button>
+          </NavLink>
         </div>
       </div>
       <div className={classes.tableOfInfo}>

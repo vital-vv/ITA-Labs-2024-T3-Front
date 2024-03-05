@@ -13,13 +13,13 @@ function SelectorForAddLot({
   chosenSecondOption,
   changeSecondOption,
 }) {
-  const fillSelectors = (array, subcategoryKey) => {
+  const fillSelectors = (array, subcategoryKey, id) => {
     return array.map((item) => {
       return (
         <option
           key={uuidv4()}
           value={item.name}
-          id={item.id}
+          id={item[id]}
           data-subcategory={item[subcategoryKey]}
         >
           {item.name}
@@ -37,7 +37,7 @@ function SelectorForAddLot({
           <option disabled value="" selected>
             {firstPlaceholder}
           </option>
-          {fillSelectors(firstSelector, subcategoryKey)}
+          {fillSelectors(firstSelector, subcategoryKey, 'id')}
         </select>
         <select
           disabled={!secondSelector}
@@ -47,7 +47,7 @@ function SelectorForAddLot({
           <option disabled value="" selected>
             {secondPlaceholder}
           </option>
-          {secondSelector ? fillSelectors(secondSelector) : null}
+          {secondSelector ? fillSelectors(secondSelector, null, 'category_id') : null}
         </select>
       </div>
     </div>

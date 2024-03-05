@@ -53,6 +53,24 @@ export const getOneLot = createAsyncThunk(
   }
 );
 
+export const deleteLot = createAsyncThunk(
+  'lots/addNewLot',
+  async (lotId, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots/${lotId}`  
+      );
+      console.log(response);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.status;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const changeFirstSelector = (
   state,
   action,
@@ -190,7 +208,6 @@ const lotsSlice = createSlice({
     },
     changeFirstOptionCat(state, action) {
       state.currentCategory = action.payload.category;
-      state.currentIdCategory = action.payload.id;
       checkValidationForm(state);
     },
     changeRegion(state, action) {
@@ -199,6 +216,8 @@ const lotsSlice = createSlice({
     },
     changeSubcategory(state, action) {
       changeInputs(state, action, 'currentSubcategory');
+      state.currentIdCategory = action.payload.id;
+      state.currentSubcategory = action.payload.subcategory;
       checkValidationForm(state);
     },
     changeTitle(state, action) {
@@ -305,6 +324,19 @@ const lotsSlice = createSlice({
       checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
       checkValidationForm(state);
     },
+    resetState: (state) => {
+      state.currentCountry = '';
+      state.currentRegion = '';
+      state.currentIdCategory = 0;
+      state.currentSubcategory = '';
+      state.currentCategory = '';
+      state.title = '';
+      state.currentWeight = '';
+      state.currentPrice = '';
+      state.sliderLimitCurrent = [40, 100];
+      state.sliderCurrent = [50,80];
+      state.minimalBet = ''; 
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -318,11 +350,13 @@ const lotsSlice = createSlice({
       .addCase(postNewLot.fulfilled, (state, action) => {
         if (Number(action.payload) === 200) {
           state.isSuccessAdding = true;
-        } else {
-          state.isSuccessAdding = false;
-        }
+        }         
         state.isProcess = false;
       })
+      .addCase(postNewLot.rejected, (state) => {
+        state.isProcess = false;
+        state.isSuccessAdding = false;
+      }) 
       .addCase(getOneLot.fulfilled, (state, action) => {
         const data = action.payload;
         state.fullValidationForm = false;
@@ -336,7 +370,8 @@ const lotsSlice = createSlice({
         state.description = data.description;
         state.expirationDate = data.expiration_date;
         state.createdDate = data.created_at;
-      });
+      })
+      ;
   },
 });
 
@@ -365,6 +400,7 @@ export const {
   changeValidationAfterTimeMinimalBet,
   changePackaging,
   addSubscribe,
+  resetState
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

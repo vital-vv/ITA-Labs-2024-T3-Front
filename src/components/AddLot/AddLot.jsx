@@ -84,7 +84,6 @@ function AddLot() {
     isDescriptionValid,
     currentIdCategory,
     description,
-    isSuccessAdding
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -116,7 +115,9 @@ function AddLot() {
   };
 
   const handleChangeSubcategory = (event) => {
-    handleChangeInputs(event, changeSubcategory);
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    const selectedId = selectedOption.id;
+    dispatch(changeSubcategory({subcategory: event.target.value, id: selectedId}))
   };
 
   const handleChangeTitle = (event) => {
@@ -283,6 +284,7 @@ function AddLot() {
       variety: currentVariety,
       size: sliderCurrent[0],
       packaging: currentPackages,
+      expiration_days: currentValidity,
       status: 'active' // delete this string after realization by back
       // add string for lifecycle for new lot
     };
