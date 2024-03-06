@@ -9,7 +9,8 @@ import OneStepBack from '../OneStepBack/OneStepBack';
 import { differenceInDays } from 'date-fns';
 import { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { deleteLot, getOneLot, resetState } from '../../features/lots/lotsSlice';
+import { getOneLot, resetState } from '../../features/lots/lotsSlice';
+import { deleteLot } from '../../features/filter/filterSlice';
 
 function Description() {
   const {
@@ -34,7 +35,10 @@ function Description() {
   const dispatch = useDispatch();
   const location = useLocation();
   const currentId = +location.pathname.split('/').pop();
-    
+  const positionLastSlash = location.pathname.lastIndexOf('/');
+  const stepBack = location.pathname.substring(0, positionLastSlash);
+  const {currentCategoryId} = useSelector(state => state.filter);
+      
   if (!isNaN(currentId)) {
     useEffect(() => {
       dispatch(getOneLot(currentId));
@@ -99,9 +103,7 @@ function Description() {
             <Cart />
             Buy for $12,000
           </button>
-          {/* This button won't render if it's user  */}
-          {/* CHECK IT!!! */}
-          <NavLink to={location-currentId}> 
+          <NavLink to={`${stepBack}?id=${currentCategoryId}`}> 
           <button onClick={handleDeleleLot} id={currentId}>
             <Trash />
             Delete

@@ -4,17 +4,18 @@ import Goods from '../Goods/Goods';
 import { useDispatch, useSelector } from 'react-redux';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import classes from './MainLotsList.module.scss';
-import { deleteLot } from '../../features/lots/lotsSlice';
+import { deleteLot } from '../../features/filter/filterSlice';
 
 const MainLotsList = () => {
   const { currentLots } = useSelector((state) => state.filter);
+  const { isProcess } = useSelector((state) => state.lots);
   const now = new Date();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const handleDeleteLot = event => {
-    dispatch(deleteLot(event.currentTarget.id))
-  }
+  const handleDeleteLot = (event) => {
+    dispatch(deleteLot(event.currentTarget.id));
+  };
 
   let lots = currentLots.map((lot, index) => {
     const targetDate = new Date(lot.expiration_date);

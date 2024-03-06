@@ -19,6 +19,11 @@ const subcategoriesSlice = createSlice({
         list: [],
         isLoading: false,
     },
+    reducers: {
+        deleteSubcategories(state) {
+            state.list = [];
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getSubcategories.fulfilled, (state, action) => {
             state.list =  action.payload;
@@ -33,5 +38,7 @@ const subcategoriesSlice = createSlice({
         });
     }
 })
+
+export const {deleteSubcategories} = subcategoriesSlice.actions;
 
 export default subcategoriesSlice.reducer;

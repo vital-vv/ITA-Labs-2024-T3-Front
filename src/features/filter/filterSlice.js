@@ -4,7 +4,8 @@ import axios from 'axios';
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
   async (_, { rejectWithValue, getState }) => {
-    const { stringFilter, sortField, currentPage, currentCategoryId } = getState().filter;
+    const { stringFilter, sortField, currentPage, currentCategoryId } =
+      getState().filter;
     try {
       const response = await axios.get(
         `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
@@ -13,6 +14,23 @@ export const applyFilters = createAsyncThunk(
         throw new Error('Something went wrong');
       }
       return response.data.content;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteLot = createAsyncThunk(
+  'lots/deleteLot',
+  async (lotId, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots/${lotId}`
+      );
+      if (response.status !== 204) {
+        throw new Error('Something went wrong');
+      }
+      return lotId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -138,6 +156,7 @@ const filterSlice = createSlice({
     isPagination: false,
     isLoading: false,
     currentCategory: '',
+    currentLabelSelector: 'New ones first',
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -359,9 +378,11 @@ const filterSlice = createSlice({
         (item) => item[1].length !== 0
       );
       arrayUnique.forEach((item, _, array) => {
-        if (Array.isArray(item[1])) {   // check array if there is arrays there.
+        if (Array.isArray(item[1])) {
+          // check array if there is arrays there.
           item[1] = item[1].map((item) => item.name.toUpperCase());
-          while (item[1].length > 1) {  // if array consists more than 1 element need to make format [key, value] for adding in string request
+          while (item[1].length > 1) {
+            // if array consists more than 1 element need to make format [key, value] for adding in string request
             array.push([item[0], item[1][item[1].length - 1]]);
             item[1].pop();
           }
@@ -378,7 +399,7 @@ const filterSlice = createSlice({
     },
     getCurrentCategory(state, action) {
       state.currentCategoryId = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -399,6 +420,11 @@ const filterSlice = createSlice({
       .addCase(applyFilters.rejected, (state, action) => {
         state.error = action.error.message;
         state.isLoading = false;
+      })
+      .addCase(deleteLot.fulfilled, (state, action) => {
+        state.currentLots = state.currentLots.filter(item => {
+          return item.lot_id !== Number(action.payload)
+        })
       });
   },
 });

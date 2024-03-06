@@ -69,7 +69,7 @@ function Goods({
               </p>
             </div>
           </div>
-          <div className={classes.purchasing}>
+          <div className={classes.purchasing} onClick={(event) => event.preventDefault()}>
             <button onClick={toggleModal}>
               <Hammer />
               My bet

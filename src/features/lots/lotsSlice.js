@@ -53,24 +53,6 @@ export const getOneLot = createAsyncThunk(
   }
 );
 
-export const deleteLot = createAsyncThunk(
-  'lots/addNewLot',
-  async (lotId, { rejectWithValue }) => {
-    try {
-      const response = await axios.delete(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots/${lotId}`  
-      );
-      console.log(response);
-      if (response.status !== 200) {
-        throw new Error('Something went wrong');
-      }
-      return response.status;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 const changeFirstSelector = (
   state,
   action,

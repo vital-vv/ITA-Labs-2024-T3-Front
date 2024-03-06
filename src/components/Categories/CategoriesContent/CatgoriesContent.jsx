@@ -6,7 +6,7 @@ import {SubcategoryItem} from "../../SubcategoryItem/SubcategoryItem.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 
-import {getSubcategories} from "../../../features/categories/subcategoriesSlice.js";
+import {deleteSubcategories, getSubcategories} from "../../../features/categories/subcategoriesSlice.js";
 
 function CategoriesContent() {
 
@@ -15,6 +15,9 @@ function CategoriesContent() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getSubcategories(currentSubcategory))
+        return () => {
+            dispatch(deleteSubcategories());
+        }
     }, [dispatch])
 
     return (
