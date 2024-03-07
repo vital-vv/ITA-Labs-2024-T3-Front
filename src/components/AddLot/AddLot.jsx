@@ -84,6 +84,7 @@ function AddLot() {
     isDescriptionValid,
     currentIdCategory,
     description,
+    isValidComparingMinBetAndPricing
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -117,7 +118,9 @@ function AddLot() {
   const handleChangeSubcategory = (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     const selectedId = selectedOption.id;
-    dispatch(changeSubcategory({subcategory: event.target.value, id: selectedId}))
+    dispatch(
+      changeSubcategory({ subcategory: event.target.value, id: selectedId })
+    );
   };
 
   const handleChangeTitle = (event) => {
@@ -262,16 +265,16 @@ function AddLot() {
     let priceToByn = currentPrice;
     switch (currentPricingMeasure) {
       case 'USD':
-        priceToByn = currentPrice/3.10;
+        priceToByn = currentPrice / 3.1;
         break;
       case 'EUR':
-        priceToByn = currentPrice/3.39;
+        priceToByn = currentPrice / 3.39;
         break;
     }
 
     const newLot = {
       category_id: currentIdCategory,
-      price_per_unit: Number((priceToByn/currentWeight).toFixed(2)),
+      price_per_unit: Number((priceToByn / currentWeight).toFixed(2)),
       length_unit: currentMeasure,
       title: title,
       quantity: currentWeight,
@@ -285,8 +288,7 @@ function AddLot() {
       size: sliderCurrent[0],
       packaging: currentPackages,
       expiration_days: currentValidity,
-      status: 'active' // delete this string after realization by back
-      // add string for lifecycle for new lot
+      status: 'active', // delete this string after realization by back
     };
     dispatch(postNewLot(newLot));
   };
@@ -404,17 +406,21 @@ function AddLot() {
               changeSelector={handleChangeSelectorCurrency}
               selectorValue={currentPricingMeasure}
             />
-            <SelectorAndInputForAddLot
-              label={'Minimal bet'}
-              placeholder={'Enter the minimal bet'}
-              options={currency}
-              changeInput={handleChangeMinimalBet}
-              inputValue={minimalBet}
-              isValid={inputMinimalBetValid}
-              changeSelector={handleChangeSelectorCurrency}
-              selectorValue={currentPricingMeasure}
-            />
-
+            <div>
+              <SelectorAndInputForAddLot
+                label={'Minimal bet'}
+                placeholder={'Enter the minimal bet'}
+                options={currency}
+                changeInput={handleChangeMinimalBet}
+                inputValue={minimalBet}
+                isValid={inputMinimalBetValid}
+                changeSelector={handleChangeSelectorCurrency}
+                selectorValue={currentPricingMeasure}
+              />
+              <p className={classes.comment}>
+                Minimal bet should be less than price
+              </p>
+            </div>
             <div>
               <InputForNewLot
                 title={'Validity'}
@@ -477,13 +483,13 @@ function AddLot() {
               </button>
             </NavLink>
             <NavLink to={ROUTES.FINISHADD}>
-            <button
-              disabled={!fullValidationForm}
-              className={fullValidationForm ? classes.validButton : null}
-              onClick={handleAddLot}
-            >
-              Place an advertisment
-            </button>
+              <button
+                disabled={!fullValidationForm}
+                className={fullValidationForm ? classes.validButton : null}
+                onClick={handleAddLot}
+              >
+                Place an advertisment
+              </button>
             </NavLink>
           </div>
           <p className={classes.comment}>
@@ -491,7 +497,7 @@ function AddLot() {
           </p>
         </>
       ) : (
-        <Loader/>
+        <Loader />
       )}
     </div>
   );

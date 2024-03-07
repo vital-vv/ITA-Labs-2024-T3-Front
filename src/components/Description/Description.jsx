@@ -29,7 +29,7 @@ function Description() {
     description,
     fullValidationForm,
     expirationDate,
-    createdDate
+    createdDate,
   } = useSelector((state) => state.lots);
 
   const dispatch = useDispatch();
@@ -37,31 +37,34 @@ function Description() {
   const currentId = +location.pathname.split('/').pop();
   const positionLastSlash = location.pathname.lastIndexOf('/');
   const stepBack = location.pathname.substring(0, positionLastSlash);
-  const {currentCategoryId} = useSelector(state => state.filter);
-      
+  const { currentCategoryId } = useSelector((state) => state.filter);
+
   if (!isNaN(currentId)) {
     useEffect(() => {
       dispatch(getOneLot(currentId));
       return () => {
         dispatch(resetState());
-      } 
-    }, [dispatch, currentId]);  
+      };
+    }, [dispatch, currentId]);
   }
-  
+
   const date = new Date();
   const createDateLocal = new Date(createdDate);
   const targetDate = new Date(expirationDate);
   const differenceDays = differenceInDays(targetDate, date);
   const handleDeleleLot = (event) => {
-    dispatch(deleteLot(event.currentTarget.id))
-  }
-  
+    dispatch(deleteLot(event.currentTarget.id));
+  };
+
   return (
     <div className={classes.description}>
-      <OneStepBack/>
       <div className={classes.wrapperPurchasing}>
         <p className={classes.labelOfDescription}>{title}</p>
-        <IdOfProduct currentValidity={fullValidationForm ? currentValidity : differenceDays}/>
+        <IdOfProduct
+          currentValidity={
+            fullValidationForm ? currentValidity : differenceDays
+          }
+        />
         <div className={classes.shortInfo}>
           <div>
             <InfoIcon />
@@ -80,8 +83,13 @@ function Description() {
             <p>{`${currentPrice} ${currentPricingMeasure}`}</p>
           </div>
           <div className={classes.costKg}>
-            <p className={fullValidationForm ? classes.noneVisibility : null}>1.1/kg</p>
-            <p>{(currentPrice/currentWeight).toFixed(2)} {currentPricingMeasure} per {currentWeightMeasure}</p>
+            <p className={fullValidationForm ? classes.noneVisibility : null}>
+              1.1/kg
+            </p>
+            <p>
+              {(currentPrice / currentWeight).toFixed(2)}{' '}
+              {currentPricingMeasure} per {currentWeightMeasure}
+            </p>
           </div>
         </div>
         <div className={fullValidationForm ? classes.hidden : classes.offerSum}>
@@ -94,7 +102,9 @@ function Description() {
           <p className={classes.comment}>Bet from $11,001 to $11,999</p>
           <p>$-/kg</p>
         </div>
-        <div className={fullValidationForm ? classes.hidden : classes.buttonManage}>
+        <div
+          className={fullValidationForm ? classes.hidden : classes.buttonManage}
+        >
           <button className={classes.hammer}>
             <HammerGray />
             Bet
@@ -103,11 +113,11 @@ function Description() {
             <Cart />
             Buy for $12,000
           </button>
-          <NavLink to={`${stepBack}?id=${currentCategoryId}`}> 
-          <button onClick={handleDeleleLot} id={currentId}>
-            <Trash />
-            Delete
-          </button>
+          <NavLink to={`${stepBack}?id=${currentCategoryId}`}>
+            <button onClick={handleDeleleLot} id={currentId}>
+              <Trash />
+              Delete
+            </button>
           </NavLink>
         </div>
       </div>
@@ -134,7 +144,11 @@ function Description() {
         </div>
         <div>
           <p>Created</p>
-          <p>{fullValidationForm ? date.toLocaleString() : createDateLocal.toLocaleString()}</p>
+          <p>
+            {fullValidationForm
+              ? date.toLocaleString()
+              : createDateLocal.toLocaleString()}
+          </p>
         </div>
       </div>
     </div>
