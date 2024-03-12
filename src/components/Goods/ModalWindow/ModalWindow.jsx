@@ -17,9 +17,9 @@ const style = {
     p: 4,
 };
 
-function ModalWindow({handleClose, open, maxValue, minValue}) {
+function ModalWindow({handleClose, open, maxValue, minValue, id}) {
     return (
-        <div>
+        <div onClick={event => event.preventDefault()}>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -31,7 +31,7 @@ function ModalWindow({handleClose, open, maxValue, minValue}) {
                         <p>Place a bet</p>
                         <button onClick={handleClose}><img src={exitIcon} alt={exitIcon}/></button>
                     </div>
-                    <ModalForm minValue={minValue} maxValue={maxValue}/>
+                    <ModalForm minValue={minValue} maxValue={maxValue} id={id}/>
                 </Box>
             </Modal>
         </div>

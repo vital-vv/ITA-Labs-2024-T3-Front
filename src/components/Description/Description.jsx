@@ -5,12 +5,18 @@ import Cart from '../../assets/svg/Cart';
 import HammerGray from '../../assets/svg/HammerGray';
 import Trash from '../../assets/svg/Trash';
 import { useDispatch, useSelector } from 'react-redux';
-import OneStepBack from '../OneStepBack/OneStepBack';
 import { differenceInDays } from 'date-fns';
 import { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { getOneLot, resetState } from '../../features/lots/lotsSlice';
+import {
+  getOneLot,
+  resetState,
+  addNewBid,
+  changeNewBidValidationAfterTime,
+  confirmBid,
+} from '../../features/lots/lotsSlice';
 import { deleteLot } from '../../features/filter/filterSlice';
+import { useValidationTimer } from '../../hook/useValidationAfterTime';
 
 function Description() {
   const {
@@ -30,6 +36,8 @@ function Description() {
     fullValidationForm,
     expirationDate,
     createdDate,
+    isValidBid,
+    currentBid,
   } = useSelector((state) => state.lots);
 
   const dispatch = useDispatch();
@@ -52,8 +60,30 @@ function Description() {
   const createDateLocal = new Date(createdDate);
   const targetDate = new Date(expirationDate);
   const differenceDays = differenceInDays(targetDate, date);
+
   const handleDeleleLot = (event) => {
     dispatch(deleteLot(event.currentTarget.id));
+  };
+
+  const handleNewBid = (event) => {
+    dispatch(addNewBid(event.target.value));
+  };
+
+  useValidationTimer(
+    isValidBid,
+    dispatch,
+    changeNewBidValidationAfterTime,
+    currentBid
+  );
+
+  const handleAddBid = () => {
+    const bidData = {
+      user_id: 1, //Still HARDCODE!!!
+      lot_id: currentId,
+      amount: currentBid,
+      currency: 'USD', //Still HARDCODE!!!, send preferred currency
+    };
+    dispatch(confirmBid(bidData));
   };
 
   return (
@@ -64,6 +94,7 @@ function Description() {
           currentValidity={
             fullValidationForm ? currentValidity : differenceDays
           }
+          currentId={currentId}
         />
         <div className={classes.shortInfo}>
           <div>
@@ -95,9 +126,13 @@ function Description() {
         <div className={fullValidationForm ? classes.hidden : classes.offerSum}>
           <div>
             <span>$</span>
-            <span>
-              <input type="text" placeholder="Enter your bet here" />
-            </span>
+            <input
+              type="text"
+              placeholder="Enter your bet here"
+              onChange={handleNewBid}
+              className={isValidBid ? null : classes.notValid}
+              value={currentBid}
+            />
           </div>
           <p className={classes.comment}>Bet from $11,001 to $11,999</p>
           <p>$-/kg</p>
@@ -105,7 +140,11 @@ function Description() {
         <div
           className={fullValidationForm ? classes.hidden : classes.buttonManage}
         >
-          <button className={classes.hammer}>
+          <button
+            disabled={currentBid ? null : true}
+            className={currentBid ? classes.valid : classes.hammer}
+            onClick={handleAddBid}
+          >
             <HammerGray />
             Bet
           </button>

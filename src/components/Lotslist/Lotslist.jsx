@@ -11,16 +11,24 @@ import { getCurrentCategory } from '../../features/filter/filterSlice.js';
 function LotsList() {
   const dispatch = useDispatch();
 
-  const { stringFilter, sortField, currentPage, chosenOptions } =
-    useSelector((state) => state.filter);
-  
+  const { stringFilter, sortField, currentPage, chosenOptions } = useSelector(
+    (state) => state.filter
+  );
+
   const location = useLocation();
   const paramId = location.search.substring(4);
 
   useEffect(() => {
     dispatch(getCurrentCategory(paramId));
     dispatch(applyFilters());
-  }, [dispatch, stringFilter, sortField, currentPage, chosenOptions.length, paramId]);
+  }, [
+    dispatch,
+    stringFilter,
+    sortField,
+    currentPage,
+    chosenOptions.length,
+    paramId,
+  ]);
 
   return (
     <div className={classes.lotsList}>

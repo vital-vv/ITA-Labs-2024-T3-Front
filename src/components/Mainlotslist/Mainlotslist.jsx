@@ -8,7 +8,6 @@ import { deleteLot } from '../../features/filter/filterSlice';
 
 const MainLotsList = () => {
   const { currentLots } = useSelector((state) => state.filter);
-  const { isProcess } = useSelector((state) => state.lots);
   const now = new Date();
   const location = useLocation();
   const dispatch = useDispatch();

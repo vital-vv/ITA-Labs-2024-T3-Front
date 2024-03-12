@@ -53,6 +53,24 @@ export const getOneLot = createAsyncThunk(
   }
 );
 
+export const confirmBid = createAsyncThunk(
+  'lots/confirmBid',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/bids', data
+      );
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      console.log(response);
+      // return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const changeFirstSelector = (
   state,
   action,
@@ -197,6 +215,10 @@ const lotsSlice = createSlice({
     isProcess: false,
     expirationDate: '',
     createdDate: '',
+    currentBid: '',
+    isValidBid: true,
+    currentId: '',
+    showModalSuccess: false,
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -345,7 +367,7 @@ const lotsSlice = createSlice({
       checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
       checkValidationForm(state);
     },
-    resetState: (state) => {
+    resetState(state) {
       state.currentCountry = '';
       state.currentRegion = '';
       state.currentIdCategory = 0;
@@ -357,6 +379,17 @@ const lotsSlice = createSlice({
       state.sliderLimitCurrent = [40, 100];
       state.sliderCurrent = [50, 80];
       state.minimalBet = '';
+      state.currentId = '';
+      state.currentBid = '';
+    },
+    addNewBid(state, action) {
+      changeAndValidationInputs(state, action, 'currentBid', 'isValidBid');
+    },
+    changeNewBidValidationAfterTime (state) {
+      changeValidationAfterTime(state, 'isValidBid');
+    },
+    changeShowModalAfterTime (state) {
+      changeValidationAfterTime(state, 'showModalSuccess');
     },
   },
   extraReducers: (builder) => {
@@ -391,7 +424,12 @@ const lotsSlice = createSlice({
         state.description = data.description;
         state.expirationDate = data.expiration_date;
         state.createdDate = data.created_at;
-      });
+        state.currentId = data.lot_id;
+      })
+      .addCase(confirmBid.fulfilled, (state) => {
+        state.showModalSuccess = true;
+      })
+      ;
   },
 });
 
@@ -421,6 +459,9 @@ export const {
   changePackaging,
   addSubscribe,
   resetState,
+  addNewBid,
+  changeNewBidValidationAfterTime,
+  changeShowModalAfterTime
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

@@ -5,16 +5,11 @@ export const betsFormInitialValues = {
     totalAmount: "",
 }
 
-const regx = {
-    name: /^([1-9]|[1-2][\d]|3[0-2])$/,
-}
-
-const totalAmount = Yup.string()
-    .matches(regx.name, "You should enter a number from the range")
-    .required("Enter your bet")
-
 export const schemas = {
     custom: Yup.object().shape({
-        totalAmount,
+        totalAmount: Yup.number()
+            .min(1, "Минимальное значение - 1")
+            .max(32, "Максимальное значение - 32")
+            .required("Введите вашу ставку"),
     })
 }

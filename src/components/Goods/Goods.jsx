@@ -89,6 +89,7 @@ function Goods({
         maxValue={maxValue}
         open={open}
         handleClose={toggleModal}
+        id={id}
       />
     </>
   );

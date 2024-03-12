@@ -156,3 +156,16 @@
 .gray {
   color: gray !important;
 }
+
+.notValid {
+  display: inline-block;
+  background-color: pink !important;
+}
+
+.valid {
+  background-color: #38999b !important;
+  border: none;
+  svg{
+    fill: white;
+  }
+}

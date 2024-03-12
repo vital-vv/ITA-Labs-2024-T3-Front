@@ -1,0 +1,17 @@
+.modal {
+    padding: 20px;
+    background-color: black;
+    color: white;
+    width: fit-content;
+    border-radius: 3px;
+    position: absolute;
+    left: 43vw;
+    bottom: 1vw;  
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+    transition: visibility 0s linear 0s, opacity 0.5s linear;
+}
