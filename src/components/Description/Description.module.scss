@@ -8,6 +8,9 @@
 
 .description {
   flex-grow: 1;
+  button {
+    cursor: pointer
+  }
 }
 
 .labelOfDescription {
@@ -99,7 +102,7 @@
 .buttonManage {
   display: flex;
   gap: 16px;
-  > button {
+  button {
     padding: 10px 20px;
     background-color: #38999b;
     color: white;
@@ -116,6 +119,7 @@
   button:last-child {
     border: none;
     background-color: #D40000;
+    width: auto;
   }
 }
 

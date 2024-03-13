@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchSubcategories = createAsyncThunk(
@@ -90,7 +90,7 @@ const changeValidationAfterTime = (state, validationAdress) => {
 
 const checkValidationForm = (state) => {
   const valuesChecked = Object.values(state);
-  valuesChecked.splice(33);
+  valuesChecked.splice(34);
   valuesChecked.every((item) => item)
     ? (state.fullValidationForm = true)
     : (state.fullValidationForm = false);
@@ -141,6 +141,20 @@ const checkOnMaxSymbols = (
   }
 };
 
+const compareMinimalBetWithPrice = (
+  state,
+  minimalBet,
+  price,
+  minimalBetValid,
+  priceValid
+) => {
+  if (state[minimalBet] >= state[price]) {
+    state[minimalBetValid] = false;
+    state[priceValid] = false;
+    state.isValidComparingMinBetAndPricing = false;
+  }
+};
+
 const lotsSlice = createSlice({
   name: 'lots',
   initialState: {
@@ -162,7 +176,7 @@ const lotsSlice = createSlice({
     currentValidity: 30,
     isValidValidity: true,
     picturesFiles: [],
-    currentVariety: 'aiwa',  //point out the first elem of categories' array
+    currentVariety: 'aiwa', //point out the first elem of categories' array
     sliderLimitCurrent: [40, 100],
     sliderLimitMm: [40, 100],
     sliderLimitCm: [4, 10],
@@ -174,6 +188,7 @@ const lotsSlice = createSlice({
     currentMeasure: 'mm',
     minimalBet: '',
     inputMinimalBetValid: true,
+    isValidComparingMinBetAndPricing: true,
     currentPackages: 'Box',
     description: ' ',
     isDescriptionValid: true,
@@ -190,7 +205,6 @@ const lotsSlice = createSlice({
     },
     changeFirstOptionCat(state, action) {
       state.currentCategory = action.payload.category;
-      state.currentIdCategory = action.payload.id;
       checkValidationForm(state);
     },
     changeRegion(state, action) {
@@ -199,6 +213,8 @@ const lotsSlice = createSlice({
     },
     changeSubcategory(state, action) {
       changeInputs(state, action, 'currentSubcategory');
+      state.currentIdCategory = action.payload.id;
+      state.currentSubcategory = action.payload.subcategory;
       checkValidationForm(state);
     },
     changeTitle(state, action) {
@@ -216,10 +232,19 @@ const lotsSlice = createSlice({
       checkValidationForm(state);
     },
     changePrice(state, action) {
+      state.isValidComparingMinBetAndPricing = true;
+      state.inputMinimalBetValid = true;
       changeAndValidationInputs(
         state,
         action,
         'currentPrice',
+        'inputPriceValid'
+      );
+      compareMinimalBetWithPrice(
+        state,
+        'minimalBet',
+        'currentPrice',
+        'inputMinimalBetValid',
         'inputPriceValid'
       );
       checkValidationForm(state);
@@ -229,8 +254,10 @@ const lotsSlice = createSlice({
       checkValidationForm(state);
     },
     changeValidationAfterTimePrice(state) {
-      changeValidationAfterTime(state, 'inputPriceValid');
-      checkValidationForm(state);
+      if (state.isValidComparingMinBetAndPricing) {
+        changeValidationAfterTime(state, 'inputPriceValid');
+        checkValidationForm(state);
+      }
     },
     changeQuantity(state, action) {
       changeInputs(state, action, 'currentWeightMeasure');
@@ -284,17 +311,30 @@ const lotsSlice = createSlice({
       }
     },
     changeMinimalBet(state, action) {
+      state.isValidComparingMinBetAndPricing = true;
+      state.inputPriceValid = true;
       changeAndValidationInputs(
         state,
         action,
         'minimalBet',
         'inputMinimalBetValid'
       );
+      if (state.currentPrice !== '') {
+        compareMinimalBetWithPrice(
+          state,
+          'minimalBet',
+          'currentPrice',
+          'inputMinimalBetValid',
+          'inputPriceValid'
+        );
+      }
       checkValidationForm(state);
     },
     changeValidationAfterTimeMinimalBet(state) {
-      changeValidationAfterTime(state, 'inputMinimalBetValid');
-      checkValidationForm(state);
+      if (state.isValidComparingMinBetAndPricing) {
+        changeValidationAfterTime(state, 'inputMinimalBetValid');
+        checkValidationForm(state);
+      }
     },
     changePackaging(state, action) {
       changeInputs(state, action, 'currentPackages');
@@ -304,6 +344,19 @@ const lotsSlice = createSlice({
       changeInputs(state, action, 'description');
       checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
       checkValidationForm(state);
+    },
+    resetState: (state) => {
+      state.currentCountry = '';
+      state.currentRegion = '';
+      state.currentIdCategory = 0;
+      state.currentSubcategory = '';
+      state.currentCategory = '';
+      state.title = '';
+      state.currentWeight = '';
+      state.currentPrice = '';
+      state.sliderLimitCurrent = [40, 100];
+      state.sliderCurrent = [50, 80];
+      state.minimalBet = '';
     },
   },
   extraReducers: (builder) => {
@@ -318,10 +371,12 @@ const lotsSlice = createSlice({
       .addCase(postNewLot.fulfilled, (state, action) => {
         if (Number(action.payload) === 200) {
           state.isSuccessAdding = true;
-        } else {
-          state.isSuccessAdding = false;
         }
         state.isProcess = false;
+      })
+      .addCase(postNewLot.rejected, (state) => {
+        state.isProcess = false;
+        state.isSuccessAdding = false;
       })
       .addCase(getOneLot.fulfilled, (state, action) => {
         const data = action.payload;
@@ -330,7 +385,7 @@ const lotsSlice = createSlice({
         state.currentCountry = data.location.country;
         state.title = data.title;
         state.currentWeight = data.weight;
-        state.currentPrice = data.price_per_unit*data.quantity;
+        state.currentPrice = data.price_per_unit * data.quantity;
         state.currentVariety = data.variety;
         state.currentPackages = data.packaging;
         state.description = data.description;
@@ -365,6 +420,7 @@ export const {
   changeValidationAfterTimeMinimalBet,
   changePackaging,
   addSubscribe,
+  resetState,
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;
