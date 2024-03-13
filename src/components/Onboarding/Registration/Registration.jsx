@@ -38,7 +38,7 @@ function Registration() {
                 validationSchema={registrationValidationSchema}
                 onSubmit={handleSubmit}>
                 {({values}) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <Field autocomplete='off' placeholder="First Name" type="text" id="name" name="name"/>
                         <ErrorMessage name="name" component="span"/>
 

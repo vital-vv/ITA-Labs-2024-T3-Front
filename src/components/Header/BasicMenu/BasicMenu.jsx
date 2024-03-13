@@ -6,10 +6,11 @@ import menuIcon from '../../../assets/images/menuIcon.png';
 import {ROUTES} from '../../../utils/routes.js';
 
 import {NavLink, useNavigate} from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import { useState} from 'react';
 import {signOut} from "@aws-amplify/auth";
-import {useDispatch, useSelector} from "react-redux";
-import {clearUserData, selectUserData} from "../../../features/currentUser/currentUserSlice.js";
+import {useDispatch} from "react-redux";
+import {clearUserData} from "../../../features/currentUser/currentUserSlice.js";
+import {cognitoSession} from "../../../utils/auth.js";
 
 export default function BasicMenu() {
 
@@ -25,11 +26,17 @@ export default function BasicMenu() {
         setAnchorEl(null);
     };
 
-    function  signOutApp(){
-        signOut();
-        handleClose();
-        navigate('/');
-        dispatch(clearUserData());
+    const  signOutApp = async() => {
+        try{
+            await signOut();
+            dispatch(clearUserData());
+            await cognitoSession();
+            handleClose();
+            navigate('/');
+        } catch (err){
+            console.log(err);
+        }
+
     }
 
     return (
@@ -53,11 +60,9 @@ export default function BasicMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <NavLink to={ROUTES.HOME} onClick={handleClose}>Profile</NavLink>
-                <NavLink to={ROUTES.HOME} onClick={handleClose}>My account</NavLink>
+                <NavLink to={ROUTES.ACCOUNT} onClick={handleClose}>Profile</NavLink>
                 <NavLink to={ROUTES.ONBOARDING} onClick={handleClose}>To onboarding</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={signOutApp}>Logout</NavLink>
-                <NavLink to={ROUTES.LOGIN} onClick={handleClose}>LogIn</NavLink>
             </Menu>
         </div>
     );

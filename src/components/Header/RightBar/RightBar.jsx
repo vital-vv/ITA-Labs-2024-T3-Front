@@ -1,17 +1,17 @@
-import Badge from '@mui/material/Badge';
 import styles from './RightBar.module.scss';
-import badgeIcon from '../../../assets/images/badgeIcon.png';
 import langIcon from '../../../assets/images/langIcon.png';
 import usdIcon from '../../../assets/images/usdIcon.png';
-import Plus from '../../../assets/svg/Plus.jsx';
-
-import BasicMenu from '../BasicMenu/BasicMenu.jsx';
-import {NavLink} from 'react-router-dom';
-import {ROUTES} from '../../../utils/routes.js';
+import {useSelector} from "react-redux";
+import {selectUserData} from "../../../features/currentUser/currentUserSlice.js";
+import {IsAuthorized} from "./IsAuthorized/IsAuthorized.jsx";
 
 function RightBar() {
+
+    const user = useSelector(selectUserData);
+    const rightBarStyle = {width: user.userData?.role === 'user' ? '550px' : '300px'};
+
     return (
-        <div className={styles.rightBar}>
+        <div className={styles.rightBar} style={rightBarStyle}>
             <div>
                 <p>USD</p>
                 <img alt={usdIcon} src={usdIcon}/>
@@ -20,20 +20,8 @@ function RightBar() {
                 <p>ENG</p>
                 <img alt={langIcon} src={langIcon}/>
             </div>
-            <NavLink to={ROUTES.ADDLOT} className={styles.newAdBtn}>
-                <div className={styles.newAd}>
-                    <Plus/>
-                    Advertisement
-                </div>
-            </NavLink>
-            <div>
-                <Badge className={styles.badge} color="error" variant="dot">
-                    <img src={badgeIcon} alt={badgeIcon}/>
-                </Badge>
-            </div>
-            <BasicMenu/>
-        </div>
-    );
-}
+           <IsAuthorized/>
+</div>
+)}
 
 export {RightBar};

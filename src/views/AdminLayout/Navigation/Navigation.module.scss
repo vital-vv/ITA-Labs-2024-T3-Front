@@ -1,15 +1,5 @@
 $blueColor: #38999B;
 
-.adminPanel {
-  height: 100%;
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-  background-color: white;
-  border-top: 1px solid #f6f6f6;
-  min-height: 74vh;
-}
-
 .navigation{
   width: 20%;
   background-color: white;
@@ -28,7 +18,7 @@ $blueColor: #38999B;
   }
   img{
     width: 20px;
-    height: 20px;
+    height: 18px;
     margin: 0 20px;
   }
 }

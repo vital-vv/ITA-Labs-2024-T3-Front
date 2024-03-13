@@ -18,7 +18,6 @@ const categoriesSlice = createSlice({
     initialState: {
         list: [],
         isLoading: false,
-        // currentCategory : null,
     },
     extraReducers: (builder) => {
         builder.addCase(getCategories.fulfilled, (state, action) => {

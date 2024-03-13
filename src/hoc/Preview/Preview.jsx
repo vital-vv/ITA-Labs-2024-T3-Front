@@ -7,12 +7,11 @@ function Preview() {
   const location = useLocation();
 
   if (!isFormComplete) {
-    return <Navigate to={'/addlot'} state={{from: location}} />
+    return <Navigate to={'/login'} state={{from: location}} />
       }
 
   return (
       <LotView />
   );
 }
-
 export default Preview;

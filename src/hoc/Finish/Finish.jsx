@@ -12,4 +12,4 @@ function Finish() {
   return <Loader />;
 }
 
-export default Finish;
+export { Finish };

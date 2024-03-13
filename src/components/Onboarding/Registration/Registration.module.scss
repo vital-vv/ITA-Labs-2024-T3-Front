@@ -6,17 +6,18 @@
   width: 90%;
   background-color: white;
   margin: 0 auto;
-  height: 500px;
+  height: 100vh;
   display: flex;
   justify-content: center;
 }
 
-form {
+.form {
   display: flex;
   flex-direction: column;
+  margin: 100px 0 0 0;
   width: 400px;
+  height: 500px;
   justify-content: space-between;
-  margin: 20px 0;
 
   input:not([type="file"]), select {
     width: 100%;
@@ -34,7 +35,7 @@ form {
   }
 
   .downloadBtn {
-    margin: 10px 0 35px 10px;
+    margin: 10px 0 35px 5px;
     cursor: pointer;
     display: block;
     padding: 5px 10px;

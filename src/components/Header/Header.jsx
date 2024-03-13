@@ -9,7 +9,7 @@ function Header() {
 
     return (
         <header>
-            <NavLink to={ROUTES.ADMINUSERS} className={styles.logo}>
+            <NavLink to={ROUTES.HOME} className={styles.logo}>
                 <img alt="logo" src={logo}/>
                 <p className={styles.logoName}>AGROEX</p>
             </NavLink>

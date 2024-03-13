@@ -18,7 +18,7 @@ function PaginationControlled({setPage,page}) {
     const paginationData = list.metadata;
 
     let pagesCount;
-    paginationData != null ? pagesCount = paginationData.totalElements / paginationData.size : null;
+    paginationData != null ? pagesCount = Math.ceil(paginationData.total_elements / paginationData.size) : null;
 
     const handleChange = (event, value) => {
         setPage(value);
