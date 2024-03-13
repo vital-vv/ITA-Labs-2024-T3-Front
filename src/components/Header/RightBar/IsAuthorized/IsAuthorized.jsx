@@ -1,6 +1,6 @@
 import styles from './IsAuthorized.module.scss';
 import {useSelector} from "react-redux";
-import {fetchUserData, selectUserData, setTokens} from "../../../../features/currentUser/currentUserSlice.js";
+import {selectUserData} from "../../../../features/currentUser/currentUserSlice.js";
 import {NavLink} from "react-router-dom";
 import {ROUTES} from "../../../../utils/routes.js";
 import Plus from "../../../../assets/svg/Plus.jsx";
@@ -20,6 +20,13 @@ function IsAuthorized() {
                 </NavLink>
             ) : user.userData.role === 'admin' ? (
                 <div>
+                    <BasicMenu />
+                </div>
+            ) : user.userData.role === 'exchanger' ? (
+                <div>
+                    <Badge className={styles.badge} color="error" variant="dot">
+                        <img src={badgeIcon} alt="badgeIcon" />
+                    </Badge>
                     <BasicMenu />
                 </div>
             ) : (

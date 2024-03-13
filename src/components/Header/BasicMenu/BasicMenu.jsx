@@ -60,8 +60,7 @@ export default function BasicMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <NavLink to={ROUTES.HOME} onClick={handleClose}>Profile</NavLink>
-                <NavLink to={ROUTES.HOME} onClick={handleClose}>My account</NavLink>
+                <NavLink to={ROUTES.ACCOUNT} onClick={handleClose}>Profile</NavLink>
                 <NavLink to={ROUTES.ONBOARDING} onClick={handleClose}>To onboarding</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={signOutApp}>Logout</NavLink>
             </Menu>

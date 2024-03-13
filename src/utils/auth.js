@@ -13,7 +13,6 @@ export async function getTokens() {
 
 export async function cognitoSession() {
     try {
-        let log = await fetchAuthSession();
         return (await fetchAuthSession()) ?? {};
     } catch (err) {
         console.log(err);

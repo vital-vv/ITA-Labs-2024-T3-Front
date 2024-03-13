@@ -1,3 +1,4 @@
+import {ROUTES} from "./routes.js";
 export const BASE_URL = 'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api';
 
 import cabbage from '../assets/images/cabbage.png'
@@ -12,6 +13,13 @@ import onboarding2 from '../assets/images/onboarding2.png';
 import onboarding3 from '../assets/images/onboarding3.png';
 import onboarding4 from '../assets/images/onboarding4.png';
 import onboarding5 from '../assets/images/onboarding5.png';
+
+import usersIcon from "../assets/images/users.png";
+import betIcon from "../assets/images/bet.png";
+import accountIcon from "../assets/images/account.png";
+import advIcon from "../assets/images/advertisements.png";
+import ordersIcon from "../assets/images/orders.png";
+
 
 export const subCategories = [
     {
@@ -94,5 +102,64 @@ export const onboardingStuff = [
         slide: `${onboarding5}`,
         title: 'Payment and shipment',
         text: 'Support and consult at the final stages of the transaction',
+    },
+]
+
+export const adminNav = [
+    {
+        title: 'All Users',
+        icon: `${usersIcon}`,
+        path: ROUTES.ADMINUSERS,
+    },
+    {
+        title: 'All Bets',
+        icon: `${betIcon}`,
+        path: ROUTES.ADMINBETS,
+    },
+    {
+        title: 'My account',
+        icon: `${accountIcon}`,
+        path: ROUTES.ADMINACCOUNT,
+    },
+]
+
+export const userNav = [
+    {
+        title: 'My advertisements',
+        icon: `${advIcon}`,
+        path: ROUTES.ADVERTISEMENT,
+    },
+    {
+        title: 'Betting',
+        icon: `${betIcon}`,
+        path: ROUTES.BETS,
+    },
+    {
+        title: 'My orders',
+        icon: `${ordersIcon}`,
+        path: ROUTES.ORDERS,
+    },
+    {
+        title: 'My account',
+        icon: `${accountIcon}`,
+        path: ROUTES.ACCOUNT,
+    },
+]
+
+export const exchangerNav = [
+    {
+        title: 'Advertisements',
+        icon: `${advIcon}`,
+        path: ROUTES.ADVERTISEMENT,
+    },
+    {
+        title: 'All bets',
+        icon: `${betIcon}`,
+        path: ROUTES.BETS,
+    },
+    {
+        title: 'My account',
+        icon: `${accountIcon}`,
+        path: ROUTES.ACCOUNT,
     },
 ]

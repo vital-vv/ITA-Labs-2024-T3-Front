@@ -19,19 +19,18 @@ function SignInApp() {
                 let tokens = await getTokens();
                 dispatch(setTokens(tokens));
                 const idToken = tokens.idToken.toString();
-                dispatch(fetchUserData(idToken));
+                // dispatch(fetchUserData(idToken));
+                const userData = user.userData;
+                if (userData) {
+                    const redirectPath = {
+                        admin: '/admin/users',
+                        exchanger: '/user/account',
+                    }[userData.role] || '/';
+                    navigate(redirectPath);
+                }
             }
         })
     }, [dispatch]);
-
-    const userData = user.userData;
-    if(userData){
-       if(userData.role === 'admin'){
-           navigate('/admin/users');
-       } else {
-           navigate('/');
-       }
-    }
 
     return (
         <div className={styles.authContainer}>

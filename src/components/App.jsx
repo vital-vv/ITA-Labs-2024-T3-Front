@@ -41,13 +41,11 @@ function App() {
         const fetchData = async () => {
         let session = await cognitoSession();
             cognitoSession()
-
-
             if (session.userSub) {
                     let tokens = await getTokens();
                     dispatch(setTokens(tokens));
                     const idToken = tokens.idToken.toString();
-                    dispatch(fetchUserData(idToken));
+                    // dispatch(fetchUserData(idToken));
             }
         };
         fetchData();
