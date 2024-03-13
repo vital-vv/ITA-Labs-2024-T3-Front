@@ -3,27 +3,31 @@ import styles from './Button.module.scss';
 import { useField } from 'formik';
 import { confirmBid } from '../../../../features/lots/lotsSlice';
 
-function Button({ children, isValid, isDirty, btnText, id, ...props }) {
+function Button({ children, isValid, isDirty, btnText, onClose, ...props }) {
   const [meta] = useField(props);
   const { currentBid } = useSelector((state) => state.lots);
   const dispatch = useDispatch();
 
-  const handleAddBid = (event) => {
+  const {idForBid} = useSelector(state => state.lots)
+  
+  const handleAddBid = () => {
     const bidData = {
       user_id: 1, //Still HARDCODE!!!
-      lot_id: event.target.id,
+      lot_id: idForBid, 
       amount: currentBid,
       currency: 'USD', //Still HARDCODE!!!, send preferred currency
     };
     dispatch(confirmBid(bidData));
+    onClose();
   };
+
+
 
   return (
     <button
       disabled={!(isValid && isDirty)}
       type="submit"
       className={styles.button}
-      id={id}
       onClick={handleAddBid}
     >
       {!(isValid && isDirty) ? (

@@ -1,5 +1,6 @@
 import Label from '../Label/Label.jsx';
 import Content from '../Content/Content.jsx';
+import ModalBid from '../ModalBid/ModalBid.jsx';
 import classes from './LotsList.module.scss';
 import BredCrumbs from '../BredCrumbs/BredCrumbs.jsx';
 import { useEffect } from 'react';
@@ -14,6 +15,7 @@ function LotsList() {
   const { stringFilter, sortField, currentPage, chosenOptions } = useSelector(
     (state) => state.filter
   );
+  const { leadBet } = useSelector(state => state.lots);
 
   const location = useLocation();
   const paramId = location.search.substring(4);
@@ -28,6 +30,7 @@ function LotsList() {
     currentPage,
     chosenOptions.length,
     paramId,
+    leadBet
   ]);
 
   return (
@@ -35,6 +38,7 @@ function LotsList() {
       <BredCrumbs />
       <Label />
       <Content />
+      <ModalBid />
     </div>
   );
 }

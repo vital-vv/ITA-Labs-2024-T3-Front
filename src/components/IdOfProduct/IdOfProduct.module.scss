@@ -35,3 +35,7 @@
 .labelOfGood {
   @include fontStyle(20px, 500, 28px, 0.15px);
 }
+
+.hidden {
+  display: none;
+}

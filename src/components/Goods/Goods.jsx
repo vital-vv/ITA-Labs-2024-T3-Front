@@ -6,6 +6,8 @@ import Cart from '../../assets/svg/Cart';
 import Trash from '../../assets/svg/Trash';
 import { ModalWindow } from './ModalWindow/ModalWindow.jsx';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeModalThrough } from '../../features/lots/lotsSlice.js';
 
 function Goods({
   lotItem,
@@ -13,15 +15,26 @@ function Goods({
   daysRest,
   hoursRest,
   buttonDelete,
-  id
+  id,
 }) {
   const [open, setOpen] = useState(false);
-  const toggleModal = () => {
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(0);
+  const dispatch = useDispatch();
+
+  
+
+  const toggleModal = (event) => {
     setOpen((prevOpen) => !prevOpen);
+    if (lotItem.leading) {
+      setMinValue(lotItem.leading.amount + 1);
+    } else {
+      setMinValue(1);
+    }
+    setMaxValue(lotItem.price_per_unit*lotItem.quantity - 1);
+    dispatch(changeModalThrough(event.target.id));
   };
 
-  const minValue = 1.1;
-  const maxValue = 1.2;
 
   return (
     <>
@@ -57,20 +70,26 @@ function Goods({
         <div className={classes.bet}>
           <div>
             <div className={classes.cost}>
-              <p>$11,000.00</p>
-              <p>
-                $<span>{minValue}</span>/kg
+              <p className={!lotItem.leading ? classes.grey : null}>
+                {lotItem.leading ? `$${lotItem.leading.amount}` : 'No bets'}
+              </p>
+              <p className={!lotItem.leading ? classes.hidden : null}>
+                $<span>{lotItem.leading && (lotItem.leading.amount/lotItem.quantity).toFixed(2)}</span>/kg
               </p>
             </div>
             <div className={classes.perKg}>
-              <p>$12,000.00</p>
+              {/* Still hardcode */}
+              <p>${lotItem.price_per_unit*lotItem.quantity}</p>
               <p>
-                $<span>{maxValue}</span>/kg
+                <span>${lotItem.price_per_unit}</span>/{lotItem.weight}
               </p>
             </div>
           </div>
-          <div className={classes.purchasing} onClick={(event) => event.preventDefault()}>
-            <button onClick={toggleModal}>
+          <div
+            className={classes.purchasing}
+            onClick={(event) => event.preventDefault()}
+          >
+            <button onClick={toggleModal} id={id}>
               <Hammer />
               My bet
             </button>
@@ -84,13 +103,7 @@ function Goods({
           </div>
         </div>
       </div>
-      <ModalWindow
-        minValue={minValue}
-        maxValue={maxValue}
-        open={open}
-        handleClose={toggleModal}
-        id={id}
-      />
+      <ModalWindow open={open} handleClose={toggleModal} minValue={minValue} maxValue={maxValue}/>
     </>
   );
 }

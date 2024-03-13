@@ -38,6 +38,8 @@ function Description() {
     createdDate,
     isValidBid,
     currentBid,
+    leadBet,
+    correctRangeBets,
   } = useSelector((state) => state.lots);
 
   const dispatch = useDispatch();
@@ -106,16 +108,18 @@ function Description() {
       <div className={classes.betBlock}>
         <div>
           <div className={classes.pricing}>
-            <p className={fullValidationForm ? classes.hidden : null}>Bet</p>
+            <p className={fullValidationForm ? classes.noneVisibility : null}>Bet</p>
             <p>Total price</p>
           </div>
           <div className={classes.cost}>
-            <p className={fullValidationForm ? classes.gray : null}>No bets</p>
+            <p className={fullValidationForm ? classes.gray : null}>
+              {leadBet ? `${leadBet} ${currentPricingMeasure}` : 'No bets'}
+            </p>
             <p>{`${currentPrice} ${currentPricingMeasure}`}</p>
           </div>
           <div className={classes.costKg}>
             <p className={fullValidationForm ? classes.noneVisibility : null}>
-              1.1/kg
+              {(leadBet / currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}
             </p>
             <p>
               {(currentPrice / currentWeight).toFixed(2)}{' '}
@@ -134,15 +138,19 @@ function Description() {
               value={currentBid}
             />
           </div>
-          <p className={classes.comment}>Bet from $11,001 to $11,999</p>
-          <p>$-/kg</p>
+          <p className={classes.comment}>
+            Bet from ${leadBet + 1} to ${currentPrice - 1}
+          </p>
+          <p>{(currentBid/currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}</p>
         </div>
         <div
           className={fullValidationForm ? classes.hidden : classes.buttonManage}
         >
           <button
-            disabled={currentBid ? null : true}
-            className={currentBid ? classes.valid : classes.hammer}
+            disabled={currentBid && correctRangeBets ? null : true}
+            className={
+              currentBid && correctRangeBets ? classes.valid : classes.hammer
+            }
             onClick={handleAddBid}
           >
             <HammerGray />
@@ -150,7 +158,7 @@ function Description() {
           </button>
           <button>
             <Cart />
-            Buy for $12,000
+            Buy for ${currentPrice}
           </button>
           <NavLink to={`${stepBack}?id=${currentCategoryId}`}>
             <button onClick={handleDeleleLot} id={currentId}>
@@ -171,7 +179,11 @@ function Description() {
         </div>
         <div>
           <p>Size</p>
-          <p>{`${sliderCurrent[0]} - ${sliderCurrent[1]} ${currentMeasure}`}</p>
+          <p>
+            {Array.isArray(sliderCurrent)
+              ? `${sliderCurrent[0]} - ${sliderCurrent[1]} ${currentMeasure}`
+              : `${sliderCurrent} ${currentMeasure}`}
+          </p>
         </div>
         <div>
           <p>Packaging</p>
