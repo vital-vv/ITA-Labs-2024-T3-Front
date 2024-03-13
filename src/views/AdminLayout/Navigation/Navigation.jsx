@@ -4,9 +4,9 @@ import {NavLink} from "react-router-dom";
 function Navigation({navTabs}) {
     return (
         <div className={styles.navigation}>
-            {navTabs.map((tab, index) => (
+            {navTabs.map((tab) => (
                 <NavLink
-                    key={index}
+                    key={tab.title}
                     className={({isActive}) =>
                         isActive ? styles.active : styles.notActive
                     }
