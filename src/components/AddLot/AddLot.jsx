@@ -41,6 +41,7 @@ import NumberInput from '../NumberInput/NumberInput';
 import { ROUTES } from '../../utils/routes';
 import OneStepBack from '../OneStepBack/OneStepBack';
 import Loader from '../../hoc/Loader/Loader';
+import { useValidationTimer } from '../../hook/useValidationAfterTime';
 
 function AddLot() {
   const dispatch = useDispatch();
@@ -84,7 +85,6 @@ function AddLot() {
     isDescriptionValid,
     currentIdCategory,
     description,
-    isValidComparingMinBetAndPricing
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -183,22 +183,6 @@ function AddLot() {
     dispatch(fetchMainData());
     dispatch(getCategories());
   }, [dispatch]);
-
-  function useValidationTimer(isValid, dispatch, action, currentValue) {
-    useEffect(() => {
-      let timer;
-      if (!isValid) {
-        timer = setTimeout(() => {
-          dispatch(action());
-        }, 1500);
-      }
-      return () => {
-        if (timer) {
-          clearTimeout(timer);
-        }
-      };
-    }, [dispatch, isValid, currentValue]);
-  }
 
   useValidationTimer(
     inputWeightValid,

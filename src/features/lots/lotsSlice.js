@@ -53,6 +53,23 @@ export const getOneLot = createAsyncThunk(
   }
 );
 
+export const confirmBid = createAsyncThunk(
+  'lots/confirmBid',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/bids',
+        data
+      );
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const changeFirstSelector = (
   state,
   action,
@@ -90,7 +107,7 @@ const changeValidationAfterTime = (state, validationAdress) => {
 
 const checkValidationForm = (state) => {
   const valuesChecked = Object.values(state);
-  valuesChecked.splice(34);
+  valuesChecked.splice(33);
   valuesChecked.every((item) => item)
     ? (state.fullValidationForm = true)
     : (state.fullValidationForm = false);
@@ -190,13 +207,20 @@ const lotsSlice = createSlice({
     inputMinimalBetValid: true,
     isValidComparingMinBetAndPricing: true,
     currentPackages: 'Box',
-    description: ' ',
     isDescriptionValid: true,
     fullValidationForm: false,
+    description: '',
     isSuccessAdding: false,
     isProcess: false,
     expirationDate: '',
     createdDate: '',
+    currentBid: '',
+    isValidBid: true,
+    currentId: '',
+    showModalSuccess: false,
+    leadBet: 0,
+    correctRangeBets: false,
+    idForBid: 0,
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -345,7 +369,7 @@ const lotsSlice = createSlice({
       checkOnMaxSymbols(state, 'description', 200, 'isDescriptionValid');
       checkValidationForm(state);
     },
-    resetState: (state) => {
+    resetState(state) {
       state.currentCountry = '';
       state.currentRegion = '';
       state.currentIdCategory = 0;
@@ -357,6 +381,28 @@ const lotsSlice = createSlice({
       state.sliderLimitCurrent = [40, 100];
       state.sliderCurrent = [50, 80];
       state.minimalBet = '';
+      state.currentId = '';
+      state.currentBid = '';
+      state.leadBet = 0;
+    },
+    addNewBid(state, action) {
+      state.correctRangeBets = false;
+      changeAndValidationInputs(state, action, 'currentBid', 'isValidBid');
+      if (
+        state.currentBid >= state.leadBet + 1 &&
+        state.currentBid < state.currentPrice - 1
+      ) {
+        state.correctRangeBets = true;
+      }
+    },
+    changeNewBidValidationAfterTime(state) {
+      changeValidationAfterTime(state, 'isValidBid');
+    },
+    changeShowModalAfterTime(state) {
+      changeValidationAfterTime(state, 'showModalSuccess');
+    },
+    changeModalThrough(state, action) {
+      state.idForBid = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -383,14 +429,23 @@ const lotsSlice = createSlice({
         state.fullValidationForm = false;
         state.currentRegion = data.location.region;
         state.currentCountry = data.location.country;
+        state.currentWeightMeasure = data.weight;
+        state.sliderCurrent = data.size;
         state.title = data.title;
-        state.currentWeight = data.weight;
+        state.currentWeight = data.quantity;
         state.currentPrice = data.price_per_unit * data.quantity;
         state.currentVariety = data.variety;
         state.currentPackages = data.packaging;
         state.description = data.description;
         state.expirationDate = data.expiration_date;
         state.createdDate = data.created_at;
+        state.currentId = data.lot_id;
+        state.leadBet = data.leading ? data.leading.amount : 0;
+      })
+      .addCase(confirmBid.fulfilled, (state) => {
+        state.showModalSuccess = true;
+        state.leadBet = state.currentBid;
+        state.currentBid = '';
       });
   },
 });
@@ -421,6 +476,11 @@ export const {
   changePackaging,
   addSubscribe,
   resetState,
+  addNewBid,
+  changeNewBidValidationAfterTime,
+  changeShowModalAfterTime,
+  changeModalThrough,
+  openBetsModal,
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;
