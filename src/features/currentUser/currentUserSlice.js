@@ -1,15 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {BASE_URL} from '../../utils/constants.js';
-import axios from 'axios';
+import {api} from '../../utils/axios.js';
 
 export const fetchUserData = createAsyncThunk(
     'currentUser/fetchUserData', async (idToken, thunkAPI) => {
         try {
-            const response = await axios.get(`${BASE_URL}/me`, {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-            });
+            const response = await api.get(`/users/me`);
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err)
@@ -19,7 +14,7 @@ export const fetchUserData = createAsyncThunk(
 const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState: {
-        userData: {role: 'user'},
+        userData: {role: 'admin'},
         idToken: null,
         accessToken: null,
         status: null,

@@ -22,14 +22,6 @@ Amplify.configure({
             }
         }
     },
-    // API:
-    //     {
-    //     REST: {
-    //         headers: async () => {
-    //             return {Authorization: `Bearer ${idToken}`};
-    //         }
-    //     }
-    // }
 });
 
 function App() {
@@ -52,17 +44,17 @@ function App() {
         fetchData();
     }, [user.idToken, dispatch]);
 
-    useEffect(() => {
-        if (user.status === 404) {
-            navigate('/onboarding');
-        } else if (user.userData) {
-            const redirectPath = {
-                admin: '/admin/users',
-                exchanger: '/user/account',
-            }[user.userData.role] || '/';
-            navigate(redirectPath);
-        }
-    }, [user.status, user.userData, navigate]);
+    // useEffect(() => {
+    //     if (user.status === 404) {
+    //         navigate('/onboarding');
+    //     } else if (user.userData) {
+    //         const redirectPath = {
+    //             admin: '/admin/users',
+    //             exchanger: '/user/account',
+    //         }[user.userData.role] || '/';
+    //         navigate(redirectPath);
+    //     }
+    // }, [user.status, user.userData, navigate]);
 
     return (
         <>
