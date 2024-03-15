@@ -36,7 +36,6 @@ export default function BasicMenu() {
         } catch (err){
             console.log(err);
         }
-
     }
 
     return (

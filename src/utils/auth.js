@@ -19,4 +19,4 @@ export async function cognitoSession() {
     }
 }
 
-export const accessToken = (await fetchAuthSession()).tokens?.accessToken?.toString();
+export const idToken = (await fetchAuthSession()).tokens?.idToken?.toString();

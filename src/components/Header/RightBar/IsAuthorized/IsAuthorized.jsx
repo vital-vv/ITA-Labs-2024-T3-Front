@@ -1,6 +1,5 @@
 import {useSelector} from "react-redux";
 import {selectUserData} from "../../../../features/currentUser/currentUserSlice.js";
-import {useNavigate} from "react-router-dom";
 import {LoginLink} from "./LoginLink/LoginLink.jsx";
 import {AdminMenu} from "./AdminMenu/AdminMenu.jsx";
 import {ExchangerMenu} from "./ExchangerMenu/ExchangerMenu.jsx";
@@ -13,7 +12,7 @@ function IsAuthorized() {
         return <LoginLink/>;
     }
 
-    switch (user.userData.role) {
+    switch (user.userData?.role) {
         case 'admin':
             return <AdminMenu />;
         case 'exchanger':

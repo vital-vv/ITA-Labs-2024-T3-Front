@@ -5,9 +5,9 @@ import axios from 'axios';
 export const fetchUserData = createAsyncThunk(
     'currentUser/fetchUserData', async (idToken, thunkAPI) => {
         try {
-            const response = await axios.get(`${BASE_URL}/${idToken}`, {
+            const response = await axios.get(`${BASE_URL}/me`, {
                 headers: {
-                    Authorization: idToken,
+                    Authorization: `Bearer ${idToken}`,
                 },
             });
             return response.data;
@@ -35,6 +35,7 @@ const currentUserSlice = createSlice({
             state.userData = null;
             state.idToken = null;
             state.accessToken = null;
+            state.status = null;
             state.isLoading = false;
             state.error = null;
         },
@@ -48,10 +49,12 @@ const currentUserSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.userData = action.payload;
+                state.status = action.payload.response.status;
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+                state.status = action.payload.response.status;
             })
     },
 })
