@@ -157,6 +157,7 @@ const filterSlice = createSlice({
     isLoading: false,
     currentCategory: '',
     currentLabelSelector: 'New ones first',
+    isLotsReady: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -319,6 +320,7 @@ const filterSlice = createSlice({
       toogleModal(state, 'isOpenModalRegions');
     },
     sortBySelector(state, action) {
+      state.currentPage = 1;
       const created = 'CREATED_AT';
       const descOrder = 'DESC';
       const ascOrder = 'ASC';
@@ -405,8 +407,10 @@ const filterSlice = createSlice({
     builder
       .addCase(applyFilters.pending, (state) => {
         state.isLoading = true;
+        state.isLotsReady = false;
       })
       .addCase(applyFilters.fulfilled, (state, action) => {
+        state.isLotsReady = true;
         if (state.isPagination) {
           state.currentLots = [...state.currentLots, ...action.payload];
           state.isPagination = false;

@@ -59,7 +59,12 @@ export const confirmBid = createAsyncThunk(
     try {
       const response = await axios.post(
         'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/bids',
-        data
+        data.request,
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`
+          },
+        }
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');

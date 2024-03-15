@@ -37,12 +37,14 @@ const mainSlice = createSlice({
     ],
     sizing: [{ name: 'mm' }, {name: 'cm' }],
     isLoadingMain: false,
+    isDataReady: false
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchMainData.pending, (state) => {
         state.isLoadingMain = true;
+        state.isDataReady = false;
       })
       .addCase(fetchMainData.fulfilled, (state, action) => {
         state.packaging = action.payload.packaging;
@@ -52,6 +54,7 @@ const mainSlice = createSlice({
         state.currency = action.payload.currency;
         state.quantity = action.payload.weight;
         state.isLoadingMain = false;
+        state.isDataReady = true;
       })
       .addCase(fetchMainData.rejected, (state, action) => {
         state.error = action.error.message;

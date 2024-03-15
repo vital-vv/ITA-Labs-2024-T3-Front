@@ -43,7 +43,7 @@ const Filter = () => {
   };
 
   const dispatch = useDispatch();
-  const { currency, quantity, packaging, countries } = useSelector((state) => state.main);
+  const { currency, quantity, packaging, countries, isDataReady, } = useSelector((state) => state.main);
 
   const {
     sliderCurrentLimit,
@@ -62,6 +62,7 @@ const Filter = () => {
     sizing,
     isOpenModalVariety,
     isOpenModalRegions,
+    isLotsReady,
   } = useSelector((state) => state.filter);
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const Filter = () => {
 
   return (
     <div>
-      {packages ? (
+      {isDataReady && isLotsReady ? (
         <>
           <div className={classes.filter}>
             <div>

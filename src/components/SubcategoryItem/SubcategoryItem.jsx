@@ -1,6 +1,6 @@
 import styles from './SubcategoryItem.module.scss';
 import { subCategories } from '../../utils/constants.js';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function SubcategoryItem() {
@@ -15,7 +15,7 @@ function SubcategoryItem() {
   const location = useLocation();
   let redirect = location.pathname;
   if (redirect === '/') {
-    redirect = 'fruits'
+    return <Navigate to={'fruits?id=1'}/>
   }
 
   return (
