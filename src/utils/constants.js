@@ -1,5 +1,4 @@
 import {ROUTES} from "./routes.js";
-export const BASE_URL = 'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api';
 
 import cabbage from '../assets/images/cabbage.png'
 import cucumber from '../assets/images/cucumber.png'

@@ -16,7 +16,7 @@
   flex-direction: column;
   margin: 100px 0 0 0;
   width: 400px;
-  height: 500px;
+  height: 490px;
   justify-content: space-between;
 
   input:not([type="file"]), select {
@@ -92,5 +92,10 @@
     font-size: 20px;
     cursor: pointer;
     margin: 0 auto;
+    &:disabled{
+      background-color: #E6E6E6;
+      color: #BCC3C3;
+      cursor: default;
+    }
   }
 }
