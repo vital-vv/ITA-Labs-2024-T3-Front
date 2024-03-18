@@ -62,7 +62,7 @@ export const confirmBid = createAsyncThunk(
         data.request,
         {
           headers: {
-            Authorization: `Bearer ${data.token}`
+            Authorization: `Bearer ${data.token}`,
           },
         }
       );
@@ -132,6 +132,10 @@ const addFilesPictures = (state, action) => {
   });
   if (!invalidFileFound) {
     state.picturesFiles = [...state.picturesFiles, ...validFiles];
+    if (state.mainPicture === '') {
+      state.mainPicture = state.picturesFiles[0].url;
+      state.bigPicture = state.mainPicture;
+    }
   }
 };
 
@@ -226,6 +230,8 @@ const lotsSlice = createSlice({
     leadBet: 0,
     correctRangeBets: false,
     idForBid: 0,
+    mainPicture: '',
+    bigPicture: '',
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -409,6 +415,28 @@ const lotsSlice = createSlice({
     changeModalThrough(state, action) {
       state.idForBid = action.payload;
     },
+    deleteImage(state, action) {
+      state.picturesFiles = state.picturesFiles.filter(
+        (picture) => picture.url !== action.payload
+      );
+      if (state.picturesFiles.length === 0) {
+        state.mainPicture = '';
+        return;
+      } 
+      if (state.mainPicture === action.payload) {
+        state.mainPicture = state.picturesFiles[0].url;
+      }
+    },
+    changeMainPicture(state, action) {
+      state.mainPicture = action.payload;
+      state.bigPicture = state.mainPicture;
+    },
+    changeBigPicture(state, action) {
+      state.bigPicture = action.payload;
+    },
+    showNextImage(state) {
+      const index = state.picturesFiles.url.indexOf(state.bigPicture);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -486,6 +514,10 @@ export const {
   changeShowModalAfterTime,
   changeModalThrough,
   openBetsModal,
+  deleteImage,
+  changeMainPicture,
+  changeBigPicture,
+  showNextImage,
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

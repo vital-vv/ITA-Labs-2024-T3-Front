@@ -11,9 +11,15 @@
 }
 
 .bigProduct {
-    max-height: 62vh;
+    height: 50vh;
     display: block;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    img {
+        max-height: 100%;
+    }
 }
 
 .arrowLeft{

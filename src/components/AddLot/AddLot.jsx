@@ -34,6 +34,8 @@ import {
   fetchSubcategories,
   addSubscribe,
   postNewLot,
+  deleteImage,
+  changeMainPicture
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
@@ -42,6 +44,8 @@ import { ROUTES } from '../../utils/routes';
 import OneStepBack from '../OneStepBack/OneStepBack';
 import Loader from '../../hoc/Loader/Loader';
 import { useValidationTimer } from '../../hook/useValidationAfterTime';
+import { v4 as uuidv4 } from 'uuid';
+import Close from '../../assets/svg/Close';
 
 function AddLot() {
   const dispatch = useDispatch();
@@ -85,6 +89,7 @@ function AddLot() {
     isDescriptionValid,
     currentIdCategory,
     description,
+    mainPicture,
   } = useSelector((state) => state.lots);
 
   const handleChangeFirstSelector = (event, sendingFunction) => {
@@ -226,6 +231,7 @@ function AddLot() {
       name: file.name,
       size: file.size,
       type: file.type,
+      url: URL.createObjectURL(file),
     }));
     dispatch(fileChange({ payload: serializableFiles }));
   };
@@ -241,8 +247,13 @@ function AddLot() {
       name: file.name,
       size: file.size,
       type: file.type,
+      url: URL.createObjectURL(file),
     }));
     dispatch(fileTransfer({ payload: serializableFiles }));
+  };
+
+  const handleDeleteImage = (event) => {
+    dispatch(deleteImage(event.currentTarget.id));
   };
 
   const handleAddLot = () => {
@@ -276,6 +287,24 @@ function AddLot() {
     };
     dispatch(postNewLot(newLot));
   };
+
+  const handleChangeMainPicture = event => {
+    dispatch(changeMainPicture(event.currentTarget.id))
+  }
+
+  const arrayPicturesPreview = picturesFiles.map(item => {
+    let isMainPicture = item.url === mainPicture;
+    return (
+      <div className={classes.picture} key={uuidv4()} id={item.url}>
+        <img src={item.url} alt="Preview" className={classes.imgPreview} />
+        <div className={classes.close} onClick={handleDeleteImage} id={item.url}>
+          <Close />
+        </div>
+        <p className={classes.toMakeMain} onClick={handleChangeMainPicture} id={item.url}>Make the title</p>
+        <p className={isMainPicture ? classes.titleImage : classes.hidden}>Title image</p>
+      </div>
+    );
+  });
 
   return (
     <div className={classes.addlot}>
@@ -449,11 +478,15 @@ function AddLot() {
                   onChange={handleFileChange}
                   style={{ visibility: 'hidden', position: 'absolute' }}
                   multiple
+                  accept="image/*, .png, .jpg, .gif, .web,"
                 />
               </div>
               <p className={classes.comment}>
                 {picturesFiles.length} of 9 images
               </p>
+              <div className={classes.picturesBlock}>
+                {arrayPicturesPreview}
+              </div>
             </div>
           </div>
 

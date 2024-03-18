@@ -4,10 +4,15 @@ import ArrowScrollPictureLeft from '../../assets/svg/ArrowScrollPictureLeft';
 import ArrowScrollPictureRight from '../../assets/svg/ArrowScrollPictureRight';
 import SmallPicture from '../SmallPicture/SmallPicture';
 import classes from './ImagesOfProduct.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function ImagesOfProduct() {
-  const {fullValidationForm} = useSelector(state => state.lots)
+  const {fullValidationForm, bigPicture} = useSelector(state => state.lots);
+  const dispatch = useDispatch();
+
+  const handleChangeNextImage = () => {
+    dispatch(showNextImage());
+  }
 
   return (
     <div className={classes.imagesOfProduct}>
@@ -16,13 +21,13 @@ function ImagesOfProduct() {
       </div>
       <div className={classes.bigProduct}>
         <img
-          src={bigProduct}
+          src={fullValidationForm ? bigPicture : null}
           alt="Big product"
         />
         <div className={classes.arrowLeft}>
           <ArrowScrollPictureLeft />
         </div>
-        <div className={classes.arrowRight}>
+        <div className={classes.arrowRight} onClick={handleChangeNextImage}>
           <ArrowScrollPictureRight />
         </div>
       </div>

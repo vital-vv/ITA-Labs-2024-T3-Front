@@ -17,7 +17,6 @@ import {
 } from '../../features/lots/lotsSlice';
 import { deleteLot } from '../../features/filter/filterSlice';
 import { useValidationTimer } from '../../hook/useValidationAfterTime';
-import { accessToken } from '../../utils/auth';
 
 function Description() {
   const {
@@ -81,9 +80,7 @@ function Description() {
   const token = useSelector(state => state.currentUser.idToken)
 
   const handleAddBid = () => {
-    console.log(token)
     const bidData = {
-      // user_id: 1, //Still HARDCODE!!!
       lot_id: currentId,
       amount: currentBid,
       currency: 'USD', //Still HARDCODE!!!, send preferred currency

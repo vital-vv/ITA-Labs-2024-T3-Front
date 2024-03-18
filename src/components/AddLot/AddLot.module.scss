@@ -153,7 +153,7 @@
 .minBet {
   width: 54%;
   flex-direction: row !important;
-  align-items: flex-end;  
+  align-items: flex-end;
   span {
     display: inline-block;
     font-weight: 400;
@@ -177,4 +177,54 @@
 
 .hidden {
   color: white;
+}
+
+.imgPreview {
+  max-height: 100px;
+}
+
+.picturesBlock {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.picture {
+  position: relative;
+  &:hover {
+    opacity: 0.6;
+    img {
+      border: 2px solid;
+      border-radius: 4px;
+    }
+    .toMakeMain {
+      visibility: visible;
+    }
+  }
+}
+
+.close {
+  position: absolute;
+  right: -23px;
+  top: -10px;
+  cursor: pointer;
+  svg {
+    fill: #51acae;
+  }
+}
+
+.titleImage {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.toMakeMain {
+  position: absolute;
+  top: 20%;
+  display: flex;
+  left: 0;
+  text-align: center;
+  visibility: hidden;
+  cursor: pointer;
 }
