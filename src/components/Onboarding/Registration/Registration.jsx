@@ -10,8 +10,9 @@ function Registration() {
 
     const [avatarPreview, setAvatarPreview] = useState(null);
 
-    const handleSubmit = () => {
-        navigate('/')
+    const handleSubmit = (values) => {
+        console.log(values)
+        // navigate('/');
     };
 
     const handleAvatarChange = (event) => {
@@ -37,7 +38,7 @@ function Registration() {
                 initialValues={registrationFormInitialValues}
                 validationSchema={registrationValidationSchema}
                 onSubmit={handleSubmit}>
-                {({values}) => (
+                {({values, isValid}) => (
                     <Form className={styles.form}>
                         <Field autocomplete='off' placeholder="First Name" type="text" id="name" name="name"/>
                         <ErrorMessage name="name" component="span"/>
@@ -78,8 +79,7 @@ function Registration() {
                             <Field type="file" id="avatar" name="avatar" onChange={handleAvatarChange}/>
                             </label>
                         </div>
-
-                        <button className={styles.confirmBtn} type="submit">Confirm</button>
+                        <button disabled={!isValid} className={styles.confirmBtn} type="submit">Confirm</button>
                     </Form>
                 )}
             </Formik>

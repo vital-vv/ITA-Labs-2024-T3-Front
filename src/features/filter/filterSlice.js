@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {api} from "../../utils/axios.js";
 
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
@@ -7,8 +8,8 @@ export const applyFilters = createAsyncThunk(
     const { stringFilter, sortField, currentPage, currentCategoryId } =
       getState().filter;
     try {
-      const response = await axios.get(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
+      const response = await api.get(
+        `/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');

@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import {api} from "../../utils/axios.js";
 
 export const fetchMainData = createAsyncThunk(
   'main/fetchMainData',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        'http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/data-selection'
+      const response = await api.get(
+        '/data-selection'
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');

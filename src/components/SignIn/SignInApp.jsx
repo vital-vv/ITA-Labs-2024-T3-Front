@@ -10,27 +10,38 @@ import {fetchUserData, selectUserData, setTokens} from "../../features/currentUs
 function SignInApp() {
 
     const navigate = useNavigate();
-    const user = useSelector(selectUserData);
     const dispatch = useDispatch();
+    const user = useSelector(selectUserData);
 
     useEffect(() => {
-        Hub.listen('auth',async (data) => {
-            if(data?.payload?.event === 'signedIn'){
+        const fetchData = async () => {
+            try {
                 let tokens = await getTokens();
                 dispatch(setTokens(tokens));
                 const idToken = tokens.idToken.toString();
-                // dispatch(fetchUserData(idToken));
-                const userData = user.userData;
-                if (userData) {
-                    const redirectPath = {
-                        admin: '/admin/users',
-                        exchanger: '/user/account',
-                    }[userData.role] || '/';
-                    navigate(redirectPath);
-                }
+                await dispatch(fetchUserData(idToken));
+            } catch (error) {
+                console.log(error)
+            }
+        };
+        Hub.listen('auth', async (data) => {
+            if (data?.payload?.event === 'signedIn') {
+                fetchData()
             }
         })
     }, [dispatch]);
+
+    useEffect(() => {
+        if (user.status === 404) {
+            navigate('/onboarding');
+        } else if (user.userData) {
+            const redirectPath = {
+                admin: '/admin/users',
+                exchanger: '/user/account',
+            }[user.userData.role] || '/';
+            navigate(redirectPath);
+        }
+    }, [user.status, user.userData, navigate]);
 
     return (
         <div className={styles.authContainer}>
