@@ -14,7 +14,7 @@ export const fetchUserData = createAsyncThunk(
 const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState: {
-        userData: {role: 'admin'},
+        userData: {role: 'user'},
         idToken: null,
         accessToken: null,
         status: null,

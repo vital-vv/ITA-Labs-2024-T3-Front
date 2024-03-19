@@ -7,17 +7,30 @@ import {useNavigate} from "react-router-dom";
 function Registration() {
 
     const navigate = useNavigate();
-
     const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatar, setAvatar] = useState(null);
+
+    function setFormData(values) {
+        const formData = new FormData();
+        formData.append('first_name', values.name);
+        formData.append('last_name', values.lastName);
+        formData.append('preferred_currency', values.currency);
+        formData.append('preferred_currency',values.countryCode+values.phoneNumber);
+        formData.append('avatar', values.avatar);
+        return formData;
+    }
 
     const handleSubmit = (values) => {
-        console.log(values)
+        values.avatar = avatar;
+        const formData = setFormData(values);
+        console.log(formData.get("first_name"))
         // navigate('/');
-    };
+    }
 
     const handleAvatarChange = (event) => {
         const file = event.currentTarget.files[0];
         if (file) {
+            setAvatar(file);
             setAvatarPreview(URL.createObjectURL(file));
         }
     };
@@ -37,15 +50,15 @@ function Registration() {
             <Formik
                 initialValues={registrationFormInitialValues}
                 validationSchema={registrationValidationSchema}
-                onSubmit={handleSubmit}>
-                {({values, isValid}) => (
-                    <Form className={styles.form}>
-                        <Field autocomplete='off' placeholder="First Name" type="text" id="name" name="name"/>
+                onSubmit={handleSubmit}
+            >
+                {({values, isValid, isDirty}) => (
+                    <Form className={styles.form} >
+                        <Field autoComplete='off' placeholder="First Name" type="text" id="name" name="name"/>
                         <ErrorMessage name="name" component="span"/>
 
-                        <Field autocomplete='off' placeholder="Last Name" type="text" id="lastName" name="lastName"/>
+                        <Field autoComplete='off' placeholder="Last Name" type="text" id="lastName" name="lastName"/>
                         <ErrorMessage name="lastName" component="span"/>
-
 
                         <Field as="select" id="currency" name="currency">
                             <option value="">Select preferable currency</option>
@@ -56,11 +69,11 @@ function Registration() {
                         <ErrorMessage name="currency" component="span"/>
 
                         <div className={styles.phoneNumberContainer}>
-                            <Field className={styles.countryCode}  as="select" id="countryCode" name="countryCode">
+                            <Field className={styles.countryCode} as="select" id="countryCode" name="countryCode">
                                 <option value="+375">+375 (BY)</option>
                                 <option value="+44">+44 (UK)</option>
                             </Field>
-                            <Field autocomplete='off' type="text" id="phoneNumber" name="phoneNumber"/>
+                            <Field autoComplete='off' type="text" id="phoneNumber" name="phoneNumber"/>
                             <ErrorMessage name="phoneNumber" component="span"/>
                         </div>
                         <div>
@@ -74,15 +87,21 @@ function Registration() {
                                     {showAvatarPlaceholder(values)}
                                 </div>
                             )}
-                            <label className={styles.downloadBtn} for="avatar">
+                            <label className={styles.downloadBtn} htmlFor="avatar">
                                 Download
-                            <Field type="file" id="avatar" name="avatar" onChange={handleAvatarChange}/>
+                                <Field type="file" accept="image/*" id="avatar" name="avatar"
+                                       onChange={(event) => handleAvatarChange(event)}/>
                             </label>
                         </div>
-                        <button disabled={!isValid} className={styles.confirmBtn} type="submit">Confirm</button>
+                        {
+                            console.log(isValid, isDirty)
+                        }
+                        <button disabled={!isValid || !isDirty ||(values.phoneNumber !== null || values.avatar !== null)} className={styles.confirmBtn} type="submit">Confirm</button>
                     </Form>
-                )}
+                )
+                }
             </Formik>
+            <div onClick={(() => navigate('/'))} className={styles.return}>Back to homepage →</div>
         </div>
     );
 }

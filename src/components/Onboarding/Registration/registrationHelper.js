@@ -5,8 +5,8 @@ export const registrationFormInitialValues = {
     lastName: '',
     currency: '',
     countryCode: '+375',
-    phoneNumber: '',
-    avatar: '',
+    phoneNumber: null,
+    avatar: null,
 }
 
 export const registrationValidationSchema = Yup.object().shape({
