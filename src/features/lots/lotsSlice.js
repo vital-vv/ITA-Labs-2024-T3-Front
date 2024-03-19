@@ -1,116 +1,106 @@
-import {createAsyncThunk, createSlice, current} from '@reduxjs/toolkit';
-import {api} from "../../utils/axios.js";
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
+import { api } from '../../utils/axios.js';
 
 export const fetchSubcategories = createAsyncThunk(
-    'lots/fetchSubcategories',
-    async (id, {rejectWithValue}) => {
-        try {
-            const response = await api.get(
-                `/categories/${id}`
-            );
-            if (response.status !== 200) {
-                throw new Error('Something went wrong');
-            }
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+  'lots/fetchSubcategories',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/categories/${id}`);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
 );
 
 export const postNewLot = createAsyncThunk(
-    'lots/addNewLot',
-    async (lotData, {rejectWithValue}) => {
-        try {
-            const response = await api.post(
-                `/lots`,
-                lotData
-            );
-            if (response.status !== 200) {
-                throw new Error('Something went wrong');
-            }
-            return response.status;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+  'lots/addNewLot',
+  async (lotData, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/lots`, lotData);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.status;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
 );
 
 export const getOneLot = createAsyncThunk(
-    'lots/getOneLot',
-    async (id, {rejectWithValue}) => {
-        try {
-            const response = await api.get(
-                `/lots/${id}`
-            );
-            if (response.status !== 200) {
-                throw new Error('Something went wrong');
-            }
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+  'lots/getOneLot',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/lots/${id}`);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
 );
 
 export const confirmBid = createAsyncThunk(
-    'lots/confirmBid',
-    async (data, {rejectWithValue}) => {
-        try {
-            const response = await api.post(
-                '/bids',
-                data
-            );
-            if (response.status !== 200) {
-                throw new Error('Something went wrong');
-            }
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+  'lots/confirmBid',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/bids', data);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
 );
 
 const changeFirstSelector = (
-    state,
-    action,
-    firstCurrentTarget,
-    secondCurrentTarget
+  state,
+  action,
+  firstCurrentTarget,
+  secondCurrentTarget
 ) => {
-    state[firstCurrentTarget] = action.payload.selectedSubcategory
-        .split(',')
-        .map((item) => ({name: item}));
-    state[secondCurrentTarget] = action.payload.chosenOption;
+  state[firstCurrentTarget] = action.payload.selectedSubcategory
+    .split(',')
+    .map((item) => ({ name: item }));
+  state[secondCurrentTarget] = action.payload.chosenOption;
 };
 
 const changeInputs = (state, action, currentTarget) => {
-    state[currentTarget] = action.payload;
+  state[currentTarget] = action.payload;
 };
 
 const changeAndValidationInputs = (
-    state,
-    action,
-    currentTarget,
-    adressValidation
+  state,
+  action,
+  currentTarget,
+  adressValidation
 ) => {
-    action.payload = +action.payload;
-    if (isNaN(action.payload) || action.payload < 0) {
-        state[adressValidation] = false;
-        return;
-    }
-    changeInputs(state, action, currentTarget);
-    state[adressValidation] = true;
+  action.payload = +action.payload;
+  if (isNaN(action.payload) || action.payload < 0) {
+    state[adressValidation] = false;
+    return;
+  }
+  changeInputs(state, action, currentTarget);
+  state[adressValidation] = true;
 };
 
 const changeValidationAfterTime = (state, validationAdress) => {
-    state[validationAdress] = !state[validationAdress];
+  state[validationAdress] = !state[validationAdress];
 };
 
 const checkValidationForm = (state) => {
-    const valuesChecked = Object.values(state);
-    valuesChecked.splice(33);
-    valuesChecked.every((item) => item)
-        ? (state.fullValidationForm = true)
-        : (state.fullValidationForm = false);
+  const valuesChecked = Object.values(state);
+  valuesChecked.splice(33);
+  valuesChecked.every((item) => item)
+    ? (state.fullValidationForm = true)
+    : (state.fullValidationForm = false);
 };
 
 const addFilesPictures = (state, action) => {
@@ -135,46 +125,52 @@ const addFilesPictures = (state, action) => {
 };
 
 const inputSliderByKeys = (state, action, currentIndex, targetValidation) => {
-    action.payload = +action.payload;
-    if (isNaN(action.payload) || action.payload > state.sliderLimitCurrent[1]) {
-        state[targetValidation] = false;
-        state.sliderCurrent[currentIndex] = state.sliderLimitCurrent[currentIndex];
-        return;
-    }
-    state.sliderCurrent[currentIndex] = action.payload;
+  action.payload = +action.payload;
+  if (isNaN(action.payload) || action.payload > state.sliderLimitCurrent[1]) {
+    state[targetValidation] = false;
+    state.sliderCurrent[currentIndex] = state.sliderLimitCurrent[currentIndex];
+    return;
+  }
+  state.sliderCurrent[currentIndex] = action.payload;
 };
 
 const replacingCurrentMeasure = (state, targetMeasure, limitMeasure) => {
-    state.sliderCurrent = state[targetMeasure];
-    state.sliderLimitCurrent = state[limitMeasure];
+  state.sliderCurrent = state[targetMeasure];
+  state.sliderLimitCurrent = state[limitMeasure];
 };
 
 const checkOnMaxSymbols = (
-    state,
-    checkedBranchState,
-    maxSymbols,
-    resultBranchState
+  state,
+  checkedBranchState,
+  maxSymbols,
+  resultBranchState
 ) => {
-    if (state[checkedBranchState].length > maxSymbols) {
-        state[resultBranchState] = false;
-    } else {
-        state[resultBranchState] = true;
-    }
+  if (state[checkedBranchState].length > maxSymbols) {
+    state[resultBranchState] = false;
+  } else {
+    state[resultBranchState] = true;
+  }
 };
 
 const compareMinimalBetWithPrice = (
-    state,
-    minimalBet,
-    price,
-    minimalBetValid,
-    priceValid
+  state,
+  minimalBet,
+  price,
+  minimalBetValid,
+  priceValid
 ) => {
-    if (state[minimalBet] >= state[price]) {
-        state[minimalBetValid] = false;
-        state[priceValid] = false;
-        state.isValidComparingMinBetAndPricing = false;
-    }
+  if (state[minimalBet] >= state[price]) {
+    state[minimalBetValid] = false;
+    state[priceValid] = false;
+    state.isValidComparingMinBetAndPricing = false;
+  }
 };
+
+const findIndexBigPicture = (state) => {
+  return state.picturesFiles.findIndex(
+    (file) => file.url === state.bigPicture
+  );
+}
 
 const lotsSlice = createSlice({
   name: 'lots',
@@ -416,8 +412,9 @@ const lotsSlice = createSlice({
       );
       if (state.picturesFiles.length === 0) {
         state.mainPicture = '';
+        state.bigPicture = '';
         return;
-      } 
+      }
       if (state.mainPicture === action.payload) {
         state.mainPicture = state.picturesFiles[0].url;
       }
@@ -430,7 +427,26 @@ const lotsSlice = createSlice({
       state.bigPicture = action.payload;
     },
     showNextImage(state) {
-      const index = state.picturesFiles.url.indexOf(state.bigPicture);
+      const index = findIndexBigPicture(state);
+      if (index === state.picturesFiles.length - 1) {
+        state.bigPicture = state.picturesFiles[0].url;
+        return;
+      }
+      state.bigPicture = state.picturesFiles[index + 1].url;
+    },
+    showPreviousImage(state) {
+      const index = findIndexBigPicture(state);
+      if (index === 0) {
+        state.bigPicture =
+          state.picturesFiles[state.picturesFiles.length - 1].url;
+        return;
+      }
+      state.bigPicture = state.picturesFiles[index - 1].url;
+    },
+    noteActive(state) {
+      state.picturesFiles.forEach(picture => picture.isActive = false);
+      const index = findIndexBigPicture(state);
+      state.picturesFiles[index] = {...state.picturesFiles[index], isActive: true};
     }
   },
   extraReducers: (builder) => {
@@ -513,6 +529,8 @@ export const {
   changeMainPicture,
   changeBigPicture,
   showNextImage,
+  showPreviousImage,
+  noteActive
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;

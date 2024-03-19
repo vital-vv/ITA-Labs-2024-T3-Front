@@ -35,7 +35,7 @@ import {
   addSubscribe,
   postNewLot,
   deleteImage,
-  changeMainPicture
+  changeMainPicture,
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
@@ -232,6 +232,7 @@ function AddLot() {
       size: file.size,
       type: file.type,
       url: URL.createObjectURL(file),
+      isActive: false
     }));
     dispatch(fileChange({ payload: serializableFiles }));
   };
@@ -248,6 +249,7 @@ function AddLot() {
       size: file.size,
       type: file.type,
       url: URL.createObjectURL(file),
+      isActive: false
     }));
     dispatch(fileTransfer({ payload: serializableFiles }));
   };

@@ -77,15 +77,14 @@ function Description() {
     changeNewBidValidationAfterTime,
     currentBid
   );
-  const token = useSelector(state => state.currentUser.idToken)
-
+  
   const handleAddBid = () => {
     const bidData = {
       lot_id: currentId,
       amount: currentBid,
       currency: 'USD', //Still HARDCODE!!!, send preferred currency
     };
-    dispatch(confirmBid({request: bidData, token: token}));
+    dispatch(confirmBid(bidData));
   };
 
   return (
