@@ -5,7 +5,7 @@ import SelectorAndInputForAddLot from '../SelectorAndInputForAddLot/SelectorAndI
 import React, { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMainData } from '../../features/main/mainSlice';
+import { fetchMainData, getRegionsCurrentCountry } from '../../features/main/mainSlice';
 import { getCategories } from '../../features/categories/categoriesSlice';
 import {
   changeFirstOption,
@@ -36,6 +36,7 @@ import {
   postNewLot,
   deleteImage,
   changeMainPicture,
+  getActualVariety,
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
@@ -49,7 +50,7 @@ import Close from '../../assets/svg/Close';
 
 function AddLot() {
   const dispatch = useDispatch();
-  const { currency, countries, apples, packaging, sizing, quantity } =
+  const { currency, countries, packaging, sizing, quantity } =
     useSelector((state) => state.main);
   const categories = useSelector((state) =>
     state.categories.list.map((item) => ({
@@ -90,21 +91,15 @@ function AddLot() {
     currentIdCategory,
     description,
     mainPicture,
+    varieties,
   } = useSelector((state) => state.lots);
-
-  const handleChangeFirstSelector = (event, sendingFunction) => {
-    const selectedSubcategory =
-      event.target.options[event.target.selectedIndex].dataset.subcategory;
-    const chosenOption = event.target.value;
-    dispatch(sendingFunction({ selectedSubcategory, chosenOption }));
-  };
 
   const handleChangeInputs = (event, sendingFunction) => {
     dispatch(sendingFunction(event.target.value));
   };
 
   const handleChangeFirstOptionCountry = (event) => {
-    handleChangeFirstSelector(event, changeFirstOption);
+    dispatch(changeFirstOption(event.target.value));
   };
 
   const handleChangeFirstOptionCategory = (event) => {
@@ -232,7 +227,8 @@ function AddLot() {
       size: file.size,
       type: file.type,
       url: URL.createObjectURL(file),
-      isActive: false
+      isActive: false,
+      isMainImage: false,
     }));
     dispatch(fileChange({ payload: serializableFiles }));
   };
@@ -249,7 +245,8 @@ function AddLot() {
       size: file.size,
       type: file.type,
       url: URL.createObjectURL(file),
-      isActive: false
+      isActive: false,
+      isMainImage: false
     }));
     dispatch(fileTransfer({ payload: serializableFiles }));
   };
@@ -272,6 +269,9 @@ function AddLot() {
     const newLot = {
       category_id: currentIdCategory,
       price_per_unit: Number((priceToByn / currentWeight).toFixed(2)),
+      // image_url
+      start_price: minimalBet,
+      expiration_days: currentValidity,
       length_unit: currentMeasure,
       title: title,
       quantity: currentWeight,
@@ -281,11 +281,11 @@ function AddLot() {
         region: currentRegion,
       },
       description: description,
-      variety: currentVariety,
-      size: sliderCurrent[0],
-      packaging: currentPackages,
-      expiration_days: currentValidity,
       status: 'active', // delete this string after realization by back
+      size: sliderCurrent[0],
+      variety: currentVariety, //?
+      packaging: currentPackages,
+      currency: currentPricingMeasure,
     };
     dispatch(postNewLot(newLot));
   };
@@ -307,6 +307,18 @@ function AddLot() {
       </div>
     );
   });
+
+  useEffect(() => {
+    dispatch(getActualVariety())
+  }, [dispatch, currentIdCategory]);
+
+  useEffect(() => {
+    dispatch(fetchSubcategories());
+  }, [dispatch, currentCategory]);
+
+  useEffect(() => {
+    dispatch(getRegionsCurrentCountry(currentCountry));
+  }, [dispatch, currentCountry]);
 
   return (
     <div className={classes.addlot}>
@@ -333,7 +345,6 @@ function AddLot() {
               </p>
             </div>
 
-            {/* These categories have to download dynamicly */}
             <SelectorForAddLot
               firstSelector={countries}
               secondSelector={regions}
@@ -362,9 +373,10 @@ function AddLot() {
 
             <SingleSelectorForAddLot
               label={'Variety'}
-              categories={apples}
+              categories={varieties}
               changeOption={handleChangeVariety}
               chosenOption={currentVariety}
+              needPlaceholder={true}
             />
             <div>Size</div>
             <div className={classes.slider}>
@@ -399,6 +411,7 @@ function AddLot() {
               categories={packaging}
               changeOption={handleChangePackaging}
               chosenOption={currentPackages}
+              needPlaceholder={false}
             />
 
             <SelectorAndInputForAddLot

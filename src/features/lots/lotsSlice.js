@@ -60,6 +60,21 @@ export const confirmBid = createAsyncThunk(
   }
 );
 
+export const getRegionsCurrentCountry = createAsyncThunk(
+  'main/fetchRegionsCurrentCountry',
+  async (currentCountry, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/data-selection/${currentCountry}/cities`);
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const changeFirstSelector = (
   state,
   action,
@@ -167,16 +182,15 @@ const compareMinimalBetWithPrice = (
 };
 
 const findIndexBigPicture = (state) => {
-  return state.picturesFiles.findIndex(
-    (file) => file.url === state.bigPicture
-  );
-}
+  return state.picturesFiles.findIndex((file) => file.url === state.bigPicture);
+};
 
 const lotsSlice = createSlice({
   name: 'lots',
   initialState: {
     regions: null,
     subcategories: null,
+    varieties: null,
     currentCountry: '',
     currentRegion: '',
     currentCategory: '',
@@ -193,7 +207,7 @@ const lotsSlice = createSlice({
     currentValidity: 30,
     isValidValidity: true,
     picturesFiles: [],
-    currentVariety: 'aiwa', //point out the first elem of categories' array
+    currentVariety: '',
     sliderLimitCurrent: [40, 100],
     sliderLimitMm: [40, 100],
     sliderLimitCm: [4, 10],
@@ -226,8 +240,7 @@ const lotsSlice = createSlice({
   },
   reducers: {
     changeFirstOption(state, action) {
-      changeFirstSelector(state, action, 'regions', 'currentCountry');
-      checkValidationForm(state);
+      state.currentCountry = action.payload;
     },
     changeFirstOptionCat(state, action) {
       state.currentCategory = action.payload.category;
@@ -237,11 +250,24 @@ const lotsSlice = createSlice({
       changeInputs(state, action, 'currentRegion');
       checkValidationForm(state);
     },
+    refreshCurrentCategory(state) {
+      state.currentCategory = state.subcategories[0].name;
+    },
     changeSubcategory(state, action) {
       changeInputs(state, action, 'currentSubcategory');
       state.currentIdCategory = action.payload.id;
       state.currentSubcategory = action.payload.subcategory;
       checkValidationForm(state);
+    },
+    getActualVariety(state) {
+      if (state.subcategories === null || state.currentIdCategory === 0) {
+        return;
+      }
+      const { subcategories } = state.subcategories.find(
+        (subcategory) => subcategory.category_id === Number(state.currentIdCategory)
+      );
+      state.varieties = subcategories;
+      state.currentVariety = state.varieties[0].name;
     },
     changeTitle(state, action) {
       changeInputs(state, action, 'title');
@@ -444,15 +470,20 @@ const lotsSlice = createSlice({
       state.bigPicture = state.picturesFiles[index - 1].url;
     },
     noteActive(state) {
-      state.picturesFiles.forEach(picture => picture.isActive = false);
+      state.picturesFiles.forEach((picture) => (picture.isActive = false));
       const index = findIndexBigPicture(state);
-      state.picturesFiles[index] = {...state.picturesFiles[index], isActive: true};
-    }
+      state.picturesFiles[index] = {
+        ...state.picturesFiles[index],
+        isActive: true,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSubcategories.fulfilled, (state, action) => {
         state.subcategories = action.payload.subcategories;
+        state.currentSubcategory = state.subcategories[0].name;
+        state.currentIdCategory = state.subcategories[0].category_id;
       })
       .addCase(postNewLot.pending, (state) => {
         state.isSuccessAdding = false;
@@ -490,6 +521,13 @@ const lotsSlice = createSlice({
         state.showModalSuccess = true;
         state.leadBet = state.currentBid;
         state.currentBid = '';
+      })
+      .addCase(getRegionsCurrentCountry.fulfilled, (state, action) => {
+        state.regions = action.payload;
+        state.regions = action.payload.map((region => {
+          return {name: region};
+        }));
+        state.currentRegion = state.regions[0].name;        
       });
   },
 });
@@ -530,7 +568,8 @@ export const {
   changeBigPicture,
   showNextImage,
   showPreviousImage,
-  noteActive
+  noteActive,
+  getActualVariety,
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;
