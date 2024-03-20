@@ -11,6 +11,17 @@ export const fetchUserData = createAsyncThunk(
         }
     });
 
+export const postOnboarding = createAsyncThunk(
+    'onboarding/postOnboarding',
+    async (formData, thunkAPI) => {
+        try {
+            const res = await api.post(`/users`, formData);
+            return res.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err);
+        }
+    });
+
 const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState: {
@@ -50,6 +61,20 @@ const currentUserSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload;
                 state.status = action.payload.response.status;
+            })
+            .addCase(postOnboarding.pending, state => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(postOnboarding.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.userData = action.payload;
+                state.status = null;
+            })
+            .addCase(postOnboarding.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                state.status = null;
             })
     },
 })

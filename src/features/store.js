@@ -7,7 +7,6 @@ import currentUserSlice from "./currentUser/currentUserSlice.js";
 import mainSlice from './main/mainSlice.js';
 import lotsSlice from './lots/lotsSlice.js';
 
-
 export const store = configureStore({
     reducer: {
         currentUser: currentUserSlice,
@@ -18,5 +17,4 @@ export const store = configureStore({
         users: usersSlice,
         filter: filterSlice,
     },
-    devTools: true,
 });

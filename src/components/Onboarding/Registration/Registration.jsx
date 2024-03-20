@@ -3,27 +3,34 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {useState} from "react";
 import {registrationFormInitialValues, registrationValidationSchema} from "./registrationHelper.js";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {postOnboarding} from "../../../features/currentUser/currentUserSlice.js";
 
 function Registration() {
 
     const navigate = useNavigate();
-    const [avatarPreview, setAvatarPreview] = useState(null);
     const [avatar, setAvatar] = useState(null);
+    const dispatch = useDispatch();
 
     function setFormData(values) {
         const formData = new FormData();
-        formData.append('first_name', values.name);
-        formData.append('last_name', values.lastName);
-        formData.append('preferred_currency', values.currency);
-        formData.append('preferred_currency',values.countryCode+values.phoneNumber);
-        formData.append('avatar', values.avatar);
+        formData.append('data', JSON.stringify({
+            first_name: values.name,
+            last_name: values.lastName,
+            preferred_currency: values.currency,
+            phoneNumber: values.phoneNumber ? values.countryCode + values.phoneNumber : null,
+
+        }));
+        if (values.avatar) {
+            formData.append('avatar', values.avatar);
+        }
         return formData;
     }
 
     const handleSubmit = (values) => {
         values.avatar = avatar;
         const formData = setFormData(values);
-        console.log(formData.get("first_name"))
+        dispatch(postOnboarding(formData));
         // navigate('/');
     }
 
@@ -31,7 +38,6 @@ function Registration() {
         const file = event.currentTarget.files[0];
         if (file) {
             setAvatar(file);
-            setAvatarPreview(URL.createObjectURL(file));
         }
     };
 
@@ -42,7 +48,7 @@ function Registration() {
     };
 
     const handleAvatarRemove = () => {
-        setAvatarPreview(null);
+        setAvatar(null);
     };
 
     return (
@@ -50,10 +56,9 @@ function Registration() {
             <Formik
                 initialValues={registrationFormInitialValues}
                 validationSchema={registrationValidationSchema}
-                onSubmit={handleSubmit}
-            >
-                {({values, isValid, isDirty}) => (
-                    <Form className={styles.form} >
+                onSubmit={handleSubmit}>
+                {({values}) => (
+                    <Form className={styles.form}>
                         <Field autoComplete='off' placeholder="First Name" type="text" id="name" name="name"/>
                         <ErrorMessage name="name" component="span"/>
 
@@ -77,9 +82,9 @@ function Registration() {
                             <ErrorMessage name="phoneNumber" component="span"/>
                         </div>
                         <div>
-                            {avatarPreview ? (
+                            {avatar ? (
                                 <div className={styles.avatarContainer}>
-                                    <img src={avatarPreview} alt="Avatar Preview" className={styles.avatarImage}/>
+                                    <img src={URL.createObjectURL(avatar)} alt="Avatar Preview" className={styles.avatarImage}/>
                                     <div className={styles.removeIcon} onClick={handleAvatarRemove}>×</div>
                                 </div>
                             ) : (
@@ -93,13 +98,8 @@ function Registration() {
                                        onChange={(event) => handleAvatarChange(event)}/>
                             </label>
                         </div>
-                        {
-                            console.log(isValid, isDirty)
-                        }
-                        <button disabled={!isValid || !isDirty ||(values.phoneNumber !== null || values.avatar !== null)} className={styles.confirmBtn} type="submit">Confirm</button>
-                    </Form>
-                )
-                }
+                        <button className={styles.confirmBtn} type="submit">Confirm</button>
+                    </Form>)}
             </Formik>
             <div onClick={(() => navigate('/'))} className={styles.return}>Back to homepage →</div>
         </div>
