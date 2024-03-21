@@ -60,7 +60,6 @@ export default function BasicMenu() {
                 }}
             >
                 <NavLink to={ROUTES.ACCOUNT} onClick={handleClose}>Profile</NavLink>
-                <NavLink to={ROUTES.ONBOARDING} onClick={handleClose}>To onboarding</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={signOutApp}>Logout</NavLink>
             </Menu>
         </div>

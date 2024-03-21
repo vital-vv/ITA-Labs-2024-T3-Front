@@ -19,6 +19,11 @@ import accountIcon from "../assets/images/account.png";
 import advIcon from "../assets/images/advertisements.png";
 import ordersIcon from "../assets/images/orders.png";
 
+import betsIcon from "../assets/images/notifications/betIcon.png";
+import currencyIcon from "../assets/images/notifications/currencyIcon.png";
+import moderationIcon from "../assets/images/notifications/moderationIcon.png";
+import orangeModerationIcon from "../assets/images/notifications/orangeModerationIcon.png";
+import outbittedIcon from "../assets/images/notifications/outbittedIcon.png";
 
 export const subCategories = [
     {
@@ -161,4 +166,45 @@ export const exchangerNav = [
         icon: `${accountIcon}`,
         path: ROUTES.ACCOUNT,
     },
+]
+
+export const notifications = [
+    {
+        title: 'Outbitted lot',
+        description: `Your bet on LOT XXX
+was outbid.`,
+        type: 'Outbitted lot',
+        img: `${outbittedIcon}`,
+    },
+    {
+        title: 'Purchased lot',
+        description: `Your Lot XXX has been purchased at the original price.
+Proceed to confirm.`,
+        type: 'Purchased lot',
+        img: `${currencyIcon}`,
+    },
+    {
+        title: 'New bet',
+        description: `A new bet has been placed on your Lot XXX.`,
+        type: 'New bet',
+        img: `${betsIcon}`,
+    },
+    {
+        title: 'Confirmed bet request',
+        description: `Your bet on Lot XXX has been confirmed.`,
+        type: 'Confirmed bet request',
+        img: `${currencyIcon}`,
+    },
+    {
+        title: 'Moderation is successful',
+        description: `Your Lot XXX has been moderated and has already been published.`,
+        type: 'Moderation is successful',
+        img: `${moderationIcon}`,
+    },
+    {
+        title: 'Moderation is unsuccessful',
+        description: `Your lot XXX was not moderated and rejected.`,
+        type: 'Moderation is unsuccessful',
+        img: `${orangeModerationIcon}`,
+    }
 ]

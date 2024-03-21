@@ -1,10 +1,9 @@
 import {ROUTES} from "../../../../../utils/routes.js";
 import {NavLink} from "react-router-dom";
 import Plus from "../../../../../assets/svg/Plus.jsx";
-import badgeIcon from '../../../../../assets/images/badgeIcon.png';
-import Badge from "@mui/material/Badge";
 import BasicMenu from "../../../BasicMenu/BasicMenu.jsx";
 import styles from './UserMenu.module.scss';
+import {NotificationBadge} from "../NotificationBadge/NotificationBadge.jsx";
 
 function UserMenu() {
 
@@ -16,11 +15,7 @@ function UserMenu() {
                     Advertisement
                 </div>
             </NavLink>
-            <div>
-                <Badge className={styles.badge} color="error" variant="dot">
-                    <img src={badgeIcon} alt="badgeIcon"/>
-                </Badge>
-            </div>
+            <NotificationBadge/>
             <BasicMenu/>
         </>
     );
