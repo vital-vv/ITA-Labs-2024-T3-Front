@@ -7,39 +7,72 @@ import { useEffect } from 'react';
 import { applyFilters } from '../../features/filter/filterSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { getCurrentCategory } from '../../features/filter/filterSlice.js';
+import {
+  getCurrentCategory,
+  getDataFormated,
+} from '../../features/filter/filterSlice.js';
+import { getSubcategories } from '../../features/categories/subcategoriesSlice.js';
+import { getRegionsCurrentCountry, fetchMainData } from '../../features/main/mainSlice.js';
+import Loader from '../../hoc/Loader/Loader';
 
 function LotsList() {
   const dispatch = useDispatch();
+  const { currency, quantity, packaging, regions, isDataReady, countries } =
+    useSelector((state) => state.main);
+  const lengthUnits = useSelector((state) => state.main.sizing);
+  const subcategories = useSelector((state) => state.subcategories.list);
+  const isLoadingSubcategory = useSelector(
+    (state) => state.subcategories.isLoading
+  );
 
-  const { stringFilter, sortField, currentPage, chosenOptions } = useSelector(
+  const { stringFilter, sortField, currentPage, isLotsReady } = useSelector(
     (state) => state.filter
   );
-  const { leadBet } = useSelector(state => state.lots);
+  const { leadBet } = useSelector((state) => state.lots);
 
   const location = useLocation();
   const paramId = location.search.substring(4);
 
   useEffect(() => {
+    dispatch(fetchMainData());
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(getCurrentCategory(paramId));
+    dispatch(getSubcategories(paramId));
+    dispatch(getRegionsCurrentCountry('Belarus'));
     dispatch(applyFilters());
-  }, [
-    dispatch,
-    stringFilter,
-    sortField,
-    currentPage,
-    chosenOptions.length,
-    paramId,
-    leadBet
-  ]);
+  }, [dispatch, stringFilter, sortField, currentPage, paramId, leadBet]);
+
+  useEffect(() => {
+    if (isDataReady) {
+      dispatch(
+        getDataFormated({
+          packages: packaging,
+          valutes: currency,
+          quantity: quantity,
+          regions: regions,
+          lengthUnits: lengthUnits,
+          subcategories: subcategories,
+          isLoading: isLoadingSubcategory,
+        })
+      );
+    }
+  }, [dispatch, packaging, countries, isLoadingSubcategory, regions]);
 
   return (
-    <div className={classes.lotsList}>
-      <BredCrumbs />
-      <Label />
-      <Content />
-      <ModalBid />
-    </div>
+    <>
+      {isDataReady && isLotsReady && !isLoadingSubcategory ? (
+        <div className={classes.lotsList}>
+          <BredCrumbs />
+          <Label />
+          <Content />
+          <ModalBid />
+        </div>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 }
 

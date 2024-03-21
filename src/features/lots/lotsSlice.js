@@ -18,9 +18,34 @@ export const fetchSubcategories = createAsyncThunk(
 
 export const postNewLot = createAsyncThunk(
   'lots/addNewLot',
-  async (lotData, { rejectWithValue }) => {
+  async (lotData, { rejectWithValue, getState }) => {
+    const { picturesFiles } = getState().lots;
+    const formData = new FormData();
+    console.log(formData)
+    for (const key in lotData) {
+      if (key === 'location') {
+        continue;
+      }
+      if (lotData.hasOwnProperty(key)) {
+        formData.append(`lot[${key}]`, lotData[key]);
+      }
+    }
+    for (const key in lotData.location) {
+      if (lotData.location.hasOwnProperty(key)) {
+        formData.append(`lot[location][${key}]`, lotData.location[key]);
+      }
+    }
+    console.log(formData)
+    picturesFiles.forEach((image, index) => {
+      formData.append(`images[${index}][file]`, image.file);
+      formData.append(`images[${index}][isMainImage]`, image.isMainImage);
+    });
     try {
-      const response = await api.post(`/lots`, lotData);
+      const response = await api.post(`/lots`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -64,7 +89,9 @@ export const getRegionsCurrentCountry = createAsyncThunk(
   'main/fetchRegionsCurrentCountry',
   async (currentCountry, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/data-selection/${currentCountry}/cities`);
+      const response = await api.get(
+        `/data-selection/${currentCountry}/cities`
+      );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -74,18 +101,6 @@ export const getRegionsCurrentCountry = createAsyncThunk(
     }
   }
 );
-
-const changeFirstSelector = (
-  state,
-  action,
-  firstCurrentTarget,
-  secondCurrentTarget
-) => {
-  state[firstCurrentTarget] = action.payload.selectedSubcategory
-    .split(',')
-    .map((item) => ({ name: item }));
-  state[secondCurrentTarget] = action.payload.chosenOption;
-};
 
 const changeInputs = (state, action, currentTarget) => {
   state[currentTarget] = action.payload;
@@ -133,6 +148,7 @@ const addFilesPictures = (state, action) => {
   if (!invalidFileFound) {
     state.picturesFiles = [...state.picturesFiles, ...validFiles];
     if (state.mainPicture === '') {
+      state.picturesFiles[0].isMainImage = true;
       state.mainPicture = state.picturesFiles[0].url;
       state.bigPicture = state.mainPicture;
     }
@@ -181,8 +197,8 @@ const compareMinimalBetWithPrice = (
   }
 };
 
-const findIndexBigPicture = (state) => {
-  return state.picturesFiles.findIndex((file) => file.url === state.bigPicture);
+const findIndexPicture = (state, findElem) => {
+  return state.picturesFiles.findIndex((file) => file.url === state[findElem]);
 };
 
 const lotsSlice = createSlice({
@@ -195,6 +211,7 @@ const lotsSlice = createSlice({
     currentRegion: '',
     currentCategory: '',
     currentIdCategory: 0,
+    currentIdVariety: 0,
     currentSubcategory: '',
     title: '',
     inputTitleValid: true,
@@ -264,10 +281,12 @@ const lotsSlice = createSlice({
         return;
       }
       const { subcategories } = state.subcategories.find(
-        (subcategory) => subcategory.category_id === Number(state.currentIdCategory)
+        (subcategory) =>
+          subcategory.category_id === Number(state.currentIdCategory)
       );
       state.varieties = subcategories;
       state.currentVariety = state.varieties[0].name;
+      state.currentIdVariety = state.varieties[0].category_id;
     },
     changeTitle(state, action) {
       changeInputs(state, action, 'title');
@@ -341,7 +360,8 @@ const lotsSlice = createSlice({
       addFilesPictures(state, action);
     },
     changeVariety(state, action) {
-      changeInputs(state, action, 'currentVariety');
+      state.currentVariety = action.payload.variety;
+      state.currentIdVariety = action.payload.id;
       checkValidationForm(state);
     },
     changeSliderValues(state, action) {
@@ -446,14 +466,19 @@ const lotsSlice = createSlice({
       }
     },
     changeMainPicture(state, action) {
+      state.picturesFiles.forEach((file) => {
+        file.isMainImage = false;
+      });
       state.mainPicture = action.payload;
+      const index = findIndexPicture(state, 'mainPicture');
+      state.picturesFiles[index].isMainImage = true;
       state.bigPicture = state.mainPicture;
     },
     changeBigPicture(state, action) {
       state.bigPicture = action.payload;
     },
     showNextImage(state) {
-      const index = findIndexBigPicture(state);
+      const index = findIndexPicture(state, 'bigPicture');
       if (index === state.picturesFiles.length - 1) {
         state.bigPicture = state.picturesFiles[0].url;
         return;
@@ -461,7 +486,7 @@ const lotsSlice = createSlice({
       state.bigPicture = state.picturesFiles[index + 1].url;
     },
     showPreviousImage(state) {
-      const index = findIndexBigPicture(state);
+      const index = findIndexPicture(state, 'bigPicture');
       if (index === 0) {
         state.bigPicture =
           state.picturesFiles[state.picturesFiles.length - 1].url;
@@ -471,7 +496,7 @@ const lotsSlice = createSlice({
     },
     noteActive(state) {
       state.picturesFiles.forEach((picture) => (picture.isActive = false));
-      const index = findIndexBigPicture(state);
+      const index = findIndexPicture(state, 'bigPicture');
       state.picturesFiles[index] = {
         ...state.picturesFiles[index],
         isActive: true,
@@ -524,10 +549,10 @@ const lotsSlice = createSlice({
       })
       .addCase(getRegionsCurrentCountry.fulfilled, (state, action) => {
         state.regions = action.payload;
-        state.regions = action.payload.map((region => {
-          return {name: region};
-        }));
-        state.currentRegion = state.regions[0].name;        
+        state.regions = action.payload.map((region) => {
+          return { name: region };
+        });
+        state.currentRegion = state.regions[0].name;
       });
   },
 });

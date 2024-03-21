@@ -38,19 +38,10 @@ const mainSlice = createSlice({
     currency: null,
     mainDataStatus: 'idle',
     error: null,
-    // regions: null,
     countries: null,
-    // countries: [{ id: 1, name: 'Belarus', regions: ['The Grodno region', 'The Minsk region', 'The Brest region', 'The Gomel region', 'The Vitebsk region', 'The Mogilev region'] }],
     quantity: null,
-    apples: [
-      { name: 'alwa', id: 1, isChecked: false },
-      { name: 'antonowka', id: 2, isChecked: false },
-      { name: 'boiken', id: 3, isChecked: false },
-      { name: 'boskoop', id: 4, isChecked: false },
-      { name: 'braeburn', id: 5, isChecked: false },
-      { name: 'champion', id: 6, isChecked: false },
-    ],
-    sizing: [{ name: 'mm' }, { name: 'cm' }],
+    sizing: null,
+    regions: null,
     isLoadingMain: false,
     isDataReady: false,
   },
@@ -79,6 +70,10 @@ const mainSlice = createSlice({
         state.quantity = action.payload.weight;
         state.isLoadingMain = false;
         state.isDataReady = true;
+        state.sizing = action.payload.lengthUnits;
+        state.sizing = state.sizing.map(size => {
+          return { name: size };
+        })
       })
       .addCase(fetchMainData.rejected, (state, action) => {
         state.error = action.error.message;
@@ -86,9 +81,6 @@ const mainSlice = createSlice({
       })
       .addCase(getRegionsCurrentCountry.fulfilled, (state, action) => {
         state.regions = action.payload;
-        state.regions = action.payload.map((region => {
-          return {name: region};
-        }))
       });
   },
 });

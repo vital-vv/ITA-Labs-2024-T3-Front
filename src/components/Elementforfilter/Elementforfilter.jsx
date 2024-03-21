@@ -10,7 +10,7 @@ const ElementForFilter = (props) => {
   
   const toogleCheckbox = (event) => {
     dispatch(choseCheckbox({id: event.currentTarget.id, name: props.name, isChecked: !props.isChecked, categoryName: props.categoryName}));
-    dispatch(applyFilters());
+    // dispatch(applyFilters());
   };
 
   

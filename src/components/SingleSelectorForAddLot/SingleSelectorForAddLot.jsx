@@ -14,7 +14,7 @@ function SingleSelectorForAddLot({
     }
     return array.map((item) => {
       return (
-        <option key={uuidv4()} value={item.name}>
+        <option key={uuidv4()} value={item.name} id={item.category_id}>
           {item.name}
         </option>
       );

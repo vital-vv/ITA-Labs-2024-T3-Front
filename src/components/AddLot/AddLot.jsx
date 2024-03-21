@@ -5,7 +5,10 @@ import SelectorAndInputForAddLot from '../SelectorAndInputForAddLot/SelectorAndI
 import React, { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMainData, getRegionsCurrentCountry } from '../../features/main/mainSlice';
+import {
+  fetchMainData,
+  getRegionsCurrentCountry,
+} from '../../features/main/mainSlice';
 import { getCategories } from '../../features/categories/categoriesSlice';
 import {
   changeFirstOption,
@@ -50,8 +53,9 @@ import Close from '../../assets/svg/Close';
 
 function AddLot() {
   const dispatch = useDispatch();
-  const { currency, countries, packaging, sizing, quantity } =
-    useSelector((state) => state.main);
+  const { currency, countries, packaging, sizing, quantity } = useSelector(
+    (state) => state.main
+  );
   const categories = useSelector((state) =>
     state.categories.list.map((item) => ({
       name: item.name,
@@ -92,7 +96,13 @@ function AddLot() {
     description,
     mainPicture,
     varieties,
+    currentIdVariety
   } = useSelector((state) => state.lots);
+
+  const findIdCurrentOption = (event) => {
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    return selectedOption.id;
+  }
 
   const handleChangeInputs = (event, sendingFunction) => {
     dispatch(sendingFunction(event.target.value));
@@ -103,8 +113,7 @@ function AddLot() {
   };
 
   const handleChangeFirstOptionCategory = (event) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
-    const selectedId = selectedOption.id;
+    const selectedId = findIdCurrentOption(event);
     dispatch(fetchSubcategories(selectedId));
     dispatch(
       changeFirstOptionCat({ category: event.target.value, id: selectedId })
@@ -116,8 +125,7 @@ function AddLot() {
   };
 
   const handleChangeSubcategory = (event) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
-    const selectedId = selectedOption.id;
+    const selectedId = findIdCurrentOption(event);
     dispatch(
       changeSubcategory({ subcategory: event.target.value, id: selectedId })
     );
@@ -148,7 +156,8 @@ function AddLot() {
   };
 
   const handleChangeVariety = (event) => {
-    handleChangeInputs(event, changeVariety);
+    const selectedId = findIdCurrentOption(event);
+    dispatch(changeVariety({ variety: event.target.value, id: selectedId }));
   };
 
   const handleChangeSlider = (event, newValue) => {
@@ -223,9 +232,7 @@ function AddLot() {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const serializableFiles = files.map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
+      file: file,
       url: URL.createObjectURL(file),
       isActive: false,
       isMainImage: false,
@@ -241,12 +248,10 @@ function AddLot() {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
     const serializableFiles = files.map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
+      file: file,
       url: URL.createObjectURL(file),
       isActive: false,
-      isMainImage: false
+      isMainImage: false,
     }));
     dispatch(fileTransfer({ payload: serializableFiles }));
   };
@@ -256,20 +261,9 @@ function AddLot() {
   };
 
   const handleAddLot = () => {
-    let priceToByn = currentPrice;
-    switch (currentPricingMeasure) {
-      case 'USD':
-        priceToByn = currentPrice / 3.1;
-        break;
-      case 'EUR':
-        priceToByn = currentPrice / 3.39;
-        break;
-    }
-
     const newLot = {
-      category_id: currentIdCategory,
-      price_per_unit: Number((priceToByn / currentWeight).toFixed(2)),
-      // image_url
+      category_id: currentIdVariety,
+      price_per_unit: Number((currentPrice / currentWeight).toFixed(2)),
       start_price: minimalBet,
       expiration_days: currentValidity,
       length_unit: currentMeasure,
@@ -281,35 +275,45 @@ function AddLot() {
         region: currentRegion,
       },
       description: description,
-      status: 'active', // delete this string after realization by back
       size: sliderCurrent[0],
-      variety: currentVariety, //?
       packaging: currentPackages,
       currency: currentPricingMeasure,
     };
     dispatch(postNewLot(newLot));
   };
 
-  const handleChangeMainPicture = event => {
-    dispatch(changeMainPicture(event.currentTarget.id))
-  }
+  const handleChangeMainPicture = (event) => {
+    dispatch(changeMainPicture(event.currentTarget.id));
+  };
 
-  const arrayPicturesPreview = picturesFiles.map(item => {
+  const arrayPicturesPreview = picturesFiles.map((item) => {
     let isMainPicture = item.url === mainPicture;
     return (
       <div className={classes.picture} key={uuidv4()} id={item.url}>
         <img src={item.url} alt="Preview" className={classes.imgPreview} />
-        <div className={classes.close} onClick={handleDeleteImage} id={item.url}>
+        <div
+          className={classes.close}
+          onClick={handleDeleteImage}
+          id={item.url}
+        >
           <Close />
         </div>
-        <p className={classes.toMakeMain} onClick={handleChangeMainPicture} id={item.url}>Make the title</p>
-        <p className={isMainPicture ? classes.titleImage : classes.hidden}>Title image</p>
+        <p
+          className={classes.toMakeMain}
+          onClick={handleChangeMainPicture}
+          id={item.url}
+        >
+          Make the title
+        </p>
+        <p className={isMainPicture ? classes.titleImage : classes.hidden}>
+          Title image
+        </p>
       </div>
     );
   });
 
   useEffect(() => {
-    dispatch(getActualVariety())
+    dispatch(getActualVariety());
   }, [dispatch, currentIdCategory]);
 
   useEffect(() => {

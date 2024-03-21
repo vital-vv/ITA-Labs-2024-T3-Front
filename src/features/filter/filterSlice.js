@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {api} from "../../utils/axios.js";
+import { api } from '../../utils/axios.js';
 
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
@@ -14,7 +14,7 @@ export const applyFilters = createAsyncThunk(
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
-      return response.data.content;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -123,7 +123,7 @@ const filterSlice = createSlice({
     currentCategoryId: 1,
     sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
     minMaxSlider: { mm: [0, 200], cm: [0, 20] },
-    sizing: ['mm', 'cm'],
+    sizing: null,
     sliderCurrentValues: [50, 150],
     sliderCurrentLimit: [0, 200],
     quantityValues: [1, 10000],
@@ -139,14 +139,7 @@ const filterSlice = createSlice({
     sumLimits: [1, 1000000],
     isValidFormSum: [true, true],
     chosenOptions: [],
-    apples: [
-      { name: 'alwa', id: 1, isChecked: false, categoryName: 'variety' },
-      { name: 'antonowka', id: 2, isChecked: false, categoryName: 'variety' },
-      { name: 'boiken', id: 3, isChecked: false, categoryName: 'variety' },
-      { name: 'boskoop', id: 4, isChecked: false, categoryName: 'variety' },
-      { name: 'braeburn', id: 5, isChecked: false, categoryName: 'variety' },
-      { name: 'champion', id: 6, isChecked: false, categoryName: 'variety' },
-    ],
+    varieties: [],
     packages: null,
     locations: [],
     sortField: '&sortField=CREATED_AT&sortOrder=DESC',
@@ -159,6 +152,7 @@ const filterSlice = createSlice({
     currentCategory: '',
     currentLabelSelector: 'New ones first',
     isLotsReady: false,
+    hasNextPage: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -251,12 +245,16 @@ const filterSlice = createSlice({
     choseCheckbox(state, action) {
       const elementId = payloadToNumber(action.payload.id);
       toggleElementsAllArrays(
-        state.apples,
+        state.varieties,
         state.packages,
         state.locations,
         elementId
       );
-      const sumArray = [...state.apples, ...state.packages, ...state.locations];
+      const sumArray = [
+        ...state.varieties,
+        ...state.packages,
+        ...state.locations,
+      ];
       const foundElement = sumArray.find((item) => item.id === elementId);
       if (
         !state.chosenOptions.some((item) => Number(item.id) === elementId) &&
@@ -275,7 +273,7 @@ const filterSlice = createSlice({
       const elementId = payloadToNumber(action.payload);
       state.chosenOptions = filterArray(state.chosenOptions, elementId);
       toggleElementsAllArrays(
-        state.apples,
+        state.varieties,
         state.packages,
         state.locations,
         elementId
@@ -285,7 +283,11 @@ const filterSlice = createSlice({
       }
     },
     clearAllParameters(state, {}) {
-      const sumArray = [...state.apples, ...state.packages, ...state.locations];
+      const sumArray = [
+        ...state.varieties,
+        ...state.packages,
+        ...state.locations,
+      ];
       sumArray.forEach((item) => {
         item.isChecked = false;
       });
@@ -305,14 +307,30 @@ const filterSlice = createSlice({
       state.packages = action.payload.packages;
       state.valuesOfValutes = action.payload.valutes;
       state.valuesOfQuantity = action.payload.quantity;
-      state.locations = action.payload.countries.flatMap((item) =>
-        item.regions.map((item, index) => ({
-          name: item,
-          id: index + 60,
-          isChecked: false,
-          categoryName: 'locations',
-        }))
-      );
+      console.log(action.payload.regions)
+      if (action.payload.regions) {
+        state.locations = action.payload.regions.map((item, index) => {
+          return {
+            name: item,
+            id: index + 60,
+            isChecked: false,
+            categoryName: 'locations',
+          };
+        });
+      }
+      state.sizing = action.payload.lengthUnits.map((item) => item.name);
+      if (!action.payload.isLoading) {
+        state.varieties = action.payload.subcategories.subcategories.map(
+          (item) => {
+            return {
+              name: item.name,
+              id: item.category_id,
+              isChecked: false,
+              categoryName: 'variety',
+            };
+          }
+        );
+      }
     },
     toogleOpenModalVariety(state) {
       toogleModal(state, 'isOpenModalVariety');
@@ -397,6 +415,9 @@ const filterSlice = createSlice({
       state.stringFilter = requestString;
     },
     loadNewPage(state) {
+      if (!state.hasNextPage) {
+        return;
+      }
       state.currentPage = state.currentPage + 1;
       state.isPagination = true;
     },
@@ -412,13 +433,14 @@ const filterSlice = createSlice({
       })
       .addCase(applyFilters.fulfilled, (state, action) => {
         state.isLotsReady = true;
+        state.hasNextPage = action.payload.metadata.has_next;
         if (state.isPagination) {
-          state.currentLots = [...state.currentLots, ...action.payload];
+          state.currentLots = [...state.currentLots, ...action.payload.content];
           state.isPagination = false;
         } else {
           state.currentPage = 1;
-          state.currentLots = action.payload;
-          state.currentCategory = action.payload[0].category_name;
+          state.currentLots = action.payload.content;
+          state.currentCategory = action.payload.content[0].category_name;
         }
         state.isLoading = false;
       })
@@ -427,9 +449,9 @@ const filterSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteLot.fulfilled, (state, action) => {
-        state.currentLots = state.currentLots.filter(item => {
-          return item.lot_id !== Number(action.payload)
-        })
+        state.currentLots = state.currentLots.filter((item) => {
+          return item.lot_id !== Number(action.payload);
+        });
       });
   },
 });
