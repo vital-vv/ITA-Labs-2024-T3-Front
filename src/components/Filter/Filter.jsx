@@ -24,9 +24,7 @@ import {
   loadNewPage,
 } from '../../features/filter/filterSlice';
 import { useMemo, useEffect, useState } from 'react';
-import Loader from '../../hoc/Loader/Loader';
 import {
-  fetchMainData,
   getRegionsCurrentCountry,
 } from '../../features/main/mainSlice';
 
@@ -44,13 +42,10 @@ const Filter = () => {
   };
 
   const dispatch = useDispatch();
-  const { currency, quantity, isDataReady, countries } = useSelector(
+  const { currency, quantity, countries } = useSelector(
     (state) => state.main
   );
-  const isLoadingSubcategory = useSelector(
-    (state) => state.subcategories.isLoading
-  );
-
+   
   const {
     sliderCurrentLimit,
     quantityValues: [fromQuantity, untilQuantity],
@@ -68,7 +63,6 @@ const Filter = () => {
     sizing,
     isOpenModalVariety,
     isOpenModalRegions,
-    isLotsReady,
   } = useSelector((state) => state.filter);
 
   const createInputChangeHandler = (actionCreator) => {

@@ -4,7 +4,10 @@ import ModalBid from '../ModalBid/ModalBid.jsx';
 import classes from './LotsList.module.scss';
 import BredCrumbs from '../BredCrumbs/BredCrumbs.jsx';
 import { useEffect } from 'react';
-import { applyFilters } from '../../features/filter/filterSlice.js';
+import {
+  applyFilters,
+  clearAllParameters,
+} from '../../features/filter/filterSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import {
@@ -12,7 +15,10 @@ import {
   getDataFormated,
 } from '../../features/filter/filterSlice.js';
 import { getSubcategories } from '../../features/categories/subcategoriesSlice.js';
-import { getRegionsCurrentCountry, fetchMainData } from '../../features/main/mainSlice.js';
+import {
+  getRegionsCurrentCountry,
+  fetchMainData,
+} from '../../features/main/mainSlice.js';
 import Loader from '../../hoc/Loader/Loader';
 
 function LotsList() {
@@ -25,9 +31,8 @@ function LotsList() {
     (state) => state.subcategories.isLoading
   );
 
-  const { stringFilter, sortField, currentPage, isLotsReady } = useSelector(
-    (state) => state.filter
-  );
+  const { stringFilter, sortField, currentPage, isLotsReady, chosenOptions } =
+    useSelector((state) => state.filter);
   const { leadBet } = useSelector((state) => state.lots);
 
   const location = useLocation();
@@ -35,14 +40,16 @@ function LotsList() {
 
   useEffect(() => {
     dispatch(fetchMainData());
+    if (chosenOptions.length) {
+      dispatch(clearAllParameters());
+    }
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(getCurrentCategory(paramId));
     dispatch(getSubcategories(paramId));
     dispatch(getRegionsCurrentCountry('Belarus'));
-    dispatch(applyFilters());
-  }, [dispatch, stringFilter, sortField, currentPage, paramId, leadBet]);
+  }, [dispatch, paramId]);
 
   useEffect(() => {
     if (isDataReady) {
@@ -59,6 +66,10 @@ function LotsList() {
       );
     }
   }, [dispatch, packaging, countries, isLoadingSubcategory, regions]);
+  
+  useEffect(() => {
+    dispatch(applyFilters());
+  }, [dispatch, stringFilter, sortField, currentPage, paramId, leadBet]);
 
   return (
     <>

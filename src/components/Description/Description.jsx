@@ -111,7 +111,7 @@ function Description() {
             <p>Total price</p>
           </div>
           <div className={classes.cost}>
-            <p className={fullValidationForm ? classes.gray : null}>
+            <p className={fullValidationForm || !leadBet ? classes.gray : null}>
               {leadBet ? `${leadBet} ${currentPricingMeasure}` : 'No bets'}
             </p>
             <p>{`${currentPrice} ${currentPricingMeasure}`}</p>
