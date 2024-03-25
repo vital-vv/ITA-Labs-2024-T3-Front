@@ -8,7 +8,7 @@ import {IsAuthorized} from "./IsAuthorized/IsAuthorized.jsx";
 function RightBar() {
 
     const user = useSelector(selectUserData);
-    const rightBarStyle = {width: user.userData?.role === 'user' ? '550px' : '300px'};
+    const rightBarStyle = {width: user.userData?.role === 'USER' ? '550px' : '300px'};
 
     return (
         <div className={styles.rightBar} style={rightBarStyle}>

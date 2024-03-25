@@ -25,23 +25,23 @@ function UserTable() {
         <div className={styles.tableContainer}>
             <table>
                 <thead>
-                <tr>
-                    <th scope="col">Id</th>
+                <tr className={styles.trTitle}>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
                     <th scope="col">Role</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {listOfUsers != null ?
-                    list.content.map(({user_id, first_name, last_name, email, role}) => (
-                        <tr key={user_id}>
-                            <td>{user_id}</td>
+                    list.content.map(({user_id, first_name, last_name, email,phoneNumber, role}) => (
+                        <tr key={user_id} className={styles.tr}>
                             <td>{first_name}</td>
                             <td>{last_name}</td>
                             <td>{email}</td>
+                            <td>{phoneNumber}</td>
                             <td>{role}</td>
                             <td><NavLink to={ROUTES.USERINFO}><img src={editIcon} alt={editIcon}/></NavLink></td>
                         </tr>

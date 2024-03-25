@@ -14,7 +14,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  margin: 100px 0 0 0;
+  margin: 80px 0 0 0;
   width: 400px;
   height: 490px;
   justify-content: space-between;
@@ -42,6 +42,7 @@
     border: 1px solid #38999B;
     color: #38999B;
     width: 90px;
+
     input[type="file"] {
       display: none;
     }
@@ -92,10 +93,18 @@
     font-size: 20px;
     cursor: pointer;
     margin: 0 auto;
-    &:disabled{
+
+    &:disabled {
       background-color: #E6E6E6;
       color: #BCC3C3;
       cursor: default;
     }
   }
+}
+
+.return {
+  margin: 30px 0 0 0;
+  cursor: pointer;
+  color: black;
+  height: 40px;
 }
