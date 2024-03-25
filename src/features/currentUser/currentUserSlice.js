@@ -25,7 +25,7 @@ export const postOnboarding = createAsyncThunk(
 const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState: {
-        userData: {role: 'user'},
+        userData: null,
         idToken: null,
         accessToken: null,
         status: null,
@@ -55,13 +55,14 @@ const currentUserSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.userData = action.payload;
-                state.status = action.payload.response.status;
+                state.status = 200;
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
                 state.status = action.payload.response.status;
             })
+
             .addCase(postOnboarding.pending, state => {
                 state.isLoading = true;
                 state.error = null;

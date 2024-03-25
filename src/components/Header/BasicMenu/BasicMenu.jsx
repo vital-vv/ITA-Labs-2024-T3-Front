@@ -8,14 +8,24 @@ import {ROUTES} from '../../../utils/routes.js';
 import {NavLink, useNavigate} from 'react-router-dom';
 import { useState} from 'react';
 import {signOut} from "@aws-amplify/auth";
-import {useDispatch} from "react-redux";
-import {clearUserData} from "../../../features/currentUser/currentUserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {clearUserData, selectUserData} from "../../../features/currentUser/currentUserSlice.js";
 import {cognitoSession} from "../../../utils/auth.js";
 
 export default function BasicMenu() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector(selectUserData);
+    let route = '';
+
+    switch (user.userData?.role) {
+        case 'ADMIN':
+            route = ROUTES.ADMINACCOUNT;
+            break;
+        default:
+            route = ROUTES.ACCOUNT;
+    }
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -59,7 +69,7 @@ export default function BasicMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <NavLink to={ROUTES.ACCOUNT} onClick={handleClose}>Profile</NavLink>
+                <NavLink to={route} onClick={handleClose}>Profile</NavLink>
                 <NavLink to={ROUTES.ONBOARDING} onClick={handleClose}>To onboarding</NavLink>
                 <NavLink to={ROUTES.HOME} onClick={signOutApp}>Logout</NavLink>
             </Menu>

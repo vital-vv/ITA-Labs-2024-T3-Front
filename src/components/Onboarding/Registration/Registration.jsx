@@ -14,16 +14,17 @@ function Registration() {
 
     function setFormData(values) {
         const formData = new FormData();
-        formData.append('data', JSON.stringify({
+        if (values.avatar) {
+            formData.append('avatar', values.avatar);
+        }
+        const data = {
             first_name: values.name,
             last_name: values.lastName,
             preferred_currency: values.currency,
             phoneNumber: values.phoneNumber ? values.countryCode + values.phoneNumber : null,
-
-        }));
-        if (values.avatar) {
-            formData.append('avatar', values.avatar);
         }
+
+        formData.append('data',new Blob([JSON.stringify(data)],{type: "application/json"}));
         return formData;
     }
 
@@ -31,7 +32,7 @@ function Registration() {
         values.avatar = avatar;
         const formData = setFormData(values);
         dispatch(postOnboarding(formData));
-        // navigate('/');
+        navigate('/');
     }
 
     const handleAvatarChange = (event) => {

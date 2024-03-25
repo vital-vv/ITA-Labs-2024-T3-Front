@@ -13,11 +13,11 @@ function IsAuthorized() {
     }
 
     switch (user.userData?.role) {
-        case 'admin':
+        case 'ADMIN':
             return <AdminMenu />;
-        case 'exchanger':
+        case 'EMPLOYEE':
             return <ExchangerMenu/>;
-        case 'user':
+        case 'USER':
             return <UserMenu/>
     }
 }
