@@ -12,11 +12,11 @@ function RightBar() {
 
     return (
         <div className={styles.rightBar} style={rightBarStyle}>
-            <div>
+            <div className={styles.variety}>
                 <p>USD</p>
                 <img alt={usdIcon} src={usdIcon}/>
             </div>
-            <div>
+            <div className={styles.variety}>
                 <p>ENG</p>
                 <img alt={langIcon} src={langIcon}/>
             </div>
