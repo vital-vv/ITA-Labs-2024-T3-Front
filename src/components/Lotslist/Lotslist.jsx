@@ -37,6 +37,10 @@ function LotsList() {
 
   const location = useLocation();
   const paramId = location.search.substring(4);
+  let category = location.pathname.split('/');
+  category = category[category.length - 1]
+  category = category.charAt(0).toUpperCase() + category.slice(1);
+  
 
   useEffect(() => {
     dispatch(fetchMainData());
@@ -46,7 +50,7 @@ function LotsList() {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getCurrentCategory(paramId));
+    dispatch(getCurrentCategory({id: paramId, category: category}));
     dispatch(getSubcategories(paramId));
     dispatch(getRegionsCurrentCountry('Belarus'));
   }, [dispatch, paramId]);

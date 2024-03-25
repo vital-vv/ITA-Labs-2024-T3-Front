@@ -21,31 +21,16 @@ export const postNewLot = createAsyncThunk(
   async (lotData, { rejectWithValue, getState }) => {
     const { picturesFiles } = getState().lots;
     const formData = new FormData();
-    console.log(formData)
-    for (const key in lotData) {
-      if (key === 'location') {
-        continue;
-      }
-      if (lotData.hasOwnProperty(key)) {
-        formData.append(`lot[${key}]`, lotData[key]);
-      }
-    }
-    for (const key in lotData.location) {
-      if (lotData.location.hasOwnProperty(key)) {
-        formData.append(`lot[location][${key}]`, lotData.location[key]);
-      }
-    }
-    console.log(formData)
-    picturesFiles.forEach((image, index) => {
-      formData.append(`images[${index}][file]`, image.file);
-      formData.append(`images[${index}][isMainImage]`, image.isMainImage);
-    });
+    formData.append(
+      'lot',
+      new Blob([JSON.stringify(lotData)], { type: 'application/json' })
+    );
+    const arrayPictures = picturesFiles.map((item) => item.file);
+    arrayPictures.forEach(item => {
+      formData.append('images', item)
+    })
     try {
-      const response = await api.post(`/lots`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      const response = await api.post(`/lots`, formData);
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -126,6 +111,9 @@ const changeValidationAfterTime = (state, validationAdress) => {
 };
 
 const checkValidationForm = (state) => {
+  if (state.picturesFiles.length === 0 || state.picturesFiles.length > 9) {
+    return;
+  }
   const valuesChecked = Object.values(state);
   valuesChecked.splice(33);
   valuesChecked.every((item) => item)
@@ -355,9 +343,11 @@ const lotsSlice = createSlice({
     },
     fileTransfer(state, action) {
       addFilesPictures(state, action);
+      checkValidationForm(state);
     },
     fileChange(state, action) {
       addFilesPictures(state, action);
+      checkValidationForm(state);
     },
     changeVariety(state, action) {
       state.currentVariety = action.payload.variety;
@@ -459,6 +449,7 @@ const lotsSlice = createSlice({
       if (state.picturesFiles.length === 0) {
         state.mainPicture = '';
         state.bigPicture = '';
+        state.fullValidationForm = false;
         return;
       }
       if (state.mainPicture === action.payload) {

@@ -263,7 +263,7 @@ function AddLot() {
   const handleAddLot = () => {
     const newLot = {
       category_id: currentIdVariety,
-      price_per_unit: Number((currentPrice / currentWeight).toFixed(2)),
+      total_price: currentPrice,
       start_price: minimalBet,
       expiration_days: currentValidity,
       length_unit: currentMeasure,

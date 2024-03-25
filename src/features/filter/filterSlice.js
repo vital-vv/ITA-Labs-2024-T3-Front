@@ -429,7 +429,8 @@ const filterSlice = createSlice({
       state.isPagination = true;
     },
     getCurrentCategory(state, action) {
-      state.currentCategoryId = action.payload;
+      state.currentCategoryId = action.payload.id;
+      state.currentCategory = action.payload.category
     },
   },
   extraReducers: (builder) => {
@@ -447,7 +448,6 @@ const filterSlice = createSlice({
         } else {
           state.currentPage = 1;
           state.currentLots = action.payload.content;
-          state.currentCategory = action.payload.content[0].category_name;
         }
         state.isLoading = false;
       })
