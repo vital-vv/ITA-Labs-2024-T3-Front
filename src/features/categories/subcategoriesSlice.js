@@ -17,6 +17,7 @@ const subcategoriesSlice = createSlice({
     initialState: {
         list: [],
         isLoading: false,
+        isSubcategoriesReady: false,
     },
     reducers: {
         deleteSubcategories(state) {
@@ -27,13 +28,15 @@ const subcategoriesSlice = createSlice({
         builder.addCase(getSubcategories.fulfilled, (state, action) => {
             state.list =  action.payload;
             state.isLoading = false;
+            state.isSubcategoriesReady = true;
         });
         builder.addCase(getSubcategories.pending, (state) => {
+            state.isSubcategoriesReady = false;
             state.isLoading =  true;
         });
         builder.addCase(getSubcategories.rejected, (state) => {
             state.isLoading =  false;
-
+            state.isSubcategoriesReady = false;
         });
     }
 })

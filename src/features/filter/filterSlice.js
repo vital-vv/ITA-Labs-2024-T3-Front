@@ -153,6 +153,7 @@ const filterSlice = createSlice({
     currentLabelSelector: 'New ones first',
     isLotsReady: false,
     hasNextPage: false,
+    allDataFilterReady: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -307,29 +308,27 @@ const filterSlice = createSlice({
       state.packages = action.payload.packages;
       state.valuesOfValutes = action.payload.valutes;
       state.valuesOfQuantity = action.payload.quantity;
-      if (action.payload.regions) {
-        state.locations = action.payload.regions.map((item, index) => {
-          return {
-            name: item,
-            id: index + 60,
-            isChecked: false,
-            categoryName: 'locations',
-          };
-        });
-      }
+      state.locations = action.payload.regions.map((item, index) => {
+        return {
+          name: item,
+          id: index + 60,
+          isChecked: false,
+          categoryName: 'locations',
+        };
+      });
       state.sizing = action.payload.lengthUnits.map((item) => item.name);
-      if (!action.payload.isLoading) {
-        state.varieties = action.payload.subcategories.subcategories.map(
-          (item) => {
-            return {
-              name: item.name,
-              id: item.category_id,
-              isChecked: false,
-              categoryName: 'variety',
-            };
-          }
-        );
-      }
+      console.log(action.payload.subcategories.subcategories);
+      state.varieties = action.payload.subcategories.subcategories.map(
+        (item) => {
+          return {
+            name: item.name,
+            id: item.category_id,
+            isChecked: false,
+            categoryName: 'variety',
+          };
+        }
+      );
+      state.allDataFilterReady = true;
     },
     toogleOpenModalVariety(state) {
       toogleModal(state, 'isOpenModalVariety');
@@ -430,7 +429,7 @@ const filterSlice = createSlice({
     },
     getCurrentCategory(state, action) {
       state.currentCategoryId = action.payload.id;
-      state.currentCategory = action.payload.category
+      state.currentCategory = action.payload.category;
     },
   },
   extraReducers: (builder) => {
