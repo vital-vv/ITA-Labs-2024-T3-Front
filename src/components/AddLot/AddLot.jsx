@@ -40,6 +40,9 @@ import {
   deleteImage,
   changeMainPicture,
   getActualVariety,
+  changeValidationAfterTimeSliderFrom,
+  changeValidationAfterTimeSliderUntil,
+  standFirstMainImage
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
@@ -221,6 +224,20 @@ function AddLot() {
     minimalBet
   );
 
+  useValidationTimer(
+    validSliderFrom,
+    dispatch,
+    changeValidationAfterTimeSliderFrom,
+    sliderCurrent[0]
+  );
+
+  useValidationTimer(
+    validSliderUntil,
+    dispatch,
+    changeValidationAfterTimeSliderUntil,
+    sliderCurrent[1]
+  );
+
   const fileInputRef = useRef(null);
 
   const handleFileInputClick = () => {
@@ -279,6 +296,7 @@ function AddLot() {
       packaging: currentPackages,
       currency: currentPricingMeasure,
     };
+    dispatch(standFirstMainImage())
     dispatch(postNewLot(newLot));
   };
 
@@ -501,7 +519,7 @@ function AddLot() {
                 />
               </div>
               <p className={classes.comment}>
-                {picturesFiles.length} of 9 images
+                {picturesFiles.length} of 9 images. At least one picture required
               </p>
               <div className={classes.picturesBlock}>
                 {arrayPicturesPreview}

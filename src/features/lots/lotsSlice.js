@@ -25,8 +25,12 @@ export const postNewLot = createAsyncThunk(
       'lot',
       new Blob([JSON.stringify(lotData)], { type: 'application/json' })
     );
+    // const index = picturesFiles.findIndex(item => item.isMainImage === true);
+    // picturesFiles.unShift(picturesFiles[index]);
+    // picturesFiles.splice(index, 1);
+    // console.log(picturesFiles)
     const arrayPictures = picturesFiles.map((item) => item.file);
-    arrayPictures.forEach(item => {
+    arrayPictures.forEach(item => {   
       formData.append('images', item)
     })
     try {
@@ -360,8 +364,16 @@ const lotsSlice = createSlice({
     changeSliderFromByKeys(state, action) {
       inputSliderByKeys(state, action, 0, 'validSliderFrom');
     },
+    changeValidationAfterTimeSliderFrom(state) {
+      changeValidationAfterTime(state, 'validSliderFrom');
+      checkValidationForm(state);
+    },
     changeSliderUntilByKeys(state, action) {
       inputSliderByKeys(state, action, 1, 'validSliderUntil');
+    },
+    changeValidationAfterTimeSliderUntil(state) {
+      changeValidationAfterTime(state, 'validSliderUntil');
+      checkValidationForm(state);
     },
     changeMeasure(state, action) {
       if (action.payload === 'cm') {
@@ -493,6 +505,13 @@ const lotsSlice = createSlice({
         isActive: true,
       };
     },
+    standFirstMainImage(state) {
+      const arrayForProcedure = [...state.picturesFiles];
+      const index = arrayForProcedure.findIndex(item => item.isMainImage === true);
+      arrayForProcedure.unshift(arrayForProcedure[index]);
+      arrayForProcedure.splice(index + 1, 1);
+      state.picturesFiles = arrayForProcedure;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -586,6 +605,9 @@ export const {
   showPreviousImage,
   noteActive,
   getActualVariety,
+  changeValidationAfterTimeSliderFrom,
+  changeValidationAfterTimeSliderUntil,
+  standFirstMainImage
 } = lotsSlice.actions;
 
 export default lotsSlice.reducer;
