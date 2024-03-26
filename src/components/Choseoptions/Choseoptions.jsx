@@ -8,10 +8,12 @@ import { deleteOption, applyFilters } from '../../features/filter/filterSlice';
 function ChoseOptions() {
   const dispatch = useDispatch();
   const chosenOptions = useSelector((state) => state.filter.chosenOptions);
+
   const handleDeleteOption = (event) => {
     dispatch(deleteOption(event.currentTarget.id));
     dispatch(applyFilters());
   };
+
   return (
     <div className={classes.chosenOptions}>
       <div className={classes.dynamicOptions}>

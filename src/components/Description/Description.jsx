@@ -77,10 +77,9 @@ function Description() {
     changeNewBidValidationAfterTime,
     currentBid
   );
-
+  
   const handleAddBid = () => {
     const bidData = {
-      user_id: 1, //Still HARDCODE!!!
       lot_id: currentId,
       amount: currentBid,
       currency: 'USD', //Still HARDCODE!!!, send preferred currency
@@ -112,7 +111,7 @@ function Description() {
             <p>Total price</p>
           </div>
           <div className={classes.cost}>
-            <p className={fullValidationForm ? classes.gray : null}>
+            <p className={fullValidationForm || !leadBet ? classes.gray : null}>
               {leadBet ? `${leadBet} ${currentPricingMeasure}` : 'No bets'}
             </p>
             <p>{`${currentPrice} ${currentPricingMeasure}`}</p>
