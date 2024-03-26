@@ -3,6 +3,10 @@
   align-items: center;
   justify-content: space-between;
   font-weight: 400;
+  .variety{
+    display: flex;
+    align-items: center;
+  }
 
   p {
     margin: auto 8px;

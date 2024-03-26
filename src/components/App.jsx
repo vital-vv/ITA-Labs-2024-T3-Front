@@ -45,13 +45,14 @@ function App() {
     }, [user.idToken, dispatch]);
 
     // useEffect(() => {
-    //     if (user.status === 404) {
+    //     if (user?.status === 404) {
     //         navigate('/onboarding');
     //     } else if (user.userData) {
     //         const redirectPath = {
-    //             admin: '/admin/users',
-    //             exchanger: '/user/account',
-    //         }[user.userData.role] || '/';
+    //             ADMIN: '/admin/users',
+    //             EMPLOYEE: '/user/account',
+    //             USER: '/',
+    //         }[user.userData.role];
     //         navigate(redirectPath);
     //     }
     // }, [user.status, user.userData, navigate]);

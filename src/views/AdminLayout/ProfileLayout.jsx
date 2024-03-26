@@ -9,15 +9,16 @@ import {userNav} from "../../utils/constants.js";
 import {exchangerNav} from "../../utils/constants.js";
 import {useSelector} from "react-redux";
 import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
+import {useEffect} from "react";
 
 
 function ProfileLayout() {
     const user = useSelector(selectUserData);
     const navigate = useNavigate();
 
-    let navOptions = user.userData.role === 'user' ? userNav :
-        user.userData.role === 'admin' ? adminNav :
-            user.userData.role === 'exchanger' ? exchangerNav : null;
+    let navOptions = user.userData.role === 'USER' ? userNav :
+        user.userData.role === 'ADMIN' ? adminNav :
+            user.userData.role === 'EMPLOYEE' ? exchangerNav : null;
 
     if (navOptions === null) {
         navigate('/login');

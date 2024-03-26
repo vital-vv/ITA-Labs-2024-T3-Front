@@ -8,15 +8,15 @@ import {IsAuthorized} from "./IsAuthorized/IsAuthorized.jsx";
 function RightBar() {
 
     const user = useSelector(selectUserData);
-    const rightBarStyle = {width: user.userData?.role === 'user' ? '550px' : '300px'};
+    const rightBarStyle = {width: user.userData?.role === 'USER' ? '550px' : '300px'};
 
     return (
         <div className={styles.rightBar} style={rightBarStyle}>
-            <div>
+            <div className={styles.variety}>
                 <p>USD</p>
                 <img alt={usdIcon} src={usdIcon}/>
             </div>
-            <div>
+            <div className={styles.variety}>
                 <p>ENG</p>
                 <img alt={langIcon} src={langIcon}/>
             </div>
