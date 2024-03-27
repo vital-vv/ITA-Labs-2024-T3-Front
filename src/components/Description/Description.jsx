@@ -40,6 +40,7 @@ function Description() {
     currentBid,
     leadBet,
     correctRangeBets,
+    minimalBet
   } = useSelector((state) => state.lots);
 
   const dispatch = useDispatch();
@@ -138,7 +139,7 @@ function Description() {
             />
           </div>
           <p className={classes.comment}>
-            Bet from ${leadBet + 1} to ${currentPrice - 1}
+            Bet from ${leadBet ? leadBet + 1 : minimalBet} to ${currentPrice - 1}
           </p>
           <p>{(currentBid/currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}</p>
         </div>

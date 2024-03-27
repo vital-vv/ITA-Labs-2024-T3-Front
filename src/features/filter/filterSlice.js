@@ -150,7 +150,6 @@ const filterSlice = createSlice({
     isPagination: false,
     isLoading: false,
     currentCategory: '',
-    currentLabelSelector: 'New ones first',
     isLotsReady: false,
     hasNextPage: false,
     allDataFilterReady: false,
@@ -347,35 +346,27 @@ const filterSlice = createSlice({
       switch (Number(action.payload)) {
         case 1:
           state.sortField = `&sortField=${created}&sortOrder=${descOrder}`;
-          state.currentLabelSelector = 'New ones first';
           break;
         case 2:
           state.sortField = `&sortField=${created}&sortOrder=${ascOrder}`;
-          state.currentLabelSelector = 'Old ones first';
           break;
         case 3:
           state.sortField = `&sortField=${quantity}&sortOrder=${descOrder}`;
-          state.currentLabelSelector = 'Biggers quantity first';
           break;
         case 4:
           state.sortField = `&sortField=${quantity}&sortOrder=${ascOrder}`;
-          state.currentLabelSelector = 'Smaller quantity first';
           break;
         case 5:
           state.sortField = `&sortField=${expDate}&sortOrder=${descOrder}`;
-          state.currentLabelSelector = 'Bigger remaining deadline first';
           break;
         case 6:
           state.sortField = `&sortField=${expDate}&sortOrder=${ascOrder}`;
-          state.currentLabelSelector = 'Smaller remaining deadline first';
           break;
         case 7:
           state.sortField = `&sortField=${size}&sortOrder=${descOrder}`;
-          state.currentLabelSelector = 'Bigger size first';
           break;
         case 8:
           state.sortField = `&sortField=${size}&sortOrder=${ascOrder}`;
-          state.currentLabelSelector = 'Smaller size first';
           break;
       }
     },

@@ -50,7 +50,6 @@ const MainLotsList = () => {
 
   return (
     <div className={classes.mainLotsList}>
-      <ChoseOptions />
       {lots.length ? (
         lots
       ) : (

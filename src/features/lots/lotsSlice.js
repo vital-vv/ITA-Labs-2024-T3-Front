@@ -434,6 +434,7 @@ const lotsSlice = createSlice({
       state.currentId = '';
       state.currentBid = '';
       state.leadBet = 0;
+      state.minimalBet = '';
     },
     addNewBid(state, action) {
       state.correctRangeBets = false;
@@ -551,6 +552,9 @@ const lotsSlice = createSlice({
         state.createdDate = data.created_at;
         state.currentId = data.lot_id;
         state.leadBet = data.leading ? data.leading.amount : 0;
+        state.bigPicture = data.image_url[0].url;
+        state.picturesFiles = data.image_url;
+        state.minimalBet = data.start_price;
       })
       .addCase(confirmBid.fulfilled, (state) => {
         state.showModalSuccess = true;

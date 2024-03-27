@@ -40,7 +40,7 @@ function Goods({
     <>
       <div className={classes.goods}>
         <div className={classes.picture}>
-          <img src={photo} alt="Photo of goods" />
+          <img src={lotItem.image_url[0].url} alt="Photo of goods" />
         </div>
         <div className={classes.info}>
           <div>
@@ -59,7 +59,7 @@ function Goods({
           </div>
           <div className={classes.more}>
             <p className={classes.description}>
-              {`${lotItem.category_name}, ${lotItem.variety}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
+              {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
             </p>
             <p className={classes.region}>
               {lotItem.location.country}, {lotItem.location.region}
@@ -79,9 +79,9 @@ function Goods({
             </div>
             <div className={classes.perKg}>
               {/* Still hardcode */}
-              <p>${lotItem.price_per_unit*lotItem.quantity}</p>
+              <p>${lotItem.total_price}</p>
               <p>
-                <span>${lotItem.price_per_unit}</span>/{lotItem.weight}
+                <span>${lotItem.price_per_unit.toFixed(2)}</span>/{lotItem.weight}
               </p>
             </div>
           </div>

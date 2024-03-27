@@ -12,7 +12,6 @@ function BredCrumbs() {
     .slice(1, location.pathname.length)
     .split('/');
   let isLastStep = quantityParams.length === 3;
-  console.log(isLastStep)
   quantityParams.pop();
   const findCategory = quantityParams[quantityParams.length - 1];
   const lastStep = quantityParams.join('/');

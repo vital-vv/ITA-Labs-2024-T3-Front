@@ -3,6 +3,7 @@ import { options } from '../dataoffilter';
 import { useDispatch, useSelector } from 'react-redux';
 import { sortBySelector } from '../../features/filter/filterSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 
 export default function Selector() {
   const dispatch = useDispatch();
@@ -11,7 +12,10 @@ export default function Selector() {
 
   const handleChangeSelectorSort = (event) => {
     dispatch(sortBySelector(event.target.value));
+    setSelectValue(event.target.value);
   };
+
+  const [selectValue, setSelectValue] = useState('') 
 
   return (
     <div className={classes.selector}>
@@ -19,7 +23,7 @@ export default function Selector() {
         <select
           id="selector order"
           onChange={handleChangeSelectorSort}
-          value={currentLabelSelector}
+          value={selectValue}
         >
           {options.map((option) => {
             return (
