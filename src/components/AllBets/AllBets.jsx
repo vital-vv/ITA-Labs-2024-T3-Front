@@ -7,7 +7,6 @@ function AllBets() {
     return (
         <div className={styles.bettingContainer}>
             <BetsNav alignmentState={'Active'}/>
-            {/*<BetsFilter/>*/}
             <BetsContent/>
         </div>
     )

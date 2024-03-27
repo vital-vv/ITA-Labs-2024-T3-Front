@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {loadUserAllBets, selectUserData} from "../../features/currentUser/currentUserSlice.js";
 import {useEffect} from "react";
 import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
+import {getAllLots} from "../../features/filter/filterSlice.js";
 
 function BetsContent() {
     const dispatch = useDispatch();
@@ -13,10 +14,14 @@ function BetsContent() {
                 dispatch(loadUserAllBets({ status : 'OVERBID'}));
                 break;
             case "EMPLOYEE":
-                //dispatch for lots
+                if(user.currentTab === 'Active'){
+                    dispatch(getAllLots({ lotStatus : 'ACTIVE'}));
+                } else if (user.currentTab === 'Moderating'){
+                    dispatch(getAllLots({ lotStatus : 'MODERATED'}));
+                }
                 break;
         }
-    },[dispatch])
+    },[dispatch, user.currentTab])
 
     return (
         <>
