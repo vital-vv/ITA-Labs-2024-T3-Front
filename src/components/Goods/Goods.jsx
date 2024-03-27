@@ -22,8 +22,6 @@ function Goods({
   const [maxValue, setMaxValue] = useState(0);
   const dispatch = useDispatch();
 
-  
-
   const toggleModal = (event) => {
     setOpen((prevOpen) => !prevOpen);
     if (lotItem.leading) {
@@ -35,11 +33,10 @@ function Goods({
     dispatch(changeModalThrough(event.target.id));
   };
 
-
   return (
     <>
       <div className={classes.goods}>
-        <div className={classes.picture}>
+        <div className={classes}>
           <img src={photo} alt="Photo of goods" />
         </div>
         <div className={classes.info}>

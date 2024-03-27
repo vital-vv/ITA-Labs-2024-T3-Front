@@ -7,10 +7,10 @@ import {NotificationBadge} from "../NotificationBadge/NotificationBadge.jsx";
 function ExchangerMenu() {
 
     return (
-        <div>
+        <>
             <NotificationBadge/>
             <BasicMenu/>
-        </div>
+        </>
     );
 }
 

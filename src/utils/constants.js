@@ -157,11 +157,6 @@ export const exchangerNav = [
         path: ROUTES.ADVERTISEMENT,
     },
     {
-        title: 'All bets',
-        icon: `${betIcon}`,
-        path: ROUTES.BETS,
-    },
-    {
         title: 'My account',
         icon: `${accountIcon}`,
         path: ROUTES.ACCOUNT,

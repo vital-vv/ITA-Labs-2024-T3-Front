@@ -8,7 +8,6 @@ import {cognitoSession, getTokens} from "../utils/auth.js";
 import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchUserData, selectUserData, setTokens} from "../features/currentUser/currentUserSlice.js";
-import {useNavigate} from "react-router-dom";
 
 Amplify.configure({
     Auth: {
@@ -28,7 +27,6 @@ function App() {
 
     const user = useSelector(selectUserData);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -43,19 +41,6 @@ function App() {
         };
         fetchData();
     }, [user.idToken, dispatch]);
-
-    // useEffect(() => {
-    //     if (user?.status === 404) {
-    //         navigate('/onboarding');
-    //     } else if (user.userData) {
-    //         const redirectPath = {
-    //             ADMIN: '/admin/users',
-    //             EMPLOYEE: '/user/account',
-    //             USER: '/',
-    //         }[user.userData.role];
-    //         navigate(redirectPath);
-    //     }
-    // }, [user.status, user.userData, navigate]);
 
     return (
         <>
