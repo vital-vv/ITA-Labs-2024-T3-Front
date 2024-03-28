@@ -67,7 +67,7 @@ const Filter = () => {
   }, [dispatch, paramId]);
 
   useEffect(() => {
-    if (isDataReady && isSubcategoriesReady) {
+    if (isDataReady && isSubcategoriesReady && locations) {
       dispatch(
         getDataFormated({
           packages: packaging,
