@@ -51,7 +51,6 @@ function Registration() {
     const handleAvatarRemove = () => {
         setAvatar(null);
     };
-
     return (
         <div className={styles.formContainer}>
             <Formik

@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default function Selector() {
   const dispatch = useDispatch();
   const {currentLabelSelector} = useSelector(state => state.filter);
-  console.log(currentLabelSelector)
 
   const handleChangeSelectorSort = (event) => {
     dispatch(sortBySelector(event.target.value));
