@@ -203,3 +203,5 @@ Proceed to confirm.`,
         img: `${orangeModerationIcon}`,
     }
 ]
+
+export const filterName = ['New ones first', 'Cheap ones first', 'Less time first'];

@@ -24,9 +24,7 @@ function BetsContent() {
     },[dispatch, user.currentTab])
 
     return (
-        <>
           <MainLotsList/>
-        </>
     )
 }
 

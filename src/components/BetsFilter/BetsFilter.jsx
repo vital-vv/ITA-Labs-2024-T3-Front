@@ -4,10 +4,10 @@ import NativeSelect from '@mui/material/NativeSelect';
 
 import styles from './BetsFilter.module.scss';
 import {OptionsGroup} from "./OptionsGroup/OptionsGroup.jsx";
+import {filterName} from "../../utils/constants.js";
 
 function BetsFilter() {
 
-    const filterName = ['New ones first', 'Cheap ones first', 'Less time first'];
 
     return (
         <Box sx={{ minWidth: 200 }} className={styles.filterBox}>

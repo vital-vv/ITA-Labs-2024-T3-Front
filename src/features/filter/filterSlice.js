@@ -44,6 +44,32 @@ export const getAllLots = createAsyncThunk(
     }
 );
 
+export const approveLot = createAsyncThunk(
+    'filters/approveLot',
+    async (id, {rejectWithValue}) => {
+        try {
+            const response = await api.get(`/lots/${id}/approve`);
+            console.log(response);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const rejectLot = createAsyncThunk(
+    'filters/rejectLot',
+    async ({id, description}, {rejectWithValue}) => {
+        try {
+            const response = await api.post(`/lots/${id}/reject`, description);
+            console.log(response);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const payloadToNumber = (string) => Number(string);
 
 const changeInputsByKeys = (
@@ -476,6 +502,34 @@ const filterSlice = createSlice({
             .addCase(getAllLots.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.currentLots = state.currentLots = action.payload.content;
+            })
+
+            .addCase(approveLot.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(approveLot.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(approveLot.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.currentLots = state.currentLots.filter((item) => {
+                    return item.lot_id !== Number(action.payload);
+                })
+            })
+
+            .addCase(rejectLot.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(rejectLot.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(rejectLot.fulfilled, (state, action) => {
+                state.currentLots = state.currentLots.filter((item) => {
+                    return item.lot_id !== Number(action.payload);
+                })
+                state.isLoading = false;
             })
     },
 });

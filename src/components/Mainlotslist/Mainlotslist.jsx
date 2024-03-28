@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import classes from './MainLotsList.module.scss';
 import { deleteLot } from '../../features/filter/filterSlice';
+import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
 
 const MainLotsList = () => {
   const { currentLots } = useSelector((state) => state.filter);
+  const userRole = useSelector(selectUserData).userData.role;
   const now = new Date();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ const MainLotsList = () => {
           daysRest={differenceDays}
           hoursRest={differenceHours}
           buttonDelete={handleDeleteLot}
+          userRole={userRole}
         />
       </NavLink>
     );
