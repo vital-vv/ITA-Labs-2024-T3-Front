@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchMainData
 } from '../../features/main/mainSlice.js';
+import { changeShowModalAfterTime } from '../../features/lots/lotsSlice.js';
 
 
 function LotsList() {
@@ -25,6 +26,8 @@ function LotsList() {
       dispatch(clearAllParameters());
     }
   }, [dispatch]);
+
+  const { showModalSuccess, currentBid } = useSelector((state) => state.lots);
   
   return (
     <>
@@ -32,7 +35,7 @@ function LotsList() {
           <BredCrumbs />
           <Label />
           <Content />
-          <ModalBid />
+          <ModalBid text={`Your bid ${currentBid} was accepted`} showModal={showModalSuccess} action={changeShowModalAfterTime}/>
         </div>
     </>
   );

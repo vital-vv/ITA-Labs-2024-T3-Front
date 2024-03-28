@@ -5,6 +5,21 @@
   letter-spacing: $letter;
 }
 
+@mixin circleButton($right, $left) {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #bcc3c3;
+  bottom: 0;
+  right: $right;
+  left: $left;
+  cursor: pointer;
+}
+
 .userInfo {
   padding: 24px 40px;
   p {
@@ -15,6 +30,15 @@
 .userForm {
   display: flex;
   margin-top: 24px;
+}
+
+.currency {
+  margin-top: 25px;
+  height: 43px;
+  width: 120px;
+  border-radius: 4px;
+  border-color: #a2a2a2;
+  padding: 0 0 0 5px;
 }
 
 .circle {
@@ -32,18 +56,17 @@
   color: white;
 }
 
-.takePhoto {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid #BCC3C3;
-  bottom: 0;
-  right: 0;
-  cursor: pointer;
+.takePhotoRight {
+  @include circleButton(0, null);
+}
+
+.takePhotoLeft {
+  @include circleButton(null, 0);
+  svg {
+    fill: red;
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .buttonContainer {
@@ -51,12 +74,16 @@
   justify-content: flex-end;
   margin-top: 24px;
   gap: 16px;
-  :first-child {
+  .cancel {
     color: #38999b;
     border: 1px solid #38999b;
     cursor: pointer;
+    svg {
+      fill: gray;
+      margin-right: 2px;
+    }
   }
-  :last-child {
+  .confirm {
     display: flex;
     background-color: #38999b;
     color: white;
@@ -64,10 +91,12 @@
     gap: 12px;
     cursor: pointer;
   }
-  div {
+  button {
     padding: 8px 16px;
     @include fontStyle(500, 16px, 24px, 0.3px);
     border-radius: 2px;
+    width: fit-content;
+    border: none;
   }
 }
 
@@ -94,11 +123,22 @@
 
 .settings {
   padding: 24px 0;
-  >p:first-child {
+  > p:first-child {
     @include fontStyle(500, 18px, 28px, 0.4px);
     margin-bottom: 24px;
   }
   p {
     @include fontStyle(400, 18px, 28px, 0.4px);
   }
+}
+
+.inputFile {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.noValid {
+  background-color: initial !important;
 }

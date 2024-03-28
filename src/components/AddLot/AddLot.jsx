@@ -42,7 +42,8 @@ import {
   getActualVariety,
   changeValidationAfterTimeSliderFrom,
   changeValidationAfterTimeSliderUntil,
-  standFirstMainImage
+  standFirstMainImage,
+  resetState,
 } from '../../features/lots/lotsSlice';
 import SingleSelectorForAddLot from '../SingleSelectorForAddLot/SingleSelectorForAddLot';
 import Slider from '../Slider/Slider';
@@ -99,13 +100,13 @@ function AddLot() {
     description,
     mainPicture,
     varieties,
-    currentIdVariety
+    currentIdVariety,
   } = useSelector((state) => state.lots);
 
   const findIdCurrentOption = (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     return selectedOption.id;
-  }
+  };
 
   const handleChangeInputs = (event, sendingFunction) => {
     dispatch(sendingFunction(event.target.value));
@@ -194,6 +195,7 @@ function AddLot() {
   useEffect(() => {
     dispatch(fetchMainData());
     dispatch(getCategories());
+    return () => dispatch(resetState());
   }, [dispatch]);
 
   useValidationTimer(
@@ -296,7 +298,7 @@ function AddLot() {
       packaging: currentPackages,
       currency: currentPricingMeasure,
     };
-    dispatch(standFirstMainImage())
+    dispatch(standFirstMainImage());
     dispatch(postNewLot(newLot));
   };
 
@@ -519,7 +521,8 @@ function AddLot() {
                 />
               </div>
               <p className={classes.comment}>
-                {picturesFiles.length} of 9 images. At least one picture required
+                {picturesFiles.length} of 9 images. At least one picture
+                required
               </p>
               <div className={classes.picturesBlock}>
                 {arrayPicturesPreview}

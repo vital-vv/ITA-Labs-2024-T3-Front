@@ -25,8 +25,8 @@ export const deleteLot = createAsyncThunk(
   'lots/deleteLot',
   async (lotId, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(
-        `http://agroex-elb-446797069.us-east-1.elb.amazonaws.com/team3/api/lots/${lotId}`
+      const response = await api.delete(
+        `/lots/${lotId}`
       );
       if (response.status !== 204) {
         throw new Error('Something went wrong');

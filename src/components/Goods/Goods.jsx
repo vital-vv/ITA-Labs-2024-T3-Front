@@ -1,5 +1,4 @@
 import classes from './Goods.module.scss';
-import photo from '../../assets/images/apples.png';
 import Clock from '../../assets/svg/Clock';
 import Hammer from '../../assets/svg/Hammer';
 import Cart from '../../assets/svg/Cart';
@@ -29,9 +28,9 @@ function Goods({
     if (lotItem.leading) {
       setMinValue(lotItem.leading.amount + 1);
     } else {
-      setMinValue(1);
+      setMinValue(lotItem.start_price);
     }
-    setMaxValue(lotItem.price_per_unit*lotItem.quantity - 1);
+    setMaxValue(lotItem.total_price - 1);
     dispatch(changeModalThrough(event.target.id));
   };
 
@@ -78,7 +77,6 @@ function Goods({
               </p>
             </div>
             <div className={classes.perKg}>
-              {/* Still hardcode */}
               <p>${lotItem.total_price}</p>
               <p>
                 <span>${lotItem.price_per_unit.toFixed(2)}</span>/{lotItem.weight}

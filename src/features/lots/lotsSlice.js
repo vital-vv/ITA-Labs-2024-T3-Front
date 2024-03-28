@@ -435,6 +435,7 @@ const lotsSlice = createSlice({
       state.currentBid = '';
       state.leadBet = 0;
       state.minimalBet = '';
+      state.picturesFiles = [];
     },
     addNewBid(state, action) {
       state.correctRangeBets = false;
@@ -544,7 +545,7 @@ const lotsSlice = createSlice({
         state.sliderCurrent = data.size;
         state.title = data.title;
         state.currentWeight = data.quantity;
-        state.currentPrice = data.price_per_unit * data.quantity;
+        state.currentPrice = data.total_price;
         state.currentVariety = data.variety;
         state.currentPackages = data.packaging;
         state.description = data.description;
