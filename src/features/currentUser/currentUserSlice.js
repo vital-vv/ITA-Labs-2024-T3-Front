@@ -105,7 +105,8 @@ const checkForm = (state) => {
   if (
     state.userData.first_name &&
     state.userData.last_name &&
-    phoneNumber.test(Number(state.userData.number))
+    phoneNumber.test(Number(state.userData.number)) ||
+    state.userData.urlAvatar.substring(0, 3) === 'blob'
   ) {
     state.isValidNewData = true;
   }
@@ -158,6 +159,7 @@ const currentUserSlice = createSlice({
     },
     changeAvatar: (state, action) => {
       state.userData.urlAvatar = action.payload;
+      checkForm(state);
     },
     deleteAvatar: (state) => {
       state.userData.urlAvatar = null;

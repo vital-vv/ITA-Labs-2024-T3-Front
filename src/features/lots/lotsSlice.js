@@ -436,6 +436,11 @@ const lotsSlice = createSlice({
       state.leadBet = 0;
       state.minimalBet = '';
       state.picturesFiles = [];
+      state.varieties = '';
+      state.regions = null;
+      state.subcategories = null;
+      state.currentValidity = 30;
+      state.currentPackages = 'Box';
     },
     addNewBid(state, action) {
       state.correctRangeBets = false;
