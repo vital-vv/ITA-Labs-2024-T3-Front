@@ -1,0 +1,35 @@
+.modalContainer{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 250px;
+  box-shadow: #a2a2a2;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rejectTitle{
+  height: 40px;
+  margin: 15px 15px 0 15px;
+  .rejectSpan{
+    font-weight: 500;
+    color: #32888a;
+  }
+}
+
+.rejectBtn{
+  margin: auto;
+  width: 40%;
+  background-color: #FDECE9;
+  border: 1px solid #DC3737;
+  color: #DC3737;
+  cursor: pointer;
+  border-radius: 2px;
+  &:hover{
+    background-color: #f6e6e3;
+  }
+}
