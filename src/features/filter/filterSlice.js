@@ -187,6 +187,7 @@ const filterSlice = createSlice({
     isLotsReady: false,
     hasNextPage: false,
     allDataFilterReady: false,
+    isOpenModalBids: false,
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -455,6 +456,9 @@ const filterSlice = createSlice({
       state.currentCategoryId = action.payload.id;
       state.currentCategory = action.payload.category;
     },
+    openModalBid(state) {
+      state.isOpenModalBids = !state.isOpenModalBids;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -518,6 +522,7 @@ export const {
   sendFiltersString,
   loadNewPage,
   getCurrentCategory,
+  openModalBid,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

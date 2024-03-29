@@ -12,7 +12,6 @@ function Button({ children, isValid, isDirty, btnText, onClose, ...props }) {
   
   const handleAddBid = () => {
     const bidData = {
-      user_id: 1, //Still HARDCODE!!!
       lot_id: idForBid, 
       amount: currentBid,
       currency: 'USD', //Still HARDCODE!!!, send preferred currency

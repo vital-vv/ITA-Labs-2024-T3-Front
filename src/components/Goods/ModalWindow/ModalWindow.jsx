@@ -1,5 +1,4 @@
 import { Modal, Box } from '@mui/material';
-
 import styles from './ModalWindow.module.scss';
 import exitIcon from '../../../assets/images/exitIcon.png';
 import { ModalForm } from './Form/Form.jsx';

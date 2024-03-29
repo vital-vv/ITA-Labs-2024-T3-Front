@@ -2,9 +2,10 @@ import classes from './Goods.module.scss';
 import Clock from '../../assets/svg/Clock';
 import { ModalWindow } from './ModalWindow/ModalWindow.jsx';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeModalThrough } from '../../features/lots/lotsSlice.js';
 import { LotButtons } from './LotButtons/LotButtons.jsx';
+import { openModalBid } from '../../features/filter/filterSlice.js';
 
 function Goods({
   lotItem,
@@ -15,21 +16,21 @@ function Goods({
   id,
   userRole,
 }) {
-  const [open, setOpen] = useState(false);
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(0);
+  // const [open, setOpen] = useState(false);
+  // const [minValue, setMinValue] = useState(0);
+  // const [maxValue, setMaxValue] = useState(0);
   const dispatch = useDispatch();
 
-  const toggleModal = (event) => {
-    setOpen((prevOpen) => !prevOpen);
-    if (lotItem.leading) {
-      setMinValue(lotItem.leading.amount + 1);
-    } else {
-      setMinValue(lotItem.start_price);
-    }
-    setMaxValue(lotItem.total_price - 1);
-    dispatch(changeModalThrough(event.target.id));
-  };
+  // const toggleModal = (event) => {
+  //   setOpen((prevOpen) => !prevOpen);
+  //   if (lotItem.leading) {
+  //     setMinValue(lotItem.leading.amount + 1);
+  //   } else {
+  //     setMinValue(lotItem.start_price);
+  //   }
+  //   setMaxValue(lotItem.total_price - 1);
+  //   dispatch(changeModalThrough(event.target.id));
+  // };
 
   return (
     <>
@@ -94,16 +95,17 @@ function Goods({
               id={id}
               title={lotItem.title}
               buttonDelete={buttonDelete}
+              lotItem={lotItem}
             />{' '}
           </div>
         </div>
       </div>
-      <ModalWindow
+      {/* <ModalWindow
         open={open}
         handleClose={toggleModal}
         minValue={minValue}
         maxValue={maxValue}
-      />
+      /> */}
     </>
   );
 }
