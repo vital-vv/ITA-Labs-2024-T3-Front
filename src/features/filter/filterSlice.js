@@ -48,7 +48,7 @@ export const approveLot = createAsyncThunk(
     'filters/approveLot',
     async (id, {rejectWithValue}) => {
         try {
-            const response = await api.get(`/lots/${id}/approve`);
+            const response = await api.post(`/lots/${id}/approve`);
             console.log(response);
             return id;
         } catch (error) {
