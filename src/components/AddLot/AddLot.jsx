@@ -195,7 +195,6 @@ function AddLot() {
   useEffect(() => {
     dispatch(fetchMainData());
     dispatch(getCategories());
-    return () => dispatch(resetState());
   }, [dispatch]);
 
   useValidationTimer(

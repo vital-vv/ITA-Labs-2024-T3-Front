@@ -326,7 +326,6 @@ const filterSlice = createSlice({
         };
       });
       state.sizing = action.payload.lengthUnits.map((item) => item.name);
-      console.log(action.payload.subcategories.subcategories);
       state.varieties = action.payload.subcategories.subcategories.map(
         (item) => {
           return {
@@ -429,7 +428,7 @@ const filterSlice = createSlice({
       state.isPagination = true;
     },
     getCurrentCategory(state, action) {
-      state.currentCategoryId = action.payload;
+      state.currentCategoryId = action.payload.id;
       state.currentCategory = action.payload.category;
     },
   },
