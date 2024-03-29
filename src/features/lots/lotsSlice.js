@@ -25,10 +25,6 @@ export const postNewLot = createAsyncThunk(
       'lot',
       new Blob([JSON.stringify(lotData)], { type: 'application/json' })
     );
-    // const index = picturesFiles.findIndex(item => item.isMainImage === true);
-    // picturesFiles.unShift(picturesFiles[index]);
-    // picturesFiles.splice(index, 1);
-    // console.log(picturesFiles)
     const arrayPictures = picturesFiles.map((item) => item.file);
     arrayPictures.forEach(item => {   
       formData.append('images', item)
@@ -434,6 +430,13 @@ const lotsSlice = createSlice({
       state.currentId = '';
       state.currentBid = '';
       state.leadBet = 0;
+      state.minimalBet = '';
+      state.picturesFiles = [];
+      state.varieties = '';
+      state.regions = null;
+      state.subcategories = null;
+      state.currentValidity = 30;
+      state.currentPackages = 'Box';
     },
     addNewBid(state, action) {
       state.correctRangeBets = false;
@@ -543,7 +546,7 @@ const lotsSlice = createSlice({
         state.sliderCurrent = data.size;
         state.title = data.title;
         state.currentWeight = data.quantity;
-        state.currentPrice = data.price_per_unit * data.quantity;
+        state.currentPrice = data.total_price;
         state.currentVariety = data.variety;
         state.currentPackages = data.packaging;
         state.description = data.description;
@@ -551,6 +554,9 @@ const lotsSlice = createSlice({
         state.createdDate = data.created_at;
         state.currentId = data.lot_id;
         state.leadBet = data.leading ? data.leading.amount : 0;
+        state.bigPicture = data.image_url[0].url;
+        state.picturesFiles = data.image_url;
+        state.minimalBet = data.start_price;
       })
       .addCase(confirmBid.fulfilled, (state) => {
         state.showModalSuccess = true;

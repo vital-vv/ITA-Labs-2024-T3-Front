@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { changeBigPicture } from '../../features/lots/lotsSlice';
 
 function SmallPicture() {
-  const { picturesFiles, fullValidationForm } = useSelector(
+  const { picturesFiles } = useSelector(
     (state) => state.lots
   );
   const dispatch = useDispatch();
@@ -28,8 +28,7 @@ function SmallPicture() {
 
   return (
     <div className={classes.wrapper}>
-      {/* Instead null will be picture from server */}
-      {fullValidationForm ? allPictures : null}
+      {allPictures}
     </div>
   );
 }

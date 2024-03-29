@@ -22,11 +22,14 @@ import {
   toogleOpenModalVariety,
   toogleOpenModalRegions,
   loadNewPage,
+  getDataFormated,
+  getCurrentCategory
 } from '../../features/filter/filterSlice';
 import { useMemo, useEffect, useState } from 'react';
-import {
-  getRegionsCurrentCountry,
-} from '../../features/main/mainSlice';
+import { getRegionsCurrentCountry } from '../../features/main/mainSlice';
+import Loader from '../../hoc/Loader/Loader';
+import { useLocation } from 'react-router-dom';
+import { getSubcategories } from '../../features/categories/subcategoriesSlice.js';
 
 const Filter = () => {
   const fillContainer = (array) => {
@@ -42,10 +45,42 @@ const Filter = () => {
   };
 
   const dispatch = useDispatch();
-  const { currency, quantity, countries } = useSelector(
+  const { currency, quantity, countries, packaging, regions, isDataReady } = useSelector(
     (state) => state.main
   );
-   
+
+  const lengthUnits = useSelector((state) => state.main.sizing);
+  const subcategories = useSelector((state) => state.subcategories.list);
+  const {isSubcategoriesReady} = useSelector(
+    (state) => state.subcategories
+  );
+  const location = useLocation();
+  const paramId = location.search.substring(4);
+  let category = location.pathname.split('/');
+  category = category[category.length - 1];
+  category = category.charAt(0).toUpperCase() + category.slice(1);
+
+  useEffect(() => {
+    dispatch(getCurrentCategory({id: paramId, category: category}));
+    dispatch(getSubcategories(paramId));
+    dispatch(getRegionsCurrentCountry('Belarus'));
+  }, [dispatch, paramId]);
+
+  useEffect(() => {
+    if (isDataReady && isSubcategoriesReady && regions) {
+      dispatch(
+        getDataFormated({
+          packages: packaging,
+          valutes: currency,
+          quantity: quantity,
+          regions: regions,
+          lengthUnits: lengthUnits,
+          subcategories: subcategories,
+        })
+      );
+    }
+  }, [dispatch, packaging, countries, regions, isSubcategoriesReady, isDataReady, subcategories]);
+  
   const {
     sliderCurrentLimit,
     quantityValues: [fromQuantity, untilQuantity],
@@ -63,6 +98,7 @@ const Filter = () => {
     sizing,
     isOpenModalVariety,
     isOpenModalRegions,
+    allDataFilterReady
   } = useSelector((state) => state.filter);
 
   const createInputChangeHandler = (actionCreator) => {
@@ -138,88 +174,94 @@ const Filter = () => {
   };
 
   const [selectorCountry, setSelectorCountry] = useState('Belarus');
-
+  
   return (
-    <div>
-      <div className={classes.filter}>
+    <>
+      {allDataFilterReady ? (
         <div>
-          <LabelForFilter name={'Variety'} />
-          {fillContainer(varieties)}
-          <MoreFilter
-            options={varieties.length}
-            isOpenModal={isOpenModalVariety}
-            setOpenModal={handleChangeOpenModalVariety}
-            arrayForShowModal={varieties}
-          />
+          <div className={classes.filter}>
+            <div>
+              <LabelForFilter name={'Variety'} />
+              {fillContainer(varieties)}
+              <MoreFilter
+                options={varieties.length}
+                isOpenModal={isOpenModalVariety}
+                setOpenModal={handleChangeOpenModalVariety}
+                arrayForShowModal={varieties}
+              />
+            </div>
+            <FilterSizing
+              values={'Size, '}
+              measures={sizing}
+              toggleMeasures={handleToggleMeasures}
+              quantityMeasure={sizeMeasuresToMm ? 'mm' : 'cm'}
+            />
+            <RSlider
+              min={sliderCurrentLimit[0]}
+              max={sliderCurrentLimit[1]}
+              currentValue={sliderCurrentValues}
+              changeSlider={handleChangeSlider}
+            />
+            <NumberInput
+              from={sliderCurrentValues[0]}
+              until={sliderCurrentValues[1]}
+              changeFrom={handleChangeFrom}
+              changeUntil={handleChangeUntil}
+              isValidFrom={isValidFrom}
+              isValidUntil={isValidUntil}
+            />
+            <LabelForFilter name={'Packaging'} />
+            {fillContainer(packages)}
+            <LabelForFilter name={'Location'} />
+            <select
+              className={classes.country}
+              onChange={handleLoadRegions}
+              value={selectorCountry}
+            >
+              {fillSelector}
+            </select>
+            {fillContainer(locations)}
+            <MoreFilter
+              options={locations.length}
+              isOpenModal={isOpenModalRegions}
+              setOpenModal={handleChangeOpenModalRegions}
+              arrayForShowModal={locations}
+            />
+            <FilterSizing
+              values={`Quantity, ${valueOfQuantityCurrent}`}
+              measures={quantity}
+              toggleMeasures={handleToggleMeasuresQuantity}
+            />
+            <NumberInput
+              from={fromQuantity}
+              until={untilQuantity}
+              isValidFrom={isValidFromQuantity}
+              isValidUntil={isValidUntilQuantity}
+              changeFrom={handleChangeFromQuantity}
+              changeUntil={handleChangeUntilQuantity}
+            />
+            <FilterSizing
+              values={`Price, ${currentValute}`}
+              measures={currency}
+              toggleMeasures={handleToggleValutes}
+            />
+            <NumberInput
+              from={currentSumFrom}
+              until={currentSumUntil}
+              isValidFrom={isValidFromSum}
+              isValidUntil={isValidUntilSum}
+              changeFrom={handleChangeFromSum}
+              changeUntil={handleChangeUntilSum}
+            />
+          </div>
+          <div className={classes.filterUse}>
+            <Buttonfilter />
+          </div>
         </div>
-        <FilterSizing
-          values={'Size, '}
-          measures={sizing}
-          toggleMeasures={handleToggleMeasures}
-          quantityMeasure={sizeMeasuresToMm ? 'mm' : 'cm'}
-        />
-        <RSlider
-          min={sliderCurrentLimit[0]}
-          max={sliderCurrentLimit[1]}
-          currentValue={sliderCurrentValues}
-          changeSlider={handleChangeSlider}
-        />
-        <NumberInput
-          from={sliderCurrentValues[0]}
-          until={sliderCurrentValues[1]}
-          changeFrom={handleChangeFrom}
-          changeUntil={handleChangeUntil}
-          isValidFrom={isValidFrom}
-          isValidUntil={isValidUntil}
-        />
-        <LabelForFilter name={'Packaging'} />
-        {fillContainer(packages)}
-        <LabelForFilter name={'Location'} />
-        <select
-          className={classes.country}
-          onChange={handleLoadRegions}
-          value={selectorCountry}
-        >
-          {fillSelector}
-        </select>
-        {fillContainer(locations)}
-        <MoreFilter
-          options={locations.length}
-          isOpenModal={isOpenModalRegions}
-          setOpenModal={handleChangeOpenModalRegions}
-          arrayForShowModal={locations}
-        />
-        <FilterSizing
-          values={`Quantity, ${valueOfQuantityCurrent}`}
-          measures={quantity}
-          toggleMeasures={handleToggleMeasuresQuantity}
-        />
-        <NumberInput
-          from={fromQuantity}
-          until={untilQuantity}
-          isValidFrom={isValidFromQuantity}
-          isValidUntil={isValidUntilQuantity}
-          changeFrom={handleChangeFromQuantity}
-          changeUntil={handleChangeUntilQuantity}
-        />
-        <FilterSizing
-          values={`Price, ${currentValute}`}
-          measures={currency}
-          toggleMeasures={handleToggleValutes}
-        />
-        <NumberInput
-          from={currentSumFrom}
-          until={currentSumUntil}
-          isValidFrom={isValidFromSum}
-          isValidUntil={isValidUntilSum}
-          changeFrom={handleChangeFromSum}
-          changeUntil={handleChangeUntilSum}
-        />
-      </div>
-      <div className={classes.filterUse}>
-        <Buttonfilter />
-      </div>
-    </div>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
 

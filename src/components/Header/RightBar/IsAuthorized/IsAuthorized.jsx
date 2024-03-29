@@ -18,7 +18,9 @@ function IsAuthorized() {
         case 'EMPLOYEE':
             return <ExchangerMenu/>;
         case 'USER':
-            return <UserMenu/>
+            return <UserMenu/>;
+        // default: 
+        //     return <UserMenu/>;
     }
 }
 
