@@ -11,8 +11,13 @@ function RightBar() {
   const rightBarStyle = {
     width: user.userData?.role === 'USER' ? '550px' : '300px',
   };
-  const currentUser = useSelector(state => state.currentUser);
-  const preferredCurrency = currentUser.userReady && user.userData.preferred_currency;
+  const currentUser = useSelector((state) => state.currentUser);
+  let preferredCurrency;
+
+  if (currentUser.userData) {
+    preferredCurrency =
+      currentUser.userReady && user.userData.preferred_currency;
+  }
 
   return (
     <div className={styles.rightBar} style={rightBarStyle}>
