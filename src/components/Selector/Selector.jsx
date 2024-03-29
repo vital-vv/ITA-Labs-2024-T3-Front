@@ -3,12 +3,10 @@ import { options } from '../dataoffilter';
 import { useDispatch, useSelector } from 'react-redux';
 import { sortBySelector } from '../../features/filter/filterSlice';
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
 
 export default function Selector() {
   const dispatch = useDispatch();
   const {currentLabelSelector} = useSelector(state => state.filter);
-  console.log(currentLabelSelector)
 
   const handleChangeSelectorSort = (event) => {
     dispatch(sortBySelector(event.target.value));

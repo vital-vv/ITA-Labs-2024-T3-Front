@@ -16,13 +16,10 @@ export const fetchUserData = createAsyncThunk(
 
 export const loadUserAllBets = createAsyncThunk(
   'filters/loadUserAllBets',
-  async (_, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/users/bids`);
-      if (response.status !== 200) {
-        throw new Error('Something went wrong');
-      }
-      // console.log(response); //add logic later
+      const response = await api.get(`/users/bids`, { params });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -92,7 +89,6 @@ export const changeCurrentUser = createAsyncThunk(
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
-      console.log(response)
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -103,9 +99,9 @@ const checkForm = (state) => {
   const phoneNumber = /^\d{9}$/;
   state.isValidNewData = false;
   if (
-    state.userData.first_name &&
-    state.userData.last_name &&
-    phoneNumber.test(Number(state.userData.number)) ||
+    (state.userData.first_name &&
+      state.userData.last_name &&
+      phoneNumber.test(Number(state.userData.number))) ||
     state.userData.urlAvatar.substring(0, 3) === 'blob'
   ) {
     state.isValidNewData = true;
@@ -121,6 +117,7 @@ const currentUserSlice = createSlice({
     status: null,
     isLoading: false,
     error: null,
+    currentTab: 'Active',
     userReady: false,
     isValidNewData: false,
     copyUserData: {},
@@ -138,6 +135,9 @@ const currentUserSlice = createSlice({
       state.status = null;
       state.isLoading = false;
       state.error = null;
+    },
+    setActiveTab: (state, action) => {
+      state.currentTab = action.payload;
     },
     changeFirstNameField: (state, action) => {
       state.userData.first_name = action.payload;
@@ -217,6 +217,18 @@ const currentUserSlice = createSlice({
         state.error = action.payload;
         state.status = null;
       })
+      .addCase(loadUserAllBets.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loadUserAllBets.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData.bids = action.payload;
+      })
+      .addCase(loadUserAllBets.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       .addCase(getAvatar.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData.urlAvatar = action.payload;
@@ -228,12 +240,13 @@ const currentUserSlice = createSlice({
       })
       .addCase(changeCurrentUser.fulfilled, (state) => {
         state.showModalSuccess = true;
-      })
+      });
   },
 });
 export const {
   setTokens,
   clearUserData,
+  setActiveTab,
   changeFirstNameField,
   changeLastNameField,
   changePhoneNumber,

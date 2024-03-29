@@ -21,8 +21,6 @@ function Goods({
   const [maxValue, setMaxValue] = useState(0);
   const dispatch = useDispatch();
 
-  
-
   const toggleModal = (event) => {
     setOpen((prevOpen) => !prevOpen);
     if (lotItem.leading) {
@@ -33,7 +31,6 @@ function Goods({
     setMaxValue(lotItem.total_price - 1);
     dispatch(changeModalThrough(event.target.id));
   };
-
 
   return (
     <>

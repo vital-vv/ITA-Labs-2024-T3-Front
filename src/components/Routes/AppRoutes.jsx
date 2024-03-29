@@ -20,8 +20,6 @@ import {CategoriesContent} from "../Categories/CategoriesContent/CatgoriesConten
 import {Onboarding} from "../Onboarding/Onboarding.jsx";
 import {Registration} from "../Onboarding/Registration/Registration.jsx";
 import {SignInApp} from "../SignIn/SignInApp.jsx";
-import {Orders} from "../Orders/Orders.jsx";
-import {Advertisements} from "../Advertisements/Advertisements.jsx";
 
 function AppRoutes() {
     return (
@@ -57,9 +55,7 @@ function AppRoutes() {
             </Route>
             <Route path="/user/*" element={<ProfileLayout/>}>
                 <Route path="account" element={<Account/>}/>
-                <Route path="orders" element={<Orders/>}/>
-                <Route path="bets" element={<AllBets/>}/>
-                <Route path="advertisements" element={<Advertisements/>}/>
+                <Route path=":betType" element={<AllBets/>}/>
             </Route>
         </Routes>
     );

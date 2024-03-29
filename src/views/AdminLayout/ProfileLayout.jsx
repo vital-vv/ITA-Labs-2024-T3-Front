@@ -1,5 +1,5 @@
 import styles from './ProfileLayout.module.scss';
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import {Header} from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Navigation from "./Navigation/Navigation.jsx";
@@ -9,27 +9,35 @@ import {userNav} from "../../utils/constants.js";
 import {exchangerNav} from "../../utils/constants.js";
 import {useSelector} from "react-redux";
 import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {CircularProgress} from "@mui/material";
 
 
 function ProfileLayout() {
     const user = useSelector(selectUserData);
-    const navigate = useNavigate();
+    const [navOptions, setNavOptions] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    let navOptions = user.userData.role === 'USER' ? userNav :
-        user.userData.role === 'ADMIN' ? adminNav :
-            user.userData.role === 'EMPLOYEE' ? exchangerNav : null;
-
-    if (navOptions === null) {
-        navigate('/login');
-    }
+    useEffect(() => {
+        if (user.userData) {
+            let options = user.userData.role === 'USER' ? userNav :
+                user.userData.role === 'ADMIN' ? adminNav :
+                    user.userData.role === 'EMPLOYEE' ? exchangerNav : null;
+            setNavOptions(options);
+            setLoading(false);
+        }
+    }, [user.userData]);
 
     return (
         <>
             <Header/>
             <div className={styles.adminPanel}>
-                {navOptions && <Navigation navTabs={navOptions}/>}
-                <Outlet/>
+                {loading ? <CircularProgress color="success" className={styles.progress}/> : (
+                    <>
+                        {navOptions && <Navigation navTabs={navOptions}/>}
+                        <Outlet/>
+                    </>
+                )}
             </div>
             <Footer/>
         </>

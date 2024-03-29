@@ -25,9 +25,7 @@ export const deleteLot = createAsyncThunk(
   'lots/deleteLot',
   async (lotId, { rejectWithValue }) => {
     try {
-      const response = await api.delete(
-        `/lots/${lotId}`
-      );
+      const response = await api.delete(`/lots/${lotId}`);
       if (response.status !== 204) {
         throw new Error('Something went wrong');
       }
@@ -35,6 +33,18 @@ export const deleteLot = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  }
+);
+
+export const getAllLots = createAsyncThunk(
+  'filters/getAllLots',
+  async (params, {rejectWithValue}) => {
+      try {
+          const response = await api.get(`/lots`, {params});
+          return response.data;
+      } catch (error) {
+          return rejectWithValue(error.message);
+      }
   }
 );
 
@@ -123,7 +133,7 @@ const filterSlice = createSlice({
     currentCategoryId: 1,
     sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
     minMaxSlider: { mm: [0, 200], cm: [0, 20] },
-    sizing: null,
+    sizing: ['mm', 'cm'],
     sliderCurrentValues: [50, 150],
     sliderCurrentLimit: [0, 200],
     quantityValues: [1, 10000],
@@ -282,7 +292,7 @@ const filterSlice = createSlice({
         state.stringFilter = '';
       }
     },
-    clearAllParameters(state) {
+    clearAllParameters(state, {}) {
       const sumArray = [
         ...state.varieties,
         ...state.packages,
@@ -419,7 +429,7 @@ const filterSlice = createSlice({
       state.isPagination = true;
     },
     getCurrentCategory(state, action) {
-      state.currentCategoryId = action.payload.id;
+      state.currentCategoryId = action.payload;
       state.currentCategory = action.payload.category;
     },
   },
@@ -449,6 +459,17 @@ const filterSlice = createSlice({
         state.currentLots = state.currentLots.filter((item) => {
           return item.lot_id !== Number(action.payload);
         });
+      })
+      .addCase(getAllLots.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.isLoading = false;
+      })
+      .addCase(getAllLots.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllLots.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentLots = state.currentLots = action.payload.content;
       });
   },
 });

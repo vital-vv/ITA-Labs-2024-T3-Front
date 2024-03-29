@@ -25,10 +25,6 @@ export const postNewLot = createAsyncThunk(
       'lot',
       new Blob([JSON.stringify(lotData)], { type: 'application/json' })
     );
-    // const index = picturesFiles.findIndex(item => item.isMainImage === true);
-    // picturesFiles.unShift(picturesFiles[index]);
-    // picturesFiles.splice(index, 1);
-    // console.log(picturesFiles)
     const arrayPictures = picturesFiles.map((item) => item.file);
     arrayPictures.forEach(item => {   
       formData.append('images', item)
