@@ -1,12 +1,10 @@
 import classes from './Goods.module.scss';
 import Clock from '../../assets/svg/Clock';
-import Hammer from '../../assets/svg/Hammer';
-import Cart from '../../assets/svg/Cart';
-import Trash from '../../assets/svg/Trash';
 import { ModalWindow } from './ModalWindow/ModalWindow.jsx';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeModalThrough } from '../../features/lots/lotsSlice.js';
+import { LotButtons } from './LotButtons/LotButtons.jsx';
 
 function Goods({
   lotItem,
@@ -15,6 +13,7 @@ function Goods({
   hoursRest,
   buttonDelete,
   id,
+  userRole,
 }) {
   const [open, setOpen] = useState(false);
   const [minValue, setMinValue] = useState(0);
@@ -55,7 +54,7 @@ function Goods({
           </div>
           <div className={classes.more}>
             <p className={classes.description}>
-              {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
+            {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
             </p>
             <p className={classes.region}>
               {lotItem.location.country}, {lotItem.location.region}
@@ -70,13 +69,19 @@ function Goods({
                 {lotItem.leading ? `$${lotItem.leading.amount}` : 'No bets'}
               </p>
               <p className={!lotItem.leading ? classes.hidden : null}>
-                $<span>{lotItem.leading && (lotItem.leading.amount/lotItem.quantity).toFixed(2)}</span>/kg
+                $
+                <span>
+                  {lotItem.leading &&
+                    (lotItem.leading.amount / lotItem.quantity).toFixed(2)}
+                </span>
+                /kg
               </p>
             </div>
             <div className={classes.perKg}>
               <p>${lotItem.total_price}</p>
               <p>
-                <span>${lotItem.price_per_unit.toFixed(2)}</span>/{lotItem.weight}
+                <span>${lotItem.price_per_unit.toFixed(2)}</span>/
+                {lotItem.weight}
               </p>
             </div>
           </div>
@@ -84,21 +89,21 @@ function Goods({
             className={classes.purchasing}
             onClick={(event) => event.preventDefault()}
           >
-            <button onClick={toggleModal} id={id}>
-              <Hammer />
-              My bet
-            </button>
-            <button>
-              <Cart />
-              Buy now
-            </button>
-            <button onClick={buttonDelete} id={id}>
-              <Trash />
-            </button>
+            <LotButtons
+              userRole={userRole}
+              id={id}
+              title={lotItem.title}
+              buttonDelete={buttonDelete}
+            />{' '}
           </div>
         </div>
       </div>
-      <ModalWindow open={open} handleClose={toggleModal} minValue={minValue} maxValue={maxValue}/>
+      <ModalWindow
+        open={open}
+        handleClose={toggleModal}
+        minValue={minValue}
+        maxValue={maxValue}
+      />
     </>
   );
 }

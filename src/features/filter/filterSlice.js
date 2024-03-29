@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { api } from '../../utils/axios.js';
 
 export const applyFilters = createAsyncThunk(
@@ -38,13 +37,37 @@ export const deleteLot = createAsyncThunk(
 
 export const getAllLots = createAsyncThunk(
   'filters/getAllLots',
-  async (params, {rejectWithValue}) => {
-      try {
-          const response = await api.get(`/lots`, {params});
-          return response.data;
-      } catch (error) {
-          return rejectWithValue(error.message);
-      }
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/lots`, { params });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const approveLot = createAsyncThunk(
+  'filters/approveLot',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/lots/${id}/approve`);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const rejectLot = createAsyncThunk(
+  'filters/rejectLot',
+  async ({ id, description }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/lots/${id}/reject`, description);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -133,7 +156,7 @@ const filterSlice = createSlice({
     currentCategoryId: 1,
     sliderDefaultValues: { mm: [50, 150], cm: [5, 15] },
     minMaxSlider: { mm: [0, 200], cm: [0, 20] },
-    sizing: ['mm', 'cm'],
+    sizing: null,
     sliderCurrentValues: [50, 150],
     sliderCurrentLimit: [0, 200],
     quantityValues: [1, 10000],
@@ -160,6 +183,7 @@ const filterSlice = createSlice({
     isPagination: false,
     isLoading: false,
     currentCategory: '',
+    currentLabelSelector: 'New ones first',
     isLotsReady: false,
     hasNextPage: false,
     allDataFilterReady: false,
@@ -304,8 +328,8 @@ const filterSlice = createSlice({
       state.chosenOptions = [];
       state.sizeMeasuresToMm = true;
       state.sliderCurrentValues = [200, 600];
-      (state.sliderCurrentLimit = [0, 1000]),
-        (state.valueOfQuantityCurrent = 'ton');
+      state.sliderCurrentLimit = [0, 1000];
+      state.valueOfQuantityCurrent = 'ton';
       state.currentValute = 'USD';
       state.quantityValues = [1, 10000];
       state.sumCurrent = [1, 1000000];

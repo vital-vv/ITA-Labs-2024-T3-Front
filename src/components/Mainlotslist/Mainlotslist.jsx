@@ -1,19 +1,21 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import ChoseOptions from '../ChoseOptions/ChoseOptions';
 import Goods from '../Goods/Goods';
 import { useDispatch, useSelector } from 'react-redux';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import classes from './MainLotsList.module.scss';
 import { deleteLot, applyFilters } from '../../features/filter/filterSlice';
 import { useEffect } from 'react';
+import { selectUserData } from '../../features/currentUser/currentUserSlice.js';
 
 const MainLotsList = () => {
   const { currentLots } = useSelector((state) => state.filter);
+  const userRole = useSelector(selectUserData).userData.role;
   const now = new Date();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { stringFilter, sortField, currentPage } =
-    useSelector((state) => state.filter);
+  const { stringFilter, sortField, currentPage } = useSelector(
+    (state) => state.filter
+  );
   const { leadBet } = useSelector((state) => state.lots);
   const paramId = location.search.substring(4);
 
@@ -43,6 +45,7 @@ const MainLotsList = () => {
           daysRest={differenceDays}
           hoursRest={differenceHours}
           buttonDelete={handleDeleteLot}
+          userRole={userRole}
         />
       </NavLink>
     );
