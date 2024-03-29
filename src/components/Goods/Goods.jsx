@@ -1,11 +1,7 @@
 import classes from './Goods.module.scss';
 import Clock from '../../assets/svg/Clock';
-import { ModalWindow } from './ModalWindow/ModalWindow.jsx';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeModalThrough } from '../../features/lots/lotsSlice.js';
 import { LotButtons } from './LotButtons/LotButtons.jsx';
-import { openModalBid } from '../../features/filter/filterSlice.js';
+
 
 function Goods({
   lotItem,
@@ -16,22 +12,6 @@ function Goods({
   id,
   userRole,
 }) {
-  // const [open, setOpen] = useState(false);
-  // const [minValue, setMinValue] = useState(0);
-  // const [maxValue, setMaxValue] = useState(0);
-  const dispatch = useDispatch();
-
-  // const toggleModal = (event) => {
-  //   setOpen((prevOpen) => !prevOpen);
-  //   if (lotItem.leading) {
-  //     setMinValue(lotItem.leading.amount + 1);
-  //   } else {
-  //     setMinValue(lotItem.start_price);
-  //   }
-  //   setMaxValue(lotItem.total_price - 1);
-  //   dispatch(changeModalThrough(event.target.id));
-  // };
-
   return (
     <>
       <div className={classes.goods}>
@@ -55,7 +35,7 @@ function Goods({
           </div>
           <div className={classes.more}>
             <p className={classes.description}>
-            {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
+              {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
             </p>
             <p className={classes.region}>
               {lotItem.location.country}, {lotItem.location.region}
@@ -100,12 +80,6 @@ function Goods({
           </div>
         </div>
       </div>
-      {/* <ModalWindow
-        open={open}
-        handleClose={toggleModal}
-        minValue={minValue}
-        maxValue={maxValue}
-      /> */}
     </>
   );
 }

@@ -153,9 +153,11 @@ const currentUserSlice = createSlice({
     },
     chooseCountryCode: (state, action) => {
       state.userData.phoneCode = action.payload;
+      checkForm(state);
     },
     chooseCurrency: (state, action) => {
       state.userData.preferred_currency = action.payload;
+      checkForm(state);
     },
     changeAvatar: (state, action) => {
       state.userData.urlAvatar = action.payload;
@@ -163,6 +165,7 @@ const currentUserSlice = createSlice({
     },
     deleteAvatar: (state) => {
       state.userData.urlAvatar = null;
+      checkForm(state);
     },
     cancelAllChanges: (state) => {
       state.userData.first_name = state.copyUserData.first_name;

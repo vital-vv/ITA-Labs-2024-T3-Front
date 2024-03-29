@@ -456,9 +456,6 @@ const filterSlice = createSlice({
       state.currentCategoryId = action.payload.id;
       state.currentCategory = action.payload.category;
     },
-    openModalBid(state) {
-      state.isOpenModalBids = !state.isOpenModalBids;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -497,6 +494,32 @@ const filterSlice = createSlice({
       .addCase(getAllLots.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentLots = state.currentLots = action.payload.content;
+      })
+      .addCase(approveLot.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.isLoading = false;
+      })
+      .addCase(approveLot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(approveLot.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentLots = state.currentLots.filter((item) => {
+          return item.lot_id !== Number(action.payload);
+        });
+      })
+      .addCase(rejectLot.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.isLoading = false;
+      })
+      .addCase(rejectLot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(rejectLot.fulfilled, (state, action) => {
+        state.currentLots = state.currentLots.filter((item) => {
+          return item.lot_id !== Number(action.payload);
+        });
+        state.isLoading = false;
       });
   },
 });
