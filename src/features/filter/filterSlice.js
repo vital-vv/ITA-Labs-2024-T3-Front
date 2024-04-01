@@ -187,6 +187,7 @@ const filterSlice = createSlice({
     isLotsReady: false,
     hasNextPage: false,
     allDataFilterReady: false,
+    isOpenModalBids: false,
   },
   reducers: {
     changeSliderValues(state, action) {
