@@ -40,8 +40,10 @@ function Description() {
     currentBid,
     leadBet,
     correctRangeBets,
-    minimalBet
+    minimalBet,
+    createdByUser,
   } = useSelector((state) => state.lots);
+  const {userData} = useSelector(state => state.currentUser);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -49,6 +51,8 @@ function Description() {
   const positionLastSlash = location.pathname.lastIndexOf('/');
   const stepBack = location.pathname.substring(0, positionLastSlash);
   const { currentCategoryId } = useSelector((state) => state.filter);
+  const checkProductOwner = createdByUser === userData.user_id;
+  const isNotUser = userData.role !== 'USER'
 
   if (!isNaN(currentId)) {
     useEffect(() => {
@@ -127,7 +131,7 @@ function Description() {
             </p>
           </div>
         </div>
-        <div className={fullValidationForm ? classes.hidden : classes.offerSum}>
+        <div className={fullValidationForm || checkProductOwner || isNotUser ? classes.hidden : classes.offerSum}>
           <div>
             <span>$</span>
             <input
@@ -144,7 +148,7 @@ function Description() {
           <p>{(currentBid/currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}</p>
         </div>
         <div
-          className={fullValidationForm ? classes.hidden : classes.buttonManage}
+          className={fullValidationForm || checkProductOwner || isNotUser ? classes.hidden : classes.buttonManage}
         >
           <button
             disabled={currentBid && correctRangeBets ? null : true}

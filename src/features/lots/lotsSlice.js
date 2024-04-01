@@ -242,6 +242,7 @@ const lotsSlice = createSlice({
     idForBid: 0,
     mainPicture: '',
     bigPicture: '',
+    createdByUser: null,
   },
   reducers: {
     changeFirstOption(state, action) {
@@ -547,7 +548,7 @@ const lotsSlice = createSlice({
         state.title = data.title;
         state.currentWeight = data.quantity;
         state.currentPrice = data.total_price;
-        state.currentVariety = data.variety;
+        state.currentVariety = data.category_name;
         state.currentPackages = data.packaging;
         state.description = data.description;
         state.expirationDate = data.expiration_date;
@@ -557,6 +558,7 @@ const lotsSlice = createSlice({
         state.bigPicture = data.image_url[0].url;
         state.picturesFiles = data.image_url;
         state.minimalBet = data.start_price;
+        state.createdByUser = data.created_by;
       })
       .addCase(confirmBid.fulfilled, (state) => {
         state.showModalSuccess = true;

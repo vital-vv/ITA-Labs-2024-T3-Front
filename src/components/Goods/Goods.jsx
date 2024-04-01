@@ -1,7 +1,7 @@
 import classes from './Goods.module.scss';
 import Clock from '../../assets/svg/Clock';
 import { LotButtons } from './LotButtons/LotButtons.jsx';
-
+import { useSelector } from 'react-redux';
 
 function Goods({
   lotItem,
@@ -12,6 +12,9 @@ function Goods({
   id,
   userRole,
 }) {
+  const {userData} = useSelector(state => state.currentUser);
+  const isProductOwner = lotItem.created_by === userData.user_id;
+
   return (
     <>
       <div className={classes.goods}>
@@ -67,7 +70,7 @@ function Goods({
             </div>
           </div>
           <div
-            className={classes.purchasing}
+            className={isProductOwner ? classes.hidden : classes.purchasing}
             onClick={(event) => event.preventDefault()}
           >
             <LotButtons
