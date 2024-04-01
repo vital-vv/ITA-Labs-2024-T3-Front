@@ -14,19 +14,6 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
-export const loadUserAllBets = createAsyncThunk(
-  'filters/loadUserAllBets',
-  async (params, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/users/bids`, { params });
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const postOnboarding = createAsyncThunk(
   'onboarding/postOnboarding',
   async (formData, thunkAPI) => {
@@ -219,18 +206,6 @@ const currentUserSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         state.status = null;
-      })
-      .addCase(loadUserAllBets.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(loadUserAllBets.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.userData.bids = action.payload;
-      })
-      .addCase(loadUserAllBets.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
       })
       .addCase(getAvatar.fulfilled, (state, action) => {
         state.isLoading = false;
