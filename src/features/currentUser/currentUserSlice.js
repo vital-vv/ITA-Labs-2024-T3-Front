@@ -111,7 +111,7 @@ const checkForm = (state) => {
 const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState: {
-    userData: null,
+    userData: 'GUEST',
     idToken: null,
     accessToken: null,
     status: null,

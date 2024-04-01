@@ -27,7 +27,7 @@ const LotButtons = ({ userRole, id, buttonDelete, title, lotItem }) => {
       setMinValue(lotItem.start_price);
     }
     setMaxValue(lotItem.total_price - 1);
-    dispatch(changeModalThrough(event.target.id));
+    dispatch(changeModalThrough(event.currentTarget.id));
   };
 
   const toggleModal = () => {
