@@ -36,7 +36,20 @@
 }
 
 .labelOfGood {
+  display: flex;
   @include fontStyle(20px, 500, 28px, 0.15px);
+}
+.manage{
+  font-weight: 400;
+  color: #38999B;
+  font-size: 15px;
+  margin: 0 0 0 2px;
+  display: flex;
+  padding: 2px 6px;
+  align-items: center;
+  &:hover{
+    background-color: #f3f3f3;
+  }
 }
 
 .data {

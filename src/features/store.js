@@ -6,6 +6,7 @@ import subcategoriesSlice from "./categories/subcategoriesSlice.js";
 import currentUserSlice from "./currentUser/currentUserSlice.js";
 import mainSlice from './main/mainSlice.js';
 import lotsSlice from './lots/lotsSlice.js';
+import imagesSlice from "./categories/imagesSlice.js";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         subcategories: subcategoriesSlice,
         users: usersSlice,
         filter: filterSlice,
+        images: imagesSlice,
     },
 });

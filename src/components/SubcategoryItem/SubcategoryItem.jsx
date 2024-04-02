@@ -1,7 +1,7 @@
 import styles from './SubcategoryItem.module.scss';
 import { subCategories } from '../../utils/constants.js';
 import { NavLink, Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 function SubcategoryItem() {
   

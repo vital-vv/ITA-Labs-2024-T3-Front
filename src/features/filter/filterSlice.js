@@ -59,18 +59,6 @@ export const getUserLots = createAsyncThunk(
     }
 );
 
-export const approveLot = createAsyncThunk(
-    'filters/approveLot',
-    async (id, {rejectWithValue}) => {
-        try {
-            const response = await api.post(`/lots/${id}/approve`);
-            return id;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-
 export const loadUserAllBets = createAsyncThunk(
     'filters/loadUserAllBets',
     async (params, {rejectWithValue}) => {
@@ -83,11 +71,49 @@ export const loadUserAllBets = createAsyncThunk(
     }
 );
 
+export const confirmLot = createAsyncThunk(
+    'filters/confirmLot',
+    async (id, {rejectWithValue}) => {
+        try {
+            const response = await api.post(`/lots/${id}/confirm`);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const approveLot = createAsyncThunk(
+    'filters/approveLot',
+    async (id, {rejectWithValue}) => {
+        try {
+            const response = await api.post(`/lots/${id}/approve`);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+
 export const rejectLot = createAsyncThunk(
     'filters/rejectLot',
     async ({id, description}, {rejectWithValue}) => {
         try {
             const response = await api.post(`/lots/${id}/reject`, description);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const deactivateLot = createAsyncThunk(
+    'filters/deactivateLot',
+    async (id, {rejectWithValue}) => {
+        try {
+            console.log(id)
+            const response = await api.post(`/lots/${id}/deactivate`);
             return id;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -563,6 +589,32 @@ const filterSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(rejectLot.fulfilled, (state, action) => {
+                state.currentLots = state.currentLots.filter((item) => {
+                    return item.lot_id !== Number(action.payload);
+                });
+                state.isLoading = false;
+            })
+            .addCase(confirmLot.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(confirmLot.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(confirmLot.fulfilled, (state, action) => {
+                state.currentLots = state.currentLots.filter((item) => {
+                    return item.lot_id !== Number(action.payload);
+                });
+                state.isLoading = false;
+            })
+            .addCase(deactivateLot.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(deactivateLot.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deactivateLot.fulfilled, (state, action) => {
                 state.currentLots = state.currentLots.filter((item) => {
                     return item.lot_id !== Number(action.payload);
                 });

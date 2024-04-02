@@ -11,15 +11,14 @@ function BetsContent() {
     const location = useLocation().pathname;
 
     useEffect(() => {
-        console.log('useeffect')
         switch (user.userData.role) {
             case "USER":
                 if (user.currentTab === 'Active' && location === '/user/advertisements') {
                     dispatch(getUserLots({status: 'ACTIVE'}));
                 } else if (user.currentTab === 'Pending') {
-                    dispatch(getUserLots({status: 'MODERATED'}));
+                    dispatch(getUserLots({status: 'MODERATED, CANCELLED'}));
                 } else if (user.currentTab === 'Inactive') {
-                    dispatch(getUserLots({status: 'CANCELLED'}));
+                    dispatch(getUserLots({status: 'DEACTIVATED'}));
                 } else if (user.currentTab === 'Active' && location === '/user/bets') {
                     dispatch(loadUserAllBets({status: 'LEADING'}));
                 } else if (user.currentTab === 'Outbid') {
@@ -34,7 +33,7 @@ function BetsContent() {
                 }
                 break;
         }
-    }, [dispatch, user.currentTab, location])
+    }, [dispatch, user.currentTab, location,user.userData.role])
 
     return (
         <MainLotsList/>
