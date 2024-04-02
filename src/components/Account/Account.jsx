@@ -19,9 +19,17 @@ import {
   cancelAllChanges,
   deleteAvatar,
   changeCurrentUser,
-  changeShowModalAfterTime
+  changeShowModalAfterTime,
+  changeEmail,
+  setTokens,
+  fetchUserData,
 } from '../../features/currentUser/currentUserSlice';
 import ModalBid from '../ModalBid/ModalBid';
+import {
+  updateUserAttribute,
+  confirmUserAttribute,
+  fetchAuthSession,
+} from 'aws-amplify/auth';
 
 function Account() {
   const { currency, isDataReady } = useSelector((state) => state.main);
@@ -43,6 +51,48 @@ function Account() {
   const sendDataToState = (dispatch, data, event) => {
     dispatch(data(event.target.value));
   };
+
+  async function handleUpdateUserAttribute(attributeKey, value) {
+    try {
+      const output = await updateUserAttribute({
+        userAttribute: {
+          attributeKey,
+          value,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleConfirmUserAttribute({
+    userAttributeKey,
+    confirmationCode,
+  }) {
+    try {
+      await confirmUserAttribute({ userAttributeKey, confirmationCode });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function currentSession() {
+    try {
+      fetchAuthSession({ forceRefresh: true })
+      .then(objTokens => {
+        const accessToken = objTokens.tokens.accessToken.toString();
+        const idToken = objTokens.tokens.idToken.toString();
+        dispatch(setTokens({accessToken, idToken}));
+        dispatch(changeCurrentUser(newAvatar));
+        dispatch(fetchUserData());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     if (!isDataReady) {
@@ -86,7 +136,7 @@ function Account() {
     const fileAvatar = event.target.files[0];
     const newAvatar = URL.createObjectURL(fileAvatar);
     setNewAvatar(fileAvatar);
-    dispatch(changeAvatar( newAvatar ));
+    dispatch(changeAvatar(newAvatar));
   };
 
   const handleCancelAllChanges = () => {
@@ -103,9 +153,34 @@ function Account() {
 
   const handleChangeCurrentUser = () => {
     dispatch(changeCurrentUser(newAvatar));
-  }
+  };
 
-  const [newAvatar, setNewAvatar] = useState(undefined); 
+  const [newAvatar, setNewAvatar] = useState(undefined);
+  const [openConfirmed, setOpenConfirmed] = useState(false);
+  const [codeConfirmed, setCodeConfirmed] = useState('');
+
+  const handleChangeEmailField = (event) => {
+    sendDataToState(dispatch, changeEmail, event);
+  };
+
+  const handleChangeCodeConfirmed = (event) => {
+    setCodeConfirmed(event.target.value);
+  };
+
+  const handleRequestChangeEmail = () => {
+    setOpenConfirmed(true);
+    handleUpdateUserAttribute('email', email);
+  };
+
+  const handleConfirmEmail = async () => {
+    handleConfirmUserAttribute({
+      confirmationCode: codeConfirmed,
+      userAttributeKey: 'email',
+    });
+    setOpenConfirmed(false);
+    await currentSession();
+    setCodeConfirmed('');
+  };
 
   return (
     <>
@@ -154,6 +229,12 @@ function Account() {
                   chooseCountryCode={handleChooseCountryCode}
                   changePhoneNumber={handleChangePhoneNumber}
                   code={phoneCode}
+                  changeEmailField={handleChangeEmailField}
+                  showValidationCode={openConfirmed}
+                  confirmationCode={codeConfirmed}
+                  changeConfirmationCode={handleChangeCodeConfirmed}
+                  requestChangeEmail={handleRequestChangeEmail}
+                  confirmEmail={handleConfirmEmail}
                 />
                 <select
                   className={classes.currency}
@@ -196,7 +277,11 @@ function Account() {
               <p>Change password</p>
             </div> */}
           </div>
-          <ModalBid text={`Your settings was changed`} showModal={showModalSuccess} action={changeShowModalAfterTime}/>
+          <ModalBid
+            text={`Your settings was changed`}
+            showModal={showModalSuccess}
+            action={changeShowModalAfterTime}
+          />
         </div>
       ) : (
         <Loader />

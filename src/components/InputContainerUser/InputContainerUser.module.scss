@@ -1,32 +1,65 @@
 .inputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 376px;
+  gap: 25px;
+  justify-content: space-between;
+
+  input {
+    height: 44px;
+    padding: 0 0 0 5px;
+  }
+
+  .numberContainer {
     display: flex;
-    flex-direction: column;
-    width: 376px;
-    gap: 25px;
     justify-content: space-between;
 
-    input {
-      height: 44px;
-      padding: 0 0 0 5px;
+    .phoneNumber {
+      width: 60%;
     }
-
-    .numberContainer {
-      display: flex;
-      justify-content: space-between;
-
-      .phoneNumber {
-        width: 60%;
-      }
-    }
-
-    .editInput {
-      width: 100%;
-    }
-
-    select {
-        width: 120px;
-        border-radius: 4px;
-        border-color: #a2a2a2;
-        padding: 0 0 0 5px;
-      }
   }
+
+  .editInput {
+    width: 100%;
+  }
+
+  select {
+    width: 120px;
+    border-radius: 4px;
+    border-color: #a2a2a2;
+    padding: 0 0 0 5px;
+  }
+}
+
+.email {
+  display: flex;
+  input {
+    flex-grow: 1;
+  }
+}
+
+.changeEmail {
+  height: 44px;
+  background-color: #38999b;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+  width: 18%;
+}
+
+.hidden {
+  display: none;
+}
+
+.inValid {
+  height: 44px;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+  width: 18%;
+  background-color: gray;
+}
