@@ -158,7 +158,7 @@ function Account() {
     dispatch(changeCurrentUser(newAvatar));
   };
 
-  const [newAvatar, setNewAvatar] = useState(undefined);
+  const [newAvatar, setNewAvatar] = useState(null);
   const [openConfirmed, setOpenConfirmed] = useState(false);
   const [codeConfirmed, setCodeConfirmed] = useState('');
   const [isInvalidCode, setIsInvalidCode] = useState(false);
