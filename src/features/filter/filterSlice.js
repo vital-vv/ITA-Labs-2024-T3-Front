@@ -47,6 +47,18 @@ export const getAllLots = createAsyncThunk(
     }
 );
 
+export const getAllOrders = createAsyncThunk(
+    'filters/getAllOrders',
+    async (_,{rejectWithValue}) => {
+        try {
+            const response = await api.get(`/requests`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const getUserLots = createAsyncThunk(
     'filters/getUserLots',
     async (params, {rejectWithValue}) => {
@@ -65,6 +77,30 @@ export const loadUserAllBets = createAsyncThunk(
         try {
             const response = await api.get(`/users/bids`, {params});
             return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getUserOrders = createAsyncThunk(
+    'filters/getUserOrders',
+    async (params, {rejectWithValue}) => {
+        try {
+            const response = await api.get(`/users/requests`, {params});
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const buyLot = createAsyncThunk(
+    'filters/buyLot',
+    async (id, {rejectWithValue}) => {
+        try {
+            const response = await api.post(`/lots/${id}/buy`);
+            return id;
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -545,6 +581,17 @@ const filterSlice = createSlice({
                 state.isLoading = false;
                 state.currentLots = state.currentLots = action.payload.content;
             })
+            .addCase(getAllOrders.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(getAllOrders.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllOrders.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.currentLots = state.currentLots = action.payload.content;
+            })
             .addCase(getUserLots.rejected, (state, action) => {
                 state.error = action.error.message;
                 state.isLoading = false;
@@ -565,6 +612,32 @@ const filterSlice = createSlice({
                 state.currentLots = state.currentLots = action.payload.content;
             })
             .addCase(loadUserAllBets.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(getUserOrders.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(getUserOrders.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.currentLots = state.currentLots = action.payload.content;
+            })
+            .addCase(getUserOrders.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(buyLot.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(buyLot.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.currentLots = state.currentLots.filter((item) => {
+                    return item.lot_id !== Number(action.payload);
+                });
+            })
+            .addCase(buyLot.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })

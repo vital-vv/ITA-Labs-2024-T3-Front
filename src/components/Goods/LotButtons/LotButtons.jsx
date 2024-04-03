@@ -4,7 +4,7 @@ import Trash from '../../../assets/svg/Trash.jsx';
 import DoneIcon from '@mui/icons-material/Done';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import {useDispatch, useSelector} from 'react-redux';
-import {approveLot, confirmLot} from '../../../features/filter/filterSlice.js';
+import {approveLot, buyLot, confirmLot} from '../../../features/filter/filterSlice.js';
 import {ModalForReject} from './ModalForReject/ModalForReject.jsx';
 import {useState} from 'react';
 import {selectUserData} from '../../../features/currentUser/currentUserSlice.js';
@@ -34,8 +34,13 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
         dispatch(changeModalThrough(event.currentTarget.id));
     };
 
-    function confirmLotItem (e) {
-    dispatch(confirmLot(e.target.id))
+    function confirmLotItem () {
+        console.log(id)
+    dispatch(confirmLot(id))
+    }
+
+    function buyLotForTotalPrice () {
+        dispatch(buyLot(id))
     }
 
     const toggleModal = () => {
@@ -65,15 +70,15 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                 <>
                     <button onClick={toggleModalBids} id={id}>
                         <Hammer/>
-                        My bet
+                        {currentTab === 'Active' ? <p>New bet</p> : <p>My bet</p>}
                     </button>
-                    <button>
+                    <button onClick={buyLotForTotalPrice}>
                         <Cart/>
                         Buy now
                     </button>
-                    <button onClick={buttonDelete} id={id}>
+                    {currentTab !== 'Active' ?  <button onClick={buttonDelete} id={id}>
                         <Trash/>
-                    </button>
+                    </button> : null}
                     <ModalWindow
                         open={openBid}
                         handleClose={toggleModalBids}

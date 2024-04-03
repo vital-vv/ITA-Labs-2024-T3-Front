@@ -10,10 +10,10 @@ function determineTabsName(betType, userRole) {
     const tabsMap = {
         advertisements: {
             USER: ['Active', 'Pending', 'Inactive'],
-            EMPLOYEE: ['Active', 'Moderating'],
+            EMPLOYEE: ['Active', 'Moderating lots', 'Moderating orders'],
         },
         orders: {
-            USER: ['Active', 'Completed'],
+            USER: ['Active', 'Delivered', 'Completed'],
         },
         bets: {
             USER: ['Active', 'Outbid'],

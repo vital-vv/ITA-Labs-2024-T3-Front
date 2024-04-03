@@ -2,7 +2,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
 import {useEffect} from "react";
 import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
-import {getAllLots, loadUserAllBets,  getUserLots} from "../../features/filter/filterSlice.js";
+import {
+    getAllLots,
+    loadUserAllBets,
+    getUserLots,
+    getUserOrders,
+    getAllOrders
+} from "../../features/filter/filterSlice.js";
 import {useLocation} from "react-router-dom";
 
 function BetsContent() {
@@ -23,13 +29,21 @@ function BetsContent() {
                     dispatch(loadUserAllBets({status: 'LEADING'}));
                 } else if (user.currentTab === 'Outbid') {
                     dispatch(loadUserAllBets({status: 'OVERBID'}));
+                } else if (user.currentTab === 'Active' && location === '/user/orders') {
+                    dispatch(getUserOrders({status: 'ACTIVE'}));
+                }else if (user.currentTab === 'Delivered') {
+                    dispatch(getUserOrders({status: 'SOLD'}));
+                } else if (user.currentTab === 'Completed') {
+                    // dispatch(getUserOrders({status: 'SOLD'})); добавить метод на загрузку всех выигранных юзер лотов
                 }
                 break;
             case "EMPLOYEE":
                 if (user.currentTab === 'Active') {
                     dispatch(getAllLots({lotStatus: 'ACTIVE'}));
-                } else if (user.currentTab === 'Moderating') {
+                } else if (user.currentTab === 'Moderating lots') {
                     dispatch(getAllLots({lotStatus: 'MODERATED'}));
+                }else if (user.currentTab === 'Moderating orders') {
+                    dispatch(getAllOrders());
                 }
                 break;
         }
