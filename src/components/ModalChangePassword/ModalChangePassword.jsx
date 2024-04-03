@@ -31,11 +31,7 @@ function ModalChangePassword({ open, close }) {
   const { email } = useSelector((state) => state.currentUser.userData);
 
   const handleShowPassword = () => {
-    setShowPassword(true);
-  };
-
-  const handleHidePassword = () => {
-    setShowPassword(false);
+    setShowPassword(prev => !prev);
   };
 
   const handleResetPassword = async () => {
@@ -100,13 +96,13 @@ function ModalChangePassword({ open, close }) {
             label="Current password"
             variant="outlined"
             className={classes.inputPassword}
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? 'password' : 'text'}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    onMouseDown={handleShowPassword}
-                    onMouseUp={handleHidePassword}
+                    onClick={handleShowPassword}
+                    
                   >
                     <EyePassword />
                   </IconButton>
