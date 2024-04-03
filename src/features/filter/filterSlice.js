@@ -59,6 +59,18 @@ export const getAllOrders = createAsyncThunk(
     }
 );
 
+export const getUserSoldLots = createAsyncThunk(
+    'filters/getUserSoldLots',
+    async (_,{rejectWithValue}) => {
+        try {
+            const response = await api.get(`/users/lots/bought`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const getUserLots = createAsyncThunk(
     'filters/getUserLots',
     async (params, {rejectWithValue}) => {
@@ -589,6 +601,17 @@ const filterSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(getAllOrders.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.currentLots = state.currentLots = action.payload.content;
+            })
+            .addCase(getUserSoldLots.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(getUserSoldLots.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getUserSoldLots.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.currentLots = state.currentLots = action.payload.content;
             })

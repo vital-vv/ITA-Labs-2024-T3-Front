@@ -7,7 +7,7 @@ import {
     loadUserAllBets,
     getUserLots,
     getUserOrders,
-    getAllOrders
+    getAllOrders, getUserSoldLots
 } from "../../features/filter/filterSlice.js";
 import {useLocation} from "react-router-dom";
 
@@ -34,7 +34,7 @@ function BetsContent() {
                 }else if (user.currentTab === 'Delivered') {
                     dispatch(getUserOrders({status: 'SOLD'}));
                 } else if (user.currentTab === 'Completed') {
-                    // dispatch(getUserOrders({status: 'SOLD'})); добавить метод на загрузку всех выигранных юзер лотов
+                    dispatch(getUserSoldLots());
                 }
                 break;
             case "EMPLOYEE":

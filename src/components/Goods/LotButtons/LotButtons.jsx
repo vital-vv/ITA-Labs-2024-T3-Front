@@ -22,6 +22,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
     const [open, setOpen] = useState(false);
     const currentTab = useSelector(selectUserData).currentTab;
     const location = useLocation().pathname;
+    const user = useSelector(selectUserData);
 
     const toggleModalBids = (event) => {
         setOpenBid((prevOpen) => !prevOpen);
@@ -34,12 +35,12 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
         dispatch(changeModalThrough(event.currentTarget.id));
     };
 
-    function confirmLotItem () {
+    function confirmLotItem() {
         console.log(id)
-    dispatch(confirmLot(id))
+        dispatch(confirmLot(id))
     }
 
-    function buyLotForTotalPrice () {
+    function buyLotForTotalPrice() {
         dispatch(buyLot(id))
     }
 
@@ -47,19 +48,24 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
         setOpen((prevOpen) => !prevOpen);
     };
 
-    const handleApprove = (e) => {
-        dispatch(approveLot(e.target.id));
+    const handleApprove = () => {
+        dispatch(approveLot(id));
     };
+
     switch (userRole) {
         case 'USER':
-            if (currentTab === 'Active' && location === '/user/advertisements') {
+            if (currentTab === 'Active' && location === '/user/advertisements' && lotItem.leading !== null) {
                 return (
-                    <button onClick={confirmLotItem} className={styles.confirmBtn}>✓ Confirm for ${lotItem?.leading?.amount} </button>
+                    <button onClick={confirmLotItem} className={styles.confirmBtn}>✓ Confirm for
+                        ${lotItem?.leading?.amount} </button>
                 )
+            } else if (currentTab === 'Active' && location === '/user/advertisements' && user?.userData?.user_id === lotItem.created_by) {
+                return null;
             } else if (currentTab === 'Pending') {
                 if (lotItem.status === 'cancelled') {
                     return (
-                        <div className={styles.description}><img src={warning} alt={warning}/>{lotItem?.reject_message}</div>
+                        <div className={styles.description}><img src={warning} alt={warning}/>{lotItem?.reject_message}
+                        </div>
                     )
                 } else return
             } else if (currentTab === 'Inactive') {
@@ -76,7 +82,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                         <Cart/>
                         Buy now
                     </button>
-                    {currentTab !== 'Active' ?  <button onClick={buttonDelete} id={id}>
+                    {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
                         <Trash/>
                     </button> : null}
                     <ModalWindow
@@ -88,7 +94,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                 </>
             );
         case 'EMPLOYEE':
-            if (currentTab === 'Moderating') {
+            if (currentTab !== 'Active') {
                 return (
                     <>
                         <button onClick={handleApprove} id={id}>
