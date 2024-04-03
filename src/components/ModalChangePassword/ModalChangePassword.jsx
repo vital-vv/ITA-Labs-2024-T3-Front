@@ -101,8 +101,7 @@ function ModalChangePassword({ open, close }) {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={handleShowPassword}
-                    
+                    onClick={handleShowPassword}                    
                   >
                     <EyePassword />
                   </IconButton>
