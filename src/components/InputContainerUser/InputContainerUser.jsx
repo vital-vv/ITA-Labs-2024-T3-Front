@@ -2,6 +2,7 @@ import styles from './InputContainerUser.module.scss';
 import { TextField } from '@mui/material';
 import Check from '../../assets/svg/Check';
 import { useSelector } from 'react-redux';
+import AdaptTextField from '../Account/AdaptTextField';
 
 function InputContainerUser({
   firstName,
@@ -18,7 +19,8 @@ function InputContainerUser({
   confirmationCode,
   changeConfirmationCode,
   requestChangeEmail,
-  confirmEmail
+  confirmEmail,
+  isInvalidCode
 }) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const isValidEmail = emailRegex.test(email);
@@ -28,7 +30,7 @@ function InputContainerUser({
 
   return (
     <div className={styles.inputContainer}>
-      <TextField
+      <AdaptTextField
         id="standard-helperText"
         label="First name"
         value={firstName}
@@ -36,7 +38,7 @@ function InputContainerUser({
         className={styles.editInput}
         onChange={changeFirstNameField}
       />
-      <TextField
+      <AdaptTextField
         id="standard-helperText"
         label="Last name"
         value={lastName}
@@ -45,7 +47,7 @@ function InputContainerUser({
         onChange={changeLastNameField}
       />
       <div className={styles.email}>
-        <TextField
+        <AdaptTextField
           id="outlined-disabled"
           label="Email"
           value={email}
@@ -64,7 +66,7 @@ function InputContainerUser({
       <div className={showValidationCode ? null : styles.hidden}>
         <p>Enter code from {email} here:</p>
         <div className={styles.email}>
-          <TextField
+          <AdaptTextField
             id="standard-helperText"
             label="Enter your code confirmation here"
             value={confirmationCode}
@@ -76,13 +78,14 @@ function InputContainerUser({
             <Check />
           </button>
         </div>
+          <p className={isInvalidCode ? styles.error : styles.hidden}>You entered invalid code</p>
       </div>
       <div className={styles.numberContainer}>
         <select onChange={chooseCountryCode} value={code}>
           <option>+375</option>
           <option>+44</option>
         </select>
-        <TextField
+        <AdaptTextField
           id="standard-helperText"
           label="Phone"
           value={phoneNumber}

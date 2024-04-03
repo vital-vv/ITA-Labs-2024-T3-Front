@@ -30,6 +30,8 @@ import {
   confirmUserAttribute,
   fetchAuthSession,
 } from 'aws-amplify/auth';
+import Lock from '../../assets/svg/Lock';
+import ModalChangePassword from '../ModalChangePassword/ModalChangePassword';
 
 function Account() {
   const { currency, isDataReady } = useSelector((state) => state.main);
@@ -72,6 +74,7 @@ function Account() {
     try {
       await confirmUserAttribute({ userAttributeKey, confirmationCode });
     } catch (error) {
+      setIsInvalidCode(true);
       console.log(error);
     }
   }
@@ -79,16 +82,16 @@ function Account() {
   async function currentSession() {
     try {
       fetchAuthSession({ forceRefresh: true })
-      .then(objTokens => {
-        const accessToken = objTokens.tokens.accessToken.toString();
-        const idToken = objTokens.tokens.idToken.toString();
-        dispatch(setTokens({accessToken, idToken}));
-        dispatch(changeCurrentUser(newAvatar));
-        dispatch(fetchUserData());
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .then((objTokens) => {
+          const accessToken = objTokens.tokens.accessToken.toString();
+          const idToken = objTokens.tokens.idToken.toString();
+          dispatch(setTokens({ accessToken, idToken }));
+          dispatch(changeCurrentUser(newAvatar));
+          dispatch(fetchUserData());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -158,12 +161,16 @@ function Account() {
   const [newAvatar, setNewAvatar] = useState(undefined);
   const [openConfirmed, setOpenConfirmed] = useState(false);
   const [codeConfirmed, setCodeConfirmed] = useState('');
+  const [isInvalidCode, setIsInvalidCode] = useState(false);
+  const [isOpenModalChangingPassword, setIsOpenModalChangingPassword] =
+    useState(false);
 
   const handleChangeEmailField = (event) => {
     sendDataToState(dispatch, changeEmail, event);
   };
 
   const handleChangeCodeConfirmed = (event) => {
+    setIsInvalidCode(false);
     setCodeConfirmed(event.target.value);
   };
 
@@ -173,13 +180,21 @@ function Account() {
   };
 
   const handleConfirmEmail = async () => {
+    setIsInvalidCode(false);
     handleConfirmUserAttribute({
       confirmationCode: codeConfirmed,
       userAttributeKey: 'email',
     });
-    setOpenConfirmed(false);
+    if (!isInvalidCode) {
+      return;
+    }
     await currentSession();
+    setOpenConfirmed(false);
     setCodeConfirmed('');
+  };
+
+  const handleToogleModalChangingPassword = () => {
+    setIsOpenModalChangingPassword((prev) => !prev);
   };
 
   return (
@@ -235,6 +250,7 @@ function Account() {
                   changeConfirmationCode={handleChangeCodeConfirmed}
                   requestChangeEmail={handleRequestChangeEmail}
                   confirmEmail={handleConfirmEmail}
+                  isInvalidCode={isInvalidCode}
                 />
                 <select
                   className={classes.currency}
@@ -270,13 +286,13 @@ function Account() {
             </div>
           </div>
           <div className={classes.security}>
-            {/* Maybe this functional will be added later */}
-            {/* <p>Security</p>
-            <div>
+            <p>Security</p>
+            <div onClick={handleToogleModalChangingPassword}>
               <Lock />
               <p>Change password</p>
-            </div> */}
+            </div>
           </div>
+          <ModalChangePassword open={isOpenModalChangingPassword} close={handleToogleModalChangingPassword}/>
           <ModalBid
             text={`Your settings was changed`}
             showModal={showModalSuccess}
