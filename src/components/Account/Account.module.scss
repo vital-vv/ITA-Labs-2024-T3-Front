@@ -142,3 +142,10 @@
 .noValid {
   background-color: initial !important;
 }
+
+.changeEmail {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+}

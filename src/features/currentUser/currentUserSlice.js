@@ -53,7 +53,8 @@ export const changeCurrentUser = createAsyncThunk(
       userData.preferred_currency === copyUserData.preferred_currency &&
       userData.number === copyUserData.number &&
       userData.phoneCode === copyUserData.phoneCode &&
-      userData.urlAvatar === copyUserData.urlAvatar
+      userData.urlAvatar === copyUserData.urlAvatar &&
+      userData.email === copyUserData.email
     ) {
       return;
     }
@@ -161,10 +162,14 @@ const currentUserSlice = createSlice({
       state.userData.phoneCode = state.copyUserData.phoneCode;
       state.userData.preferred_currency = state.copyUserData.preferred_currency;
       state.userData.urlAvatar = state.copyUserData.urlAvatar;
+      state.userData.email = state.copyUserData.email;
     },
     changeShowModalAfterTime: (state) => {
       state.showModalSuccess = !state.showModalSuccess;
     },
+    changeEmail: (state, action) => {
+      state.userData.email = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -235,6 +240,7 @@ export const {
   deleteAvatar,
   cancelAllChanges,
   changeShowModalAfterTime,
+  changeEmail,
 } = currentUserSlice.actions;
 
 export const selectUserData = (state) => state.currentUser;
