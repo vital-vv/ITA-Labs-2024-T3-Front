@@ -75,11 +75,14 @@ export const changeCurrentUser = createAsyncThunk(
       last_name: userData.last_name,
       preferred_currency: userData.preferred_currency,
       phoneNumber: userData.phoneCode + userData.number,
-      isChange: isChangeAvatar,
     };
     formData.append(
       'data',
       new Blob([JSON.stringify(data)], { type: 'application/json' })
+    );
+    formData.append(
+      'isChange',
+      isChangeAvatar
     );
     if (newAvatar && isChangeAvatar) {
       formData.append('newAvatar', newAvatar);
