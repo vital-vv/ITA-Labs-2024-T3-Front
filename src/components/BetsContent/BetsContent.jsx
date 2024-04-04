@@ -1,14 +1,14 @@
-import {useDispatch, useSelector} from "react-redux";
-import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
-import {useEffect} from "react";
-import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
 import {
     getAllLots,
-    loadUserAllBets,
+    getAllOrders,
     getUserLots,
-    getUserOrders,
-    getAllOrders, getUserSoldLots
+    getUserOrders, getUserSoldLots,
+    loadUserAllBets
 } from "../../features/filter/filterSlice.js";
+import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
 import {useLocation} from "react-router-dom";
 
 function BetsContent() {
@@ -17,41 +17,51 @@ function BetsContent() {
     const location = useLocation().pathname;
 
     useEffect(() => {
+        const handleUserActions = (user, dispatch) => {
+            const actions = {
+                'Active': () => {
+                    if (location === '/user/advertisements') {
+                        dispatch(getUserLots({status: 'ACTIVE'}));
+                    } else if (location === '/user/bets') {
+                        dispatch(loadUserAllBets({status: 'LEADING'}));
+                    } else if (location === '/user/orders') {
+                        dispatch(getUserOrders({status: 'ACTIVE'}));
+                    }
+                },
+                'Pending': () => dispatch(getUserLots({status: 'MODERATED, CANCELLED'})),
+                'Inactive': () => dispatch(getUserLots({status: 'DEACTIVATED'})),
+                'Outbid': () => dispatch(loadUserAllBets({status: 'OVERBID'})),
+                'Delivered': () => dispatch(getUserOrders({status: 'SOLD'})),
+                'Completed': () => dispatch(getUserSoldLots())
+            };
+
+            actions[user.currentTab]?.();
+        };
+        const handleEmployeeActions = (user, dispatch) => {
+            const actions = {
+                'Active': () => dispatch(getAllLots({lotStatus: 'ACTIVE'})),
+                'Moderating lots': () => dispatch(getAllLots({lotStatus: 'MODERATED'})),
+                'Moderating orders': () => dispatch(getAllOrders()),
+            };
+
+            actions[user.currentTab]?.();
+        };
+
         switch (user.userData.role) {
             case "USER":
-                if (user.currentTab === 'Active' && location === '/user/advertisements') {
-                    dispatch(getUserLots({status: 'ACTIVE'}));
-                } else if (user.currentTab === 'Pending') {
-                    dispatch(getUserLots({status: 'MODERATED, CANCELLED'}));
-                } else if (user.currentTab === 'Inactive') {
-                    dispatch(getUserLots({status: 'DEACTIVATED'}));
-                } else if (user.currentTab === 'Active' && location === '/user/bets') {
-                    dispatch(loadUserAllBets({status: 'LEADING'}));
-                } else if (user.currentTab === 'Outbid') {
-                    dispatch(loadUserAllBets({status: 'OVERBID'}));
-                } else if (user.currentTab === 'Active' && location === '/user/orders') {
-                    dispatch(getUserOrders({status: 'ACTIVE'}));
-                }else if (user.currentTab === 'Delivered') {
-                    dispatch(getUserOrders({status: 'SOLD'}));
-                } else if (user.currentTab === 'Completed') {
-                    dispatch(getUserSoldLots());
-                }
+                handleUserActions(user, dispatch);
                 break;
             case "EMPLOYEE":
-                if (user.currentTab === 'Active') {
-                    dispatch(getAllLots({lotStatus: 'ACTIVE'}));
-                } else if (user.currentTab === 'Moderating lots') {
-                    dispatch(getAllLots({lotStatus: 'MODERATED'}));
-                }else if (user.currentTab === 'Moderating orders') {
-                    dispatch(getAllOrders());
-                }
+                handleEmployeeActions(user, dispatch);
                 break;
         }
-    }, [dispatch, user.currentTab, location,user.userData.role])
+
+
+    }, [dispatch, user.currentTab, location, user.userData.role])
 
     return (
         <MainLotsList/>
     )
 }
 
-export {BetsContent}
+export {BetsContent};

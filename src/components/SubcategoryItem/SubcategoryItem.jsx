@@ -1,13 +1,9 @@
 import styles from './SubcategoryItem.module.scss';
-import { subCategories } from '../../utils/constants.js';
 import { NavLink, Navigate, useLocation } from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import {ImageItem} from "./ImageItem/ImageItem.jsx";
 
 function SubcategoryItem() {
-  
-  const filtredCategory = subCategories.filter(
-    (product) => product.category === 'Vegetables'
-  );
 
   let { list } = useSelector(({ subcategories }) => subcategories);
   list = list.subcategories;
@@ -28,7 +24,7 @@ function SubcategoryItem() {
               id={item.category_id}
             >
               <NavLink to={`${redirect}/${item.name.toLowerCase()}?id=${item.category_id}`}>
-                <img src={filtredCategory[index].url} alt={item.name}></img>
+                <ImageItem imageUrl={item.imageUrl} name={item.name} />
                 <div className={styles.subcategoryOpacity}></div>
                 <p className={styles.subcategoryName}>{item.name}</p>
               </NavLink>
