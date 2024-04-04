@@ -57,8 +57,7 @@ export const getAvatar = createAsyncThunk(
 export const changeCurrentUser = createAsyncThunk(
   'currentUser/changeCurrentUser',
   async (newAvatar, { rejectWithValue, getState }) => {
-    const { userData } = getState().currentUser;
-    const { copyUserData } = getState().currentUser;
+    const { userData, copyUserData, isChangeAvatar } = getState().currentUser;
     if (
       userData.first_name === copyUserData.first_name &&
       userData.last_name === copyUserData.last_name &&
@@ -81,7 +80,11 @@ export const changeCurrentUser = createAsyncThunk(
       'data',
       new Blob([JSON.stringify(data)], { type: 'application/json' })
     );
-    if (newAvatar !== undefined) {
+    formData.append(
+      'isChange',
+      isChangeAvatar
+    );
+    if (newAvatar && isChangeAvatar) {
       formData.append('newAvatar', newAvatar);
     }
     try {
@@ -101,8 +104,7 @@ const checkForm = (state) => {
   if (
     (state.userData.first_name &&
       state.userData.last_name &&
-      phoneNumber.test(Number(state.userData.number))) ||
-    state.userData.urlAvatar.substring(0, 3) === 'blob'
+      phoneNumber.test(Number(state.userData.number))) 
   ) {
     state.isValidNewData = true;
   }
@@ -122,6 +124,7 @@ const currentUserSlice = createSlice({
     isValidNewData: false,
     copyUserData: {},
     showModalSuccess: false,
+    isChangeAvatar: false,
   },
   reducers: {
     setTokens: (state, action) => {
@@ -161,10 +164,14 @@ const currentUserSlice = createSlice({
     },
     changeAvatar: (state, action) => {
       state.userData.urlAvatar = action.payload;
+      state.isChangeAvatar = true;
+      state.isValidNewData = true;
       checkForm(state);
     },
     deleteAvatar: (state) => {
       state.userData.urlAvatar = null;
+      state.isChangeAvatar = true;
+      state.isValidNewData = true;
       checkForm(state);
     },
     cancelAllChanges: (state) => {
@@ -244,6 +251,7 @@ const currentUserSlice = createSlice({
           ...state.copyUserData,
           urlAvatar: action.payload,
         };
+        state.isChangeAvatar = false;
       })
       .addCase(changeCurrentUser.fulfilled, (state) => {
         state.showModalSuccess = true;

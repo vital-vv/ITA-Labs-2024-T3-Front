@@ -30,6 +30,8 @@ import {
   confirmUserAttribute,
   fetchAuthSession,
 } from 'aws-amplify/auth';
+import Lock from '../../assets/svg/Lock';
+import ModalChangePassword from '../ModalChangePassword/ModalChangePassword';
 
 function Account() {
   const { currency, isDataReady } = useSelector((state) => state.main);
@@ -54,7 +56,7 @@ function Account() {
 
   async function handleUpdateUserAttribute(attributeKey, value) {
     try {
-      const output = await updateUserAttribute({
+      await updateUserAttribute({
         userAttribute: {
           attributeKey,
           value,
@@ -72,23 +74,24 @@ function Account() {
     try {
       await confirmUserAttribute({ userAttributeKey, confirmationCode });
     } catch (error) {
-      console.log(error);
+      setTextError(error);
+      setIsInvalidCode(true);
     }
   }
 
   async function currentSession() {
     try {
       fetchAuthSession({ forceRefresh: true })
-      .then(objTokens => {
-        const accessToken = objTokens.tokens.accessToken.toString();
-        const idToken = objTokens.tokens.idToken.toString();
-        dispatch(setTokens({accessToken, idToken}));
-        dispatch(changeCurrentUser(newAvatar));
-        dispatch(fetchUserData());
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .then((objTokens) => {
+          const accessToken = objTokens.tokens.accessToken.toString();
+          const idToken = objTokens.tokens.idToken.toString();
+          dispatch(setTokens({ accessToken, idToken }));
+          dispatch(changeCurrentUser(newAvatar));
+          dispatch(fetchUserData());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -103,6 +106,8 @@ function Account() {
   useEffect(() => {
     if (userReady) {
       dispatch(getAvatar());
+      setOpenConfirmed(false);
+      setIsInvalidCode(false);
     }
   }, [dispatch, userReady]);
 
@@ -155,15 +160,20 @@ function Account() {
     dispatch(changeCurrentUser(newAvatar));
   };
 
-  const [newAvatar, setNewAvatar] = useState(undefined);
+  const [newAvatar, setNewAvatar] = useState(null);
   const [openConfirmed, setOpenConfirmed] = useState(false);
   const [codeConfirmed, setCodeConfirmed] = useState('');
+  const [isInvalidCode, setIsInvalidCode] = useState(false);
+  const [isOpenModalChangingPassword, setIsOpenModalChangingPassword] =
+    useState(false);
+  const [textError, setTextError] = useState('')
 
   const handleChangeEmailField = (event) => {
     sendDataToState(dispatch, changeEmail, event);
   };
 
   const handleChangeCodeConfirmed = (event) => {
+    setIsInvalidCode(false);
     setCodeConfirmed(event.target.value);
   };
 
@@ -173,13 +183,21 @@ function Account() {
   };
 
   const handleConfirmEmail = async () => {
+    setIsInvalidCode(false);
     handleConfirmUserAttribute({
       confirmationCode: codeConfirmed,
       userAttributeKey: 'email',
     });
-    setOpenConfirmed(false);
+    if (isInvalidCode) {
+      return;
+    }
     await currentSession();
+    setOpenConfirmed(false);
     setCodeConfirmed('');
+  };
+
+  const handleToogleModalChangingPassword = () => {
+    setIsOpenModalChangingPassword((prev) => !prev);
   };
 
   return (
@@ -235,6 +253,8 @@ function Account() {
                   changeConfirmationCode={handleChangeCodeConfirmed}
                   requestChangeEmail={handleRequestChangeEmail}
                   confirmEmail={handleConfirmEmail}
+                  isInvalidCode={isInvalidCode}
+                  textError = {textError}
                 />
                 <select
                   className={classes.currency}
@@ -270,13 +290,13 @@ function Account() {
             </div>
           </div>
           <div className={classes.security}>
-            {/* Maybe this functional will be added later */}
-            {/* <p>Security</p>
-            <div>
+            <p>Security</p>
+            <div onClick={handleToogleModalChangingPassword}>
               <Lock />
               <p>Change password</p>
-            </div> */}
+            </div>
           </div>
+          <ModalChangePassword open={isOpenModalChangingPassword} close={handleToogleModalChangingPassword}/>
           <ModalBid
             text={`Your settings was changed`}
             showModal={showModalSuccess}
