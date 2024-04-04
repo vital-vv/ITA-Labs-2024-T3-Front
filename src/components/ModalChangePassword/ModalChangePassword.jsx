@@ -8,18 +8,6 @@ import { resetPassword, confirmResetPassword, updatePassword } from '@aws-amplif
 import { useSelector } from 'react-redux';
 
 function ModalChangePassword({ open, close }) {
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
   const [showPassword, setShowPassword] = useState(false);
   const [showFormCodeValidation, setShowFormCodeValidation] = useState(false);
   const [valuePassword, setValuePassword] = useState('');
@@ -88,7 +76,7 @@ function ModalChangePassword({ open, close }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box className={classes.modalStyle}>
         <div className={classes.labelModal}>
           <p>Change Password</p>
           <button className={classes.buttonClose} onClick={close}>
