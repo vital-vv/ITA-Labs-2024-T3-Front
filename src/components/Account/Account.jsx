@@ -56,7 +56,7 @@ function Account() {
 
   async function handleUpdateUserAttribute(attributeKey, value) {
     try {
-      const output = await updateUserAttribute({
+      await updateUserAttribute({
         userAttribute: {
           attributeKey,
           value,
@@ -74,8 +74,8 @@ function Account() {
     try {
       await confirmUserAttribute({ userAttributeKey, confirmationCode });
     } catch (error) {
+      setTextError(error);
       setIsInvalidCode(true);
-      console.log(error);
     }
   }
 
@@ -106,6 +106,8 @@ function Account() {
   useEffect(() => {
     if (userReady) {
       dispatch(getAvatar());
+      setOpenConfirmed(false);
+      setIsInvalidCode(false);
     }
   }, [dispatch, userReady]);
 
@@ -164,6 +166,7 @@ function Account() {
   const [isInvalidCode, setIsInvalidCode] = useState(false);
   const [isOpenModalChangingPassword, setIsOpenModalChangingPassword] =
     useState(false);
+  const [textError, setTextError] = useState('')
 
   const handleChangeEmailField = (event) => {
     sendDataToState(dispatch, changeEmail, event);
@@ -185,7 +188,7 @@ function Account() {
       confirmationCode: codeConfirmed,
       userAttributeKey: 'email',
     });
-    if (!isInvalidCode) {
+    if (isInvalidCode) {
       return;
     }
     await currentSession();
@@ -251,6 +254,7 @@ function Account() {
                   requestChangeEmail={handleRequestChangeEmail}
                   confirmEmail={handleConfirmEmail}
                   isInvalidCode={isInvalidCode}
+                  textError = {textError}
                 />
                 <select
                   className={classes.currency}

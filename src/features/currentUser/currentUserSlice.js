@@ -248,6 +248,7 @@ const currentUserSlice = createSlice({
           ...state.copyUserData,
           urlAvatar: action.payload,
         };
+        state.isChangeAvatar = false;
       })
       .addCase(changeCurrentUser.fulfilled, (state) => {
         state.showModalSuccess = true;

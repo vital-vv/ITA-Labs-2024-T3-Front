@@ -28,6 +28,8 @@ function ModalChangePassword({ open, close }) {
   const [valueConfirmPassword, setValueConfirmPassword] = useState('');
   const [wrongCodeConfirmation, setWrongCodeConfirmation] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [textError, setTextError] = useState('')
+  const [textFinish, setTextFinish] = useState('');
   const { email } = useSelector((state) => state.currentUser.userData);
 
   const handleShowPassword = () => {
@@ -63,6 +65,7 @@ function ModalChangePassword({ open, close }) {
       try {
         await confirmResetPassword({ username: email, confirmationCode: valueCodeConfirmation, newPassword: valueNewPassword });
       } catch (error) {
+        setTextError(error);
         setWrongCodeConfirmation(true);
         return
       }
@@ -70,12 +73,13 @@ function ModalChangePassword({ open, close }) {
       try {
         await updatePassword({ oldPassword: valuePassword, newPassword: valueNewPassword });
       } catch (err) {
-        console.log(err);
-        return
+        setTextFinish(err);
       }
     }
     setIsSuccess(true);
   };
+
+  const color = {color : 'red !important'}
 
   return (
     <Modal
@@ -129,7 +133,7 @@ function ModalChangePassword({ open, close }) {
               value={valueCodeConfirmation}
               onChange={(event) => setCodeConfirmation(event.target.value)}
             />
-            <p className={wrongCodeConfirmation ? classes.incorrect : classes.notDisplay}>Your entered incorrect code</p>
+            <p className={wrongCodeConfirmation ? classes.incorrect : classes.notDisplay}>{textError}</p>
           </div>
           <AdaptTextField
             label="New password"
@@ -154,7 +158,7 @@ function ModalChangePassword({ open, close }) {
             value={valueConfirmPassword}
             onChange={(event) => setValueConfirmPassword(event.target.value)}
           />
-          <h3 className={isSuccess ? null : classes.hidden}>Success! You changed your password</h3>
+          <h3 className={isSuccess ? null : classes.hidden} style={textFinish ? color : null}>{textFinish || 'Success! You changed your password'}</h3>
           <button
             className={
               isValidPassword

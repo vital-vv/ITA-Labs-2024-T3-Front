@@ -20,7 +20,8 @@ function InputContainerUser({
   changeConfirmationCode,
   requestChangeEmail,
   confirmEmail,
-  isInvalidCode
+  isInvalidCode,
+  textError
 }) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const isValidEmail = emailRegex.test(email);
@@ -78,7 +79,7 @@ function InputContainerUser({
             <Check />
           </button>
         </div>
-          <p className={isInvalidCode ? styles.error : styles.hidden}>You entered invalid code</p>
+          <p className={isInvalidCode ? styles.error : styles.hidden}>{textError}</p>
       </div>
       <div className={styles.numberContainer}>
         <select onChange={chooseCountryCode} value={code}>
