@@ -29,7 +29,7 @@ function BetsContent() {
                     }
                 },
                 'Pending': () => dispatch(getUserLots({status: 'MODERATED, CANCELLED'})),
-                'Inactive': () => dispatch(getUserLots({status: 'DEACTIVATED'})),
+                'Inactive': () => dispatch(getUserLots({status: 'DEACTIVATED, AUCTION_ENDED, EXPIRED'})),
                 'Outbid': () => dispatch(loadUserAllBets({status: 'OVERBID'})),
                 'Delivered': () => dispatch(getUserOrders({status: 'SOLD'})),
                 'Completed': () => dispatch(getUserSoldLots())

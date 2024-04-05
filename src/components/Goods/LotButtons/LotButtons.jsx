@@ -60,10 +60,9 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                     return null;
                 }
             },
-            default: handleDefaultActions(),
         };
 
-        actions[user.currentTab]?.() || actions.default?.();
+        actions[user.currentTab]?.() || handleDefaultActions();
     };
 
     const handleEmployeeActions = (user) => {

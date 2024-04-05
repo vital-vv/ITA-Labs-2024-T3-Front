@@ -76,7 +76,7 @@ function Goods({
                         className={isProductOwner && !location.startsWith('/user/') ? classes.hidden : classes.purchasing}
                         onClick={(event) => event.preventDefault()}
                     >
-                        <LotButtons
+                        <LotButtonsOld
                             userRole={userRole}
                             id={id}
                             title={lotItem.title}
