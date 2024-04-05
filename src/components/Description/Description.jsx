@@ -31,7 +31,6 @@ function Description() {
     currentPackages,
     currentValidity,
     currentMeasure,
-    currentPricingMeasure,
     description,
     fullValidationForm,
     expirationDate,
@@ -43,7 +42,7 @@ function Description() {
     minimalBet,
     createdByUser,
   } = useSelector((state) => state.lots);
-  const {userData} = useSelector(state => state.currentUser);
+  const { userData, currencyThisSession } = useSelector((state) => state.currentUser);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -52,15 +51,16 @@ function Description() {
   const stepBack = location.pathname.substring(0, positionLastSlash);
   const { currentCategoryId } = useSelector((state) => state.filter);
   const checkProductOwner = createdByUser === userData.user_id;
-  const isNotUser = userData.role !== 'USER'
+  const isNotUser = userData.role !== 'USER';
+  
 
   if (!isNaN(currentId)) {
     useEffect(() => {
-      dispatch(getOneLot(currentId));
+      dispatch(getOneLot({id: currentId, currency:currencyThisSession}));
       return () => {
         dispatch(resetState());
       };
-    }, [dispatch, currentId]);
+    }, [dispatch, currentId, currencyThisSession]);
   }
 
   const date = new Date();
@@ -82,12 +82,12 @@ function Description() {
     changeNewBidValidationAfterTime,
     currentBid
   );
-  
+
   const handleAddBid = () => {
     const bidData = {
       lot_id: currentId,
       amount: currentBid,
-      currency: 'USD', //Still HARDCODE!!!, send preferred currency
+      currency: currencyThisSession,
     };
     dispatch(confirmBid(bidData));
   };
@@ -112,28 +112,39 @@ function Description() {
       <div className={classes.betBlock}>
         <div>
           <div className={classes.pricing}>
-            <p className={fullValidationForm ? classes.noneVisibility : null}>Bet</p>
+            <p className={fullValidationForm ? classes.noneVisibility : null}>
+              Bet
+            </p>
             <p>Total price</p>
           </div>
           <div className={classes.cost}>
             <p className={fullValidationForm || !leadBet ? classes.gray : null}>
-              {leadBet ? `${leadBet} ${currentPricingMeasure}` : 'No bets'}
+              {leadBet
+                ? `${leadBet.toFixed(2)} ${currencyThisSession}`
+                : 'No bets'}
             </p>
-            <p>{`${currentPrice} ${currentPricingMeasure}`}</p>
+            <p>{`${currentPrice} ${currencyThisSession}`}</p>
           </div>
           <div className={classes.costKg}>
             <p className={fullValidationForm ? classes.noneVisibility : null}>
-              {(leadBet / currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}
+              {(leadBet / currentWeight).toFixed(2)}{' '}
+              {currencyThisSession} / {currentWeightMeasure}
             </p>
             <p>
               {(currentPrice / currentWeight).toFixed(2)}{' '}
-              {currentPricingMeasure} per {currentWeightMeasure}
+              {currencyThisSession} per {currentWeightMeasure}
             </p>
           </div>
         </div>
-        <div className={fullValidationForm || checkProductOwner || isNotUser ? classes.hidden : classes.offerSum}>
+        <div
+          className={
+            fullValidationForm || checkProductOwner || isNotUser
+              ? classes.hidden
+              : classes.offerSum
+          }
+        >
           <div>
-            <span>$</span>
+            <span>{currencyThisSession}</span>
             <input
               type="text"
               placeholder="Enter your bet here"
@@ -143,12 +154,21 @@ function Description() {
             />
           </div>
           <p className={classes.comment}>
-            Bet from ${leadBet ? leadBet + 1 : minimalBet} to ${currentPrice - 1}
+            Bet from {currencyThisSession}{' '}
+            {leadBet ? leadBet + 1 : minimalBet} to{' '}
+            {currencyThisSession} {currentPrice - 1}
           </p>
-          <p>{(currentBid/currentWeight).toFixed(2)} {currentPricingMeasure} / {currentWeightMeasure}</p>
+          <p>
+            {(currentBid / currentWeight).toFixed(2)}{' '}
+            {currencyThisSession} / {currentWeightMeasure}
+          </p>
         </div>
         <div
-          className={fullValidationForm || checkProductOwner || isNotUser ? classes.hidden : classes.buttonManage}
+          className={
+            fullValidationForm || checkProductOwner || isNotUser
+              ? classes.hidden
+              : classes.buttonManage
+          }
         >
           <button
             disabled={currentBid && correctRangeBets ? null : true}
@@ -183,11 +203,7 @@ function Description() {
         </div>
         <div>
           <p>Size</p>
-          <p>
-            {Array.isArray(sliderCurrent)
-              ? `${sliderCurrent[0]} - ${sliderCurrent[1]} ${currentMeasure}`
-              : `${sliderCurrent} ${currentMeasure}`}
-          </p>
+          <p>{`${sliderCurrent[0]} - ${sliderCurrent[1]} ${currentMeasure}`}</p>
         </div>
         <div>
           <p>Packaging</p>

@@ -18,7 +18,7 @@ const style = {
 
 
 
-function ModalWindow({ handleClose, open, minValue, maxValue }) {
+function ModalWindow({ handleClose, open, minValue, maxValue, quantity }) {
   return (
     <div onClick={(event) => event.preventDefault()}>
       <Modal
@@ -34,7 +34,7 @@ function ModalWindow({ handleClose, open, minValue, maxValue }) {
               <img src={exitIcon} alt={exitIcon} />
             </button>
           </div>
-          <ModalForm minValue={minValue} maxValue={maxValue} onClose={handleClose}/>
+          <ModalForm minValue={minValue} maxValue={maxValue} onClose={handleClose} quantity={quantity}/>
         </Box>
       </Modal>
     </div>

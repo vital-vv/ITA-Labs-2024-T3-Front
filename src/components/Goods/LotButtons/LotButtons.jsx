@@ -18,6 +18,7 @@ const LotButtons = ({ userRole, id, buttonDelete, title, lotItem }) => {
   const [openBid, setOpenBid] = useState(false);
   const [open, setOpen] = useState(false);
   const currentTab = useSelector(selectUserData).currentTab;
+  const quantity = `${lotItem.quantity} ${lotItem.weight}`;
 
   const toggleModalBids = (event) => {
     setOpenBid((prevOpen) => !prevOpen);
@@ -58,6 +59,7 @@ const LotButtons = ({ userRole, id, buttonDelete, title, lotItem }) => {
             handleClose={toggleModalBids}
             minValue={minValue}
             maxValue={maxValue}
+            quantity={quantity}
           />
         </>
       );

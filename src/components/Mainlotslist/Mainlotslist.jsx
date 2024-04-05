@@ -23,9 +23,11 @@ const MainLotsList = () => {
     dispatch(deleteLot(event.currentTarget.id));
   };
 
+  const { currencyThisSession } = useSelector((state) => state.filter);
+
   useEffect(() => {
     dispatch(applyFilters());
-  }, [dispatch, stringFilter, sortField, currentPage, paramId, leadBet]);
+  }, [dispatch, stringFilter, sortField, currentPage, paramId, leadBet, currencyThisSession]);
 
   let lots = currentLots.map((lot, index) => {
     const targetDate = new Date(lot.expiration_date);

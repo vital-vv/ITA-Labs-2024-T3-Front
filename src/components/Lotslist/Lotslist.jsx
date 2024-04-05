@@ -13,7 +13,6 @@ import {
 } from '../../features/main/mainSlice.js';
 import { changeShowModalAfterTime } from '../../features/lots/lotsSlice.js';
 
-
 function LotsList() {
   const dispatch = useDispatch(); 
 

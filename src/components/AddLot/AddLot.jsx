@@ -293,7 +293,8 @@ function AddLot() {
         region: currentRegion,
       },
       description: description,
-      size: sliderCurrent[0],
+      fromSize: sliderCurrent[0],
+      toSize: sliderCurrent[1],
       packaging: currentPackages,
       currency: currentPricingMeasure,
     };

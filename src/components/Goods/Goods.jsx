@@ -14,7 +14,7 @@ function Goods({
 }) {
   const {userData} = useSelector(state => state.currentUser);
   const isProductOwner = lotItem.created_by === userData.user_id;
-
+  
   return (
     <>
       <div className={classes.goods}>
@@ -38,7 +38,7 @@ function Goods({
           </div>
           <div className={classes.more}>
             <p className={classes.description}>
-              {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.size} mm, ${lotItem.packaging}`}
+              {`${lotItem.title}, ${lotItem.category_name}, ${lotItem.quantity} ton, ${lotItem.fromSize}-${lotItem.toSize} mm, ${lotItem.packaging}`}
             </p>
             <p className={classes.region}>
               {lotItem.location.country}, {lotItem.location.region}
@@ -50,21 +50,21 @@ function Goods({
           <div>
             <div className={classes.cost}>
               <p className={!lotItem.leading ? classes.grey : null}>
-                {lotItem.leading ? `$${lotItem.leading.amount}` : 'No bets'}
+                {lotItem.leading ? `${lotItem.leading.amount.toFixed(2)} ${lotItem.currency}` : 'No bets'}
               </p>
               <p className={!lotItem.leading ? classes.hidden : null}>
-                $
+                {`${lotItem.currency} `}
                 <span>
                   {lotItem.leading &&
                     (lotItem.leading.amount / lotItem.quantity).toFixed(2)}
                 </span>
-                /kg
+                /{lotItem.weight}
               </p>
             </div>
             <div className={classes.perKg}>
-              <p>${lotItem.total_price}</p>
+              <p>{lotItem.total_price} {lotItem.currency}</p>
               <p>
-                <span>${lotItem.price_per_unit.toFixed(2)}</span>/
+                <span>{lotItem.currency} {lotItem.price_per_unit.toFixed(2)}</span>/
                 {lotItem.weight}
               </p>
             </div>

@@ -4,11 +4,11 @@ import { api } from '../../utils/axios.js';
 export const applyFilters = createAsyncThunk(
   'filters/applyFilters',
   async (_, { rejectWithValue, getState }) => {
-    const { stringFilter, sortField, currentPage, currentCategoryId } =
+    const { stringFilter, sortField, currentPage, currentCategoryId, currencyThisSession } =
       getState().filter;
     try {
       const response = await api.get(
-        `/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}`
+        `/categories/${currentCategoryId}/lots?page=${currentPage}&limit=8${stringFilter}${sortField}&currency=${currencyThisSession}`
       );
       if (response.status !== 200) {
         throw new Error('Something went wrong');
@@ -187,6 +187,7 @@ const filterSlice = createSlice({
     isLotsReady: false,
     hasNextPage: false,
     allDataFilterReady: false,
+    currencyThisSession: '',
   },
   reducers: {
     changeSliderValues(state, action) {
@@ -360,6 +361,7 @@ const filterSlice = createSlice({
           };
         }
       );
+      state.currencyThisSession = action.payload.currencyThisSession;
       state.allDataFilterReady = true;
     },
     toogleOpenModalVariety(state) {

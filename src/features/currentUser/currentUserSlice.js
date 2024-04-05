@@ -125,6 +125,7 @@ const currentUserSlice = createSlice({
     copyUserData: {},
     showModalSuccess: false,
     isChangeAvatar: false,
+    currencyThisSession: 'USD',
   },
   reducers: {
     setTokens: (state, action) => {
@@ -132,7 +133,7 @@ const currentUserSlice = createSlice({
       state.accessToken = action.payload.accessToken;
     },
     clearUserData: (state) => {
-      state.userData = null;
+      state.userData = 'GUEST';
       state.idToken = null;
       state.accessToken = null;
       state.status = null;
@@ -184,10 +185,13 @@ const currentUserSlice = createSlice({
       state.userData.email = state.copyUserData.email;
     },
     changeShowModalAfterTime: (state) => {
-      state.showModalSuccess = !state.showModalSuccess;
+      state.showModalSuccess = false;
     },
     changeEmail: (state, action) => {
       state.userData.email = action.payload;
+    },
+    sendCurrencyThisSession: (state, action) => {
+      state.currencyThisSession = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -210,6 +214,7 @@ const currentUserSlice = createSlice({
           state.userData.phoneNumber.length - 9
         );
         state.copyUserData = state.userData;
+        state.currencyThisSession = state.userData.preferred_currency;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.isLoading = false;
@@ -273,6 +278,7 @@ export const {
   cancelAllChanges,
   changeShowModalAfterTime,
   changeEmail,
+  sendCurrencyThisSession,
 } = currentUserSlice.actions;
 
 export const selectUserData = (state) => state.currentUser;

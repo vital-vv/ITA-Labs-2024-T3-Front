@@ -6,7 +6,6 @@ import Pencil from '../../assets/svg/Pencil';
 import Trash from '../../assets/svg/Trash';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMainData } from '../../features/main/mainSlice';
 import Loader from '../../hoc/Loader/Loader';
 import {
   changeFirstNameField,
@@ -98,12 +97,6 @@ function Account() {
   }
 
   useEffect(() => {
-    if (!isDataReady) {
-      dispatch(fetchMainData());
-    }
-  }, [dispatch, isDataReady]);
-
-  useEffect(() => {
     if (userReady) {
       dispatch(getAvatar());
       setOpenConfirmed(false);
@@ -166,7 +159,7 @@ function Account() {
   const [isInvalidCode, setIsInvalidCode] = useState(false);
   const [isOpenModalChangingPassword, setIsOpenModalChangingPassword] =
     useState(false);
-  const [textError, setTextError] = useState('')
+  const [textError, setTextError] = useState('');
 
   const handleChangeEmailField = (event) => {
     sendDataToState(dispatch, changeEmail, event);
@@ -254,7 +247,7 @@ function Account() {
                   requestChangeEmail={handleRequestChangeEmail}
                   confirmEmail={handleConfirmEmail}
                   isInvalidCode={isInvalidCode}
-                  textError = {textError}
+                  textError={textError}
                 />
                 <select
                   className={classes.currency}
@@ -296,7 +289,10 @@ function Account() {
               <p>Change password</p>
             </div>
           </div>
-          <ModalChangePassword open={isOpenModalChangingPassword} close={handleToogleModalChangingPassword}/>
+          <ModalChangePassword
+            open={isOpenModalChangingPassword}
+            close={handleToogleModalChangingPassword}
+          />
           <ModalBid
             text={`Your settings was changed`}
             showModal={showModalSuccess}

@@ -59,6 +59,7 @@ const Filter = () => {
   let category = location.pathname.split('/');
   category = category[category.length - 1];
   category = category.charAt(0).toUpperCase() + category.slice(1);
+  const {currencyThisSession} = useSelector(state => state.currentUser);
 
   useEffect(() => {
     dispatch(getCurrentCategory({id: paramId, category: category}));
@@ -76,10 +77,11 @@ const Filter = () => {
           regions: regions,
           lengthUnits: lengthUnits,
           subcategories: subcategories,
+          currencyThisSession: currencyThisSession
         })
       );
     }
-  }, [dispatch, packaging, countries, regions, isSubcategoriesReady, isDataReady, subcategories]);
+  }, [dispatch, packaging, countries, regions, isSubcategoriesReady, isDataReady, subcategories, currencyThisSession]);
   
   const {
     sliderCurrentLimit,
