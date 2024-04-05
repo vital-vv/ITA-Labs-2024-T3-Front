@@ -60,44 +60,49 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                     return null;
                 }
             },
+            default: handleDefaultActions(),
         };
 
-        actions[user.currentTab]?.();
+        actions[user.currentTab]?.() || actions.default?.();
     };
 
     const handleEmployeeActions = (user) => {
         const actions = {
-            'Moderating lots': () => <ApproveRejectBtns id={id} title={lotItem.title}/>,
-            'Moderating orders': () => <ApproveRejectBtns id={id} title={lotItem.title}/>,
+            'Moderating lots' : () => {
+                console.log('mode')
+                return <ApproveRejectBtns id={id} title={lotItem.title}/>
+            },
+            'Moderating orders': () => {
+               return <ApproveRejectBtns id={id} title={lotItem.title}/>
+            },
         };
 
         actions[user.currentTab]?.();
     };
 
     const handleDefaultActions = () => {
-       return (
-           <>
-               <button onClick={toggleModalBids} id={id}>
-                   <Hammer/>
-                   {currentTab === 'Active' ? <p>New bet</p> : <p>My bet</p>}
-               </button>
-               <button onClick={buyLotForTotalPrice}>
-                   <Cart/>
-                   Buy now
-               </button>
-               {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
-                   <Trash/>
-               </button> : null}
-               <ModalWindow
-                   open={openBid}
-                   handleClose={toggleModalBids}
-                   minValue={minValue}
-                   maxValue={maxValue}
-               />
-           </>
-       )
+        return (
+            <>
+                <button onClick={toggleModalBids} id={id}>
+                    <Hammer/>
+                    {currentTab === 'Active' ? <p>New bet</p> : <p>My bet</p>}
+                </button>
+                <button onClick={buyLotForTotalPrice}>
+                    <Cart/>
+                    Buy now
+                </button>
+                {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
+                    <Trash/>
+                </button> : null}
+                <ModalWindow
+                    open={openBid}
+                    handleClose={toggleModalBids}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                />
+            </>
+        )
     };
-
 
     switch (userRole) {
         case "USER":
@@ -106,7 +111,9 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
         case "EMPLOYEE":
             handleEmployeeActions(user);
             break;
-        default: handleDefaultActions();
+        default:
+            handleDefaultActions();
+            break;
     }
 };
 
