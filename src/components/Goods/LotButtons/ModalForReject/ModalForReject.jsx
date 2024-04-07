@@ -32,7 +32,6 @@ const ModalForReject = ({handleClose, open, id, title}) => {
         dispatch(rejectLot({id, description}));
         handleOpenSnackBar();
         handleClose();
-        console.log(openSnackBar);
     }
 
     return (

@@ -7,7 +7,7 @@ export const getSubcategories = createAsyncThunk(
         try {
             const res = await api.get(`/categories/${id}`);
             return res.data;
-        } catch (err){
+        } catch (err) {
             return thunkAPI.rejectWithValue(err);
         }
     })
@@ -25,19 +25,20 @@ const subcategoriesSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getSubcategories.fulfilled, (state, action) => {
-            state.list =  action.payload;
-            state.isLoading = false;
-            state.isSubcategoriesReady = true;
-        });
-        builder.addCase(getSubcategories.pending, (state) => {
-            state.isSubcategoriesReady = false;
-            state.isLoading =  true;
-        });
-        builder.addCase(getSubcategories.rejected, (state) => {
-            state.isLoading =  false;
-            state.isSubcategoriesReady = false;
-        });
+        builder
+            .addCase(getSubcategories.fulfilled, (state, action) => {
+                state.list = action.payload;
+                state.isLoading = false;
+                state.isSubcategoriesReady = true;
+            })
+            .addCase(getSubcategories.pending, (state) => {
+                state.isSubcategoriesReady = false;
+                state.isLoading = true;
+            })
+            .addCase(getSubcategories.rejected, (state) => {
+                state.isLoading = false;
+                state.isSubcategoriesReady = false;
+            })
     }
 })
 
