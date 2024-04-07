@@ -9,7 +9,7 @@ import {selectUserData, setActiveTab} from "../../features/currentUser/currentUs
 function determineTabsName(betType, userRole) {
     const tabsMap = {
         advertisements: {
-            USER: ['Active', 'Pending', 'Inactive'],
+            USER: ['Active', 'Pending', 'Inactive', 'Sold'],
             EMPLOYEE: ['Active', 'Moderating lots', 'Moderating orders'],
         },
         orders: {

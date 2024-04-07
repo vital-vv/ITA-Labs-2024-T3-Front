@@ -6,6 +6,7 @@ import {useLocation} from "react-router-dom";
 import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
 import {ManageLot} from "./ManageLot/ManageLot.jsx";
 import {LotButtons} from "./LotButtons/LotButtons.jsx";
+import Item from '../../assets/images/item.png';
 
 function Goods({
                    lotItem,
@@ -20,12 +21,14 @@ function Goods({
     const currentTabName = useSelector(selectUserData);
     const isProductOwner = lotItem.created_by === userData.user_id;
     const location = useLocation().pathname;
+    console.log(dateCreated)
 
     return (
         <>
             <div className={classes.goods}>
                 <div className={classes.picture}>
-                    <img src={lotItem.image_url[0].url} alt="Photo of goods"/>
+                    {lotItem?.image_url &&
+                    lotItem?.image_url[0]?.url ?  <img src={lotItem.image_url[0]?.url} alt="Photo of goods"/> : <img src={Item} alt={Item}/>}
                 </div>
                 <div className={classes.info}>
                     <div>
@@ -34,9 +37,11 @@ function Goods({
                         </div>
                         <div className={classes.data}>
                             <p>
-                                <span><Clock/></span>
-                                <span>{daysRest}d {hoursRest}h</span></p>
-                            <p>ID{id}</p>
+                                {daysRest ? <><span><Clock/></span>
+                                    <span>{daysRest}d {hoursRest}h</span>
+                                </> : <div>{lotItem.description}</div>}
+                                </p>
+                            <p>ID {id || lotItem.request_id}</p>
                         </div>
                     </div>
                     <div className={classes.more}>
@@ -46,11 +51,11 @@ function Goods({
                         <p className={classes.region}>
                             {lotItem.location.country}, {lotItem.location.region}
                         </p>
-                        <p className={classes.dataOfAd}>{dateCreated}</p>
+                        <p className={classes.dataOfAd}>{dateCreated !== 'Invalid Date' ? dateCreated : null}</p>
                     </div>
                 </div>
                 <div className={classes.bet}>
-                    <div>
+                    <div className={classes.betInfo}>
                         <div className={classes.cost}>
                             <p className={!lotItem.leading ? classes.grey : null}>
                                 {lotItem.leading ? `$${lotItem.leading.amount}` : 'No bets'}

@@ -41,13 +41,14 @@ const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
     }
 
     switch (userRole) {
+
         case 'USER':
             if (currentTab === 'Active' && location === '/user/advertisements' && lotItem.leading !== null) {
                 return (
                     <button onClick={confirmLotItem} className={styles.confirmBtn}>✓ Confirm for
                         ${lotItem?.leading?.amount} </button>
                 )
-            } else if (currentTab === 'Active' && location === '/user/advertisements' && user?.userData?.user_id === lotItem.created_by) {
+            } else if (currentTab === 'Active' && location === '/user/advertisements' && user?.userData?.user_id === lotItem.created_by || location === '/user/orders') {
                 return null;
             } else if (currentTab === 'Pending') {
                 if (lotItem.status === 'cancelled') {
@@ -56,7 +57,7 @@ const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
                         </div>
                     )
                 } else return
-            } else if (currentTab === 'Inactive') {
+            } else if (currentTab === 'Inactive' || currentTab === 'Sold') {
                 return null;
             }
         default:
