@@ -23,13 +23,14 @@ import {
   toogleOpenModalRegions,
   loadNewPage,
   getDataFormated,
-  getCurrentCategory
+  getCurrentCategory,
 } from '../../features/filter/filterSlice';
 import { useMemo, useEffect, useState } from 'react';
 import { getRegionsCurrentCountry } from '../../features/main/mainSlice';
 import Loader from '../../hoc/Loader/Loader';
 import { useLocation } from 'react-router-dom';
 import { getSubcategories } from '../../features/categories/subcategoriesSlice.js';
+import { resetState } from '../../features/lots/lotsSlice.js';
 
 const Filter = () => {
   const fillContainer = (array) => {
@@ -45,26 +46,24 @@ const Filter = () => {
   };
 
   const dispatch = useDispatch();
-  const { currency, quantity, countries, packaging, regions, isDataReady } = useSelector(
-    (state) => state.main
-  );
+  const { currency, quantity, countries, packaging, regions, isDataReady } =
+    useSelector((state) => state.main);
 
   const lengthUnits = useSelector((state) => state.main.sizing);
   const subcategories = useSelector((state) => state.subcategories.list);
-  const {isSubcategoriesReady} = useSelector(
-    (state) => state.subcategories
-  );
+  const { isSubcategoriesReady } = useSelector((state) => state.subcategories);
   const location = useLocation();
   const paramId = location.search.substring(4);
   let category = location.pathname.split('/');
   category = category[category.length - 1];
   category = category.charAt(0).toUpperCase() + category.slice(1);
-  const {currencyThisSession} = useSelector(state => state.currentUser);
+  const { currencyThisSession } = useSelector((state) => state.currentUser);
 
   useEffect(() => {
-    dispatch(getCurrentCategory({id: paramId, category: category}));
+    dispatch(getCurrentCategory({ id: paramId, category: category }));
     dispatch(getSubcategories(paramId));
     dispatch(getRegionsCurrentCountry('Belarus'));
+    return () => dispatch(resetState());
   }, [dispatch, paramId]);
 
   useEffect(() => {
@@ -77,12 +76,21 @@ const Filter = () => {
           regions: regions,
           lengthUnits: lengthUnits,
           subcategories: subcategories,
-          currencyThisSession: currencyThisSession
+          currencyThisSession: currencyThisSession,
         })
       );
     }
-  }, [dispatch, packaging, countries, regions, isSubcategoriesReady, isDataReady, subcategories, currencyThisSession]);
-  
+  }, [
+    dispatch,
+    packaging,
+    countries,
+    regions,
+    isSubcategoriesReady,
+    isDataReady,
+    subcategories,
+    currencyThisSession,
+  ]);
+
   const {
     sliderCurrentLimit,
     quantityValues: [fromQuantity, untilQuantity],
@@ -100,7 +108,7 @@ const Filter = () => {
     sizing,
     isOpenModalVariety,
     isOpenModalRegions,
-    allDataFilterReady
+    allDataFilterReady,
   } = useSelector((state) => state.filter);
 
   const createInputChangeHandler = (actionCreator) => {
@@ -176,7 +184,7 @@ const Filter = () => {
   };
 
   const [selectorCountry, setSelectorCountry] = useState('Belarus');
-  
+
   return (
     <>
       {allDataFilterReady ? (

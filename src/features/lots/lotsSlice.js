@@ -515,7 +515,7 @@ const lotsSlice = createSlice({
       arrayForProcedure.unshift(arrayForProcedure[index]);
       arrayForProcedure.splice(index + 1, 1);
       state.picturesFiles = arrayForProcedure;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

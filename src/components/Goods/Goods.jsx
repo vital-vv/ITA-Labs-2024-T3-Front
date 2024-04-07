@@ -19,7 +19,7 @@ function Goods({
     <>
       <div className={classes.goods}>
         <div className={classes.picture}>
-          <img src={lotItem.image_url[0].url} alt="Photo of goods" />
+          <img src={lotItem.image_url[0] ? lotItem.image_url[0].url : "https://zm61.ru/upload/iblock/84b/srjklt20apje627nhctsvp8voy5oxppg.jpg"} alt="Photo of goods" />
         </div>
         <div className={classes.info}>
           <div>
