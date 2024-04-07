@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-    const {idToken} = (await fetchAuthSession()).tokens ?? {};
+    const {idToken} = (await fetchAuthSession({ forceRefresh: true })).tokens ?? {};
     if (idToken) {
         config.headers.Authorization = `Bearer ${idToken}`;
     }
