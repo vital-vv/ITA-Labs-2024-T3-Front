@@ -88,6 +88,8 @@ const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
             } else {
                 return null;
             }
+        case 'ADMIN':
+            return null;
     }
 };
 

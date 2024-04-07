@@ -18,6 +18,7 @@ function ProfileLayout() {
     const [navOptions, setNavOptions] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         if (user.userData) {
             let options = user.userData.role === 'USER' ? userNav :

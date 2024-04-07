@@ -50,12 +50,25 @@ function BetsContent() {
             actions[user.currentTab]?.();
         };
 
+        const handleAdminActions = (user, dispatch) => {
+            const actions = {
+                'Active': () => dispatch(getAllLots({lotStatus: 'ACTIVE', currency: currencyThisSession })),
+                'Sold': () => dispatch(getAllLots({lotStatus: 'SOLD', currency: currencyThisSession})),
+                'Auction Ended': () => dispatch(getAllLots({lotStatus: 'AUCTION_ENDED', currency: currencyThisSession})),
+            };
+
+            actions[user.currentTab]?.();
+        };
+
         switch (user.userData.role) {
             case "USER":
                 handleUserActions(user, dispatch);
                 break;
             case "EMPLOYEE":
                 handleEmployeeActions(user, dispatch);
+                break;
+            case "ADMIN":
+                handleAdminActions(user, dispatch);
                 break;
         }
 
