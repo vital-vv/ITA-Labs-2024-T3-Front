@@ -16,9 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 function RightBar() {
   const user = useSelector(selectUserData);
-  const rightBarStyle = {
-    width: user.userData?.role === 'USER' ? '550px' : '300px',
-  };
   const {currencyThisSession} = useSelector(state => state.currentUser);
   const dispatch = useDispatch();
   const {currency} = useSelector((state) => state.main)
@@ -32,7 +29,7 @@ function RightBar() {
   }
 
   return (
-    <div className={styles.rightBar} style={rightBarStyle}>
+    <div className={styles.rightBar}>
       <div className={styles.variety}>
         <img alt={usdIcon} src={usdIcon} />
         <FormControl

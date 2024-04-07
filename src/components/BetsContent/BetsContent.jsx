@@ -3,7 +3,8 @@ import {
     getAllOrders,
     getUserLots,
     getUserOrders, getUserSoldLots,
-    loadUserAllBets
+    loadUserAllBets,
+    getCurrencyThisSession
 } from "../../features/filter/filterSlice.js";
 import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
 import {useEffect} from "react";
@@ -15,24 +16,25 @@ function BetsContent() {
     const dispatch = useDispatch();
     const user = useSelector(selectUserData);
     const location = useLocation().pathname;
+    const {currencyThisSession} = useSelector(state => state.currentUser)
 
     useEffect(() => {
         const handleUserActions = (user, dispatch) => {
             const actions = {
                 'Active': () => {
                     if (location === '/user/advertisements') {
-                        dispatch(getUserLots({status: 'ACTIVE'}));
+                        dispatch(getUserLots({status: 'ACTIVE', currency: currencyThisSession}));
                     } else if (location === '/user/bets') {
-                        dispatch(loadUserAllBets({status: 'LEADING'}));
+                        dispatch(loadUserAllBets({status: 'LEADING', currency: currencyThisSession}));
                     } else if (location === '/user/orders') {
-                        dispatch(getUserOrders({status: 'ACTIVE'}));
+                        dispatch(getUserOrders({status: 'ACTIVE', currency: currencyThisSession}));
                     }
                 },
-                'Pending': () => dispatch(getUserLots({status: 'MODERATED, CANCELLED'})),
-                'Inactive': () => dispatch(getUserLots({status: 'DEACTIVATED, AUCTION_ENDED, EXPIRED'})),
-                'Sold': () => dispatch(getUserLots({status: 'SOLD'})),
-                'Outbid': () => dispatch(loadUserAllBets({status: 'OVERBID'})),
-                'Delivered': () => dispatch(getUserOrders({status: 'SOLD'})),
+                'Pending': () => dispatch(getUserLots({status: 'MODERATED, CANCELLED', currency: currencyThisSession})),
+                'Inactive': () => dispatch(getUserLots({status: 'DEACTIVATED, AUCTION_ENDED, EXPIRED', currency: currencyThisSession})),
+                'Sold': () => dispatch(getUserLots({status: 'SOLD', currency: currencyThisSession})),
+                'Outbid': () => dispatch(loadUserAllBets({status: 'OVERBID', currency: currencyThisSession})),
+                'Delivered': () => dispatch(getUserOrders({status: 'SOLD', currency: currencyThisSession})),
                 'Completed': () => dispatch(getUserSoldLots())
             };
 
@@ -40,8 +42,8 @@ function BetsContent() {
         };
         const handleEmployeeActions = (user, dispatch) => {
             const actions = {
-                'Active': () => dispatch(getAllLots({lotStatus: 'ACTIVE'})),
-                'Moderating lots': () => dispatch(getAllLots({lotStatus: 'MODERATED'})),
+                'Active': () => dispatch(getAllLots({lotStatus: 'ACTIVE', currency: currencyThisSession })),
+                'Moderating lots': () => dispatch(getAllLots({lotStatus: 'MODERATED', currency: currencyThisSession})),
                 'Moderating orders': () => dispatch(getAllOrders()),
             };
 
@@ -58,7 +60,7 @@ function BetsContent() {
         }
 
 
-    }, [dispatch, user.currentTab, location, user.userData.role])
+    }, [dispatch, user.currentTab, location, user.userData.role, currencyThisSession])
 
     return (
         <MainLotsList/>

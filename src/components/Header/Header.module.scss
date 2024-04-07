@@ -33,7 +33,7 @@ header {
 
   .searchBlock {
     display: flex;
-    width: 60%;
+    flex-grow: 1;
 
     img{
       margin: 0 2px 1px 0;

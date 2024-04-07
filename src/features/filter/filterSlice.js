@@ -560,6 +560,9 @@ const filterSlice = createSlice({
       state.currentCategoryId = action.payload.id;
       state.currentCategory = action.payload.category;
     },
+    getCurrencyThisSession(state, action) {
+      state.currencyThisSession = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -747,6 +750,7 @@ export const {
   loadNewPage,
   getCurrentCategory,
   openModalBid,
+  getCurrencyThisSession,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
