@@ -23,7 +23,7 @@ function Goods({
 
     return (
         <>
-            <div className={classes.goods}>
+            <div className={`${currentTabName.currentTab === 'Inactive' ? classes.gray : classes.goods}`}>
                 <div className={classes.picture}>
                     <img
                         src={lotItem.image_url && lotItem.image_url[0] ? lotItem.image_url[0].url : "https://zm61.ru/upload/iblock/84b/srjklt20apje627nhctsvp8voy5oxppg.jpg"}
@@ -60,6 +60,7 @@ function Goods({
                             <p className={!lotItem.leading ? classes.grey : null}>
                                 {
                                     location === '/user/orders' ? `${lotItem.desired_price}` :
+                                        currentTabName.currentTab === 'Sold' && lotItem.leading === null ? `${lotItem.total_price} ${lotItem.currency}` :
                                         lotItem.leading ? `${lotItem.leading.amount.toFixed(2)} ${lotItem.currency}` : 'No bets'}
                             </p>
                             <p className={!lotItem.leading ? classes.hidden : null}>

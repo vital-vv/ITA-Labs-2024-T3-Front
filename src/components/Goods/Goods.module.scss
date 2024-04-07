@@ -13,6 +13,14 @@
   opacity: 0.7;
   transition: opacity 0.3s linear;
 }
+.gray{
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
+  color: gray;
+}
 
 .goods:hover .purchasing {
   visibility: visible;
@@ -139,6 +147,7 @@
 
 .purchasing {
   display: flex;
+  justify-content: flex-end;
   margin-top: 24px;
   gap: 8px;
   width: 100%;

@@ -71,9 +71,9 @@ const LotButtonsOld = ({userRole, id, buttonDelete, lotItem}) => {
                         <Cart/>
                         Buy now
                     </button>
-                    {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
-                        <Trash/>
-                    </button> : null}
+                    {/*{currentTab !== 'Active' || currentTab !== 'Outbid' ? <button onClick={buttonDelete} id={id}>*/}
+                    {/*    <Trash/>*/}
+                    {/*</button> : null}*/}
                     <ModalWindow
                         open={openBid}
                         handleClose={toggleModalBids}
