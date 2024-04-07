@@ -5,8 +5,6 @@ import {useSelector} from 'react-redux';
 import {useLocation} from "react-router-dom";
 import {selectUserData} from "../../features/currentUser/currentUserSlice.js";
 import {ManageLot} from "./ManageLot/ManageLot.jsx";
-import {LotButtons} from "./LotButtons/LotButtons.jsx";
-import Item from '../../assets/images/item.png';
 
 function Goods({
 

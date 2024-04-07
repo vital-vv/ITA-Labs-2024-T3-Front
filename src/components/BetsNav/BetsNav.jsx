@@ -30,7 +30,7 @@ function BetsNav() {
     const { role: userRole } = userData.userData;
     const [tabsName, setTabsName] = useState([]);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const currentTab = userData.currentTab;
     console.log(window.location.pathname)
 

@@ -4,7 +4,6 @@ import {
     getUserLots,
     getUserOrders, getUserSoldLots,
     loadUserAllBets,
-    getCurrencyThisSession
 } from "../../features/filter/filterSlice.js";
 import MainLotsList from "../Mainlotslist/Mainlotslist.jsx";
 import {useEffect} from "react";

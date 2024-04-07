@@ -12,7 +12,7 @@ import styles from './LotButtons.module.scss';
 import warning from '../../../assets/images/warning.png';
 import {ApproveRejectBtns} from "./ApproveRejectBtns/ApproveRejectBtns.jsx";
 
-const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
+const LotButtonsOld = ({userRole, id, buttonDelete, lotItem}) => {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(0);
     const dispatch = useDispatch();
