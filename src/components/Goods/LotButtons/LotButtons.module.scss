@@ -1,0 +1,24 @@
+.confirmBtn{
+  background-color: #009761;
+  border: none;
+  color: white!important;
+  height: 40px;
+  font-weight: 400!important;
+  width: 100%;
+}
+.description{
+  visibility: visible;
+  background-color: #FDECE9;
+  border: 1px solid #DC3737;
+  border-radius: 3px;
+  width: 240px;
+  display:flex ;
+  padding: 7px 10px 7px 0;
+  align-items: center;
+  word-break: break-all;
+  img{
+    height: 16px;
+    margin: 15px!important;
+
+  }
+}

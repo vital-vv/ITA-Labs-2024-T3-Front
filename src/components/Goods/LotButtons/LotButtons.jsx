@@ -1,90 +1,119 @@
 import Hammer from '../../../assets/svg/Hammer.jsx';
 import Cart from '../../../assets/svg/Cart.jsx';
 import Trash from '../../../assets/svg/Trash.jsx';
-import DoneIcon from '@mui/icons-material/Done';
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import { useDispatch, useSelector } from 'react-redux';
-import { approveLot } from '../../../features/filter/filterSlice.js';
-import { ModalForReject } from './ModalForReject/ModalForReject.jsx';
-import { useState } from 'react';
-import { selectUserData } from '../../../features/currentUser/currentUserSlice.js';
-import { ModalWindow } from '../ModalWindow/ModalWindow.jsx';
-import { changeModalThrough } from '../../../features/lots/lotsSlice.js';
+import {useDispatch, useSelector} from 'react-redux';
+import {buyLot, confirmLot} from '../../../features/filter/filterSlice.js';
+import {useState} from 'react';
+import {selectUserData} from '../../../features/currentUser/currentUserSlice.js';
+import {ModalWindow} from '../ModalWindow/ModalWindow.jsx';
+import {changeModalThrough} from '../../../features/lots/lotsSlice.js';
+import {useLocation} from "react-router-dom";
+import styles from './LotButtons.module.scss';
+import warning from '../../../assets/images/warning.png';
+import {ApproveRejectBtns} from "./ApproveRejectBtns/ApproveRejectBtns.jsx";
 
-const LotButtons = ({ userRole, id, buttonDelete, title, lotItem }) => {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(0);
-  const dispatch = useDispatch();
-  const [openBid, setOpenBid] = useState(false);
-  const [open, setOpen] = useState(false);
-  const currentTab = useSelector(selectUserData).currentTab;
+const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
+    const [minValue, setMinValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(0);
+    const dispatch = useDispatch();
+    const [openBid, setOpenBid] = useState(false);
+    const currentTab = useSelector(selectUserData).currentTab;
+    const location = useLocation().pathname;
+    const user = useSelector(selectUserData);
+    const toggleModalBids = (event) => {
+        setOpenBid((prevOpen) => !prevOpen);
+        if (lotItem.leading) {
+            setMinValue(lotItem.leading.amount + 1);
+        } else {
+            setMinValue(lotItem.start_price);
+        }
+        setMaxValue(lotItem.total_price - 1);
+        dispatch(changeModalThrough(event.currentTarget.id));
+    };
 
-  const toggleModalBids = (event) => {
-    setOpenBid((prevOpen) => !prevOpen);
-    if (lotItem.leading) {
-      setMinValue(lotItem.leading.amount + 1);
-    } else {
-      setMinValue(lotItem.start_price);
+    function confirmLotItem() {
+        dispatch(confirmLot(id));
     }
-    setMaxValue(lotItem.total_price - 1);
-    dispatch(changeModalThrough(event.currentTarget.id));
-  };
 
-  const toggleModal = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+    function buyLotForTotalPrice() {
+        dispatch(buyLot(id));
+    }
 
-  const handleApprove = (e) => {
-    dispatch(approveLot(e.target.id));
-  };
+    const handleUserActions = (user) => {
+        const actions = {
+            'Inactive': () => null,
+            'Pending': () => {
+                if (lotItem.status === 'cancelled') {
+                    return (
+                        <div className={styles.description}><img src={warning} alt={warning}/>{lotItem?.reject_message}
+                        </div>
+                    )
+                } else return null;
+            },
+            'Active': () => {
+                if (location === '/user/advertisements' && lotItem.leading !== null) {
+                    return (
+                        <button onClick={confirmLotItem} className={styles.confirmBtn}>✓ Confirm for
+                            ${lotItem?.leading?.amount} </button>
+                    )
+                } else if (location === '/user/advertisements' && user?.userData?.user_id === lotItem.created_by) {
+                    return null;
+                }
+            },
+        };
 
-  switch (userRole) {
-    case 'USER':
-      return (
-        <>
-          <button onClick={toggleModalBids} id={id}>
-            <Hammer />
-            My bet
-          </button>
-          <button>
-            <Cart />
-            Buy now
-          </button>
-          <button onClick={buttonDelete} id={id}>
-            <Trash />
-          </button>
-          <ModalWindow
-            open={openBid}
-            handleClose={toggleModalBids}
-            minValue={minValue}
-            maxValue={maxValue}
-          />
-        </>
-      );
-    case 'EMPLOYEE':
-      if (currentTab === 'Moderating') {
+        actions[user.currentTab]?.() || handleDefaultActions();
+    };
+
+    const handleEmployeeActions = (user) => {
+        const actions = {
+            'Moderating lots' : () => {
+                console.log('mode')
+                return <ApproveRejectBtns id={id} title={lotItem.title}/>
+            },
+            'Moderating orders': () => {
+               return <ApproveRejectBtns id={id} title={lotItem.title}/>
+            },
+        };
+
+        actions[user.currentTab]?.();
+    };
+
+    const handleDefaultActions = () => {
         return (
-          <>
-            <button onClick={handleApprove} id={id}>
-              <DoneIcon />
-              Approve
-            </button>
-            <button onClick={toggleModal} id={id}>
-              <DoDisturbIcon />
-              Reject
-            </button>
-            <ModalForReject
-              open={open}
-              handleClose={toggleModal}
-              id={id}
-              title={title}
-            />
-          </>
-        );
-      } else {
-        return null;
-      }
-  }
+            <>
+                <button onClick={toggleModalBids} id={id}>
+                    <Hammer/>
+                    {currentTab === 'Active' ? <p>New bet</p> : <p>My bet</p>}
+                </button>
+                <button onClick={buyLotForTotalPrice}>
+                    <Cart/>
+                    Buy now
+                </button>
+                {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
+                    <Trash/>
+                </button> : null}
+                <ModalWindow
+                    open={openBid}
+                    handleClose={toggleModalBids}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                />
+            </>
+        )
+    };
+
+    switch (userRole) {
+        case "USER":
+            handleUserActions(user);
+            break;
+        case "EMPLOYEE":
+            handleEmployeeActions(user);
+            break;
+        default:
+            handleDefaultActions();
+            break;
+    }
 };
 
-export { LotButtons };
+export {LotButtons};
