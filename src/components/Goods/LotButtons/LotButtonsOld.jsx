@@ -12,7 +12,7 @@ import styles from './LotButtons.module.scss';
 import warning from '../../../assets/images/warning.png';
 import {ApproveRejectBtns} from "./ApproveRejectBtns/ApproveRejectBtns.jsx";
 
-const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
+const LotButtonsOld = ({userRole, id, buttonDelete, lotItem}) => {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(0);
     const dispatch = useDispatch();
@@ -71,9 +71,9 @@ const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
                         <Cart/>
                         Buy now
                     </button>
-                    {currentTab !== 'Active' ? <button onClick={buttonDelete} id={id}>
-                        <Trash/>
-                    </button> : null}
+                    {/*{currentTab !== 'Active' || currentTab !== 'Outbid' ? <button onClick={buttonDelete} id={id}>*/}
+                    {/*    <Trash/>*/}
+                    {/*</button> : null}*/}
                     <ModalWindow
                         open={openBid}
                         handleClose={toggleModalBids}
@@ -88,6 +88,8 @@ const LotButtonsOld = ({userRole, id, buttonDelete, title, lotItem}) => {
             } else {
                 return null;
             }
+        case 'ADMIN':
+            return null;
     }
 };
 

@@ -17,24 +17,33 @@ function determineTabsName(betType, userRole) {
         },
         bets: {
             USER: ['Active', 'Outbid'],
-        }
+            ADMIN: ['Active', 'Sold', 'Auction Ended']
+        },
     };
     return tabsMap[betType] && tabsMap[betType][userRole] ? tabsMap[betType][userRole] : [];
 }
 
 function BetsNav() {
-    const { betType } = useParams();
+    const  {betType} = useParams();
     const dispatch = useDispatch();
     const userData = useSelector(selectUserData);
     const { role: userRole } = userData.userData;
     const [tabsName, setTabsName] = useState([]);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const currentTab = userData.currentTab;
+    console.log(window.location.pathname)
 
     useEffect(() => {
+
         if (betType && userRole) {
             const newTabsName = determineTabsName(betType, userRole);
+            setTabsName(newTabsName);
+            if (newTabsName[0]) {
+                dispatch(setActiveTab(newTabsName[0]));
+            }
+        } else if(window.location.pathname === '/team3/admin/bets'){
+            const newTabsName = determineTabsName("bets", userRole);
             setTabsName(newTabsName);
             if (newTabsName[0]) {
                 dispatch(setActiveTab(newTabsName[0]));
