@@ -3,8 +3,11 @@ import { Formik, Form } from 'formik';
 import { Input } from './Input.jsx';
 import { betsFormInitialValues, schemas } from './helper.js';
 import { Button } from './Button.jsx';
+import { useSelector } from 'react-redux';
 
-function ModalForm({ minValue, maxValue, onClose }) { 
+function ModalForm({ minValue, maxValue, onClose, quantity }) { 
+  const {currencyThisSession} = useSelector(state=> state.currentUser)
+
   return (
     <Formik
       initialValues={betsFormInitialValues}
@@ -18,7 +21,7 @@ function ModalForm({ minValue, maxValue, onClose }) {
               label="Quantity"
               name="quantity"
               id="quantity"
-              placeholder="10000 kg"
+              placeholder={quantity}
             />
             <Input
               label="Total amount"
@@ -28,7 +31,7 @@ function ModalForm({ minValue, maxValue, onClose }) {
             />
             {formik.isValid && (
               <div className={styles.label}>
-                From ${minValue} to ${maxValue}
+                From {currencyThisSession} {minValue.toFixed(2)} to {currencyThisSession} {maxValue}
               </div>
             )}
             <Button

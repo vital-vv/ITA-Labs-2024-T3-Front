@@ -20,6 +20,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
     const currentTab = useSelector(selectUserData).currentTab;
     const location = useLocation().pathname;
     const user = useSelector(selectUserData);
+    const quantity = `${lotItem.quantity} ${lotItem.weight}`;
     const toggleModalBids = (event) => {
         setOpenBid((prevOpen) => !prevOpen);
         if (lotItem.leading) {
@@ -30,6 +31,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
         setMaxValue(lotItem.total_price - 1);
         dispatch(changeModalThrough(event.currentTarget.id));
     };
+
 
     function confirmLotItem() {
         dispatch(confirmLot(id));
@@ -76,10 +78,12 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
             },
         };
 
+
         actions[user.currentTab]?.();
     };
 
     const handleDefaultActions = () => {
+
         return (
             <>
                 <button onClick={toggleModalBids} id={id}>
@@ -98,6 +102,7 @@ const LotButtons = ({userRole, id, buttonDelete, title, lotItem}) => {
                     handleClose={toggleModalBids}
                     minValue={minValue}
                     maxValue={maxValue}
+                    quantity={quantity}
                 />
             </>
         )

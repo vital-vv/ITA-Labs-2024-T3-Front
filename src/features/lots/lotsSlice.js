@@ -43,9 +43,9 @@ export const postNewLot = createAsyncThunk(
 
 export const getOneLot = createAsyncThunk(
   'lots/getOneLot',
-  async (id, { rejectWithValue }) => {
+  async (params,  { rejectWithValue }) => {
     try {
-      const response = await api.get(`/lots/${id}`);
+      const response = await api.get(`/lots/${params.id}?currency=${params.currency}`);
       if (response.status !== 200) {
         throw new Error('Something went wrong');
       }
@@ -515,7 +515,7 @@ const lotsSlice = createSlice({
       arrayForProcedure.unshift(arrayForProcedure[index]);
       arrayForProcedure.splice(index + 1, 1);
       state.picturesFiles = arrayForProcedure;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -544,7 +544,8 @@ const lotsSlice = createSlice({
         state.currentRegion = data.location.region;
         state.currentCountry = data.location.country;
         state.currentWeightMeasure = data.weight;
-        state.sliderCurrent = data.size;
+        state.sliderCurrent[0] = data.fromSize;
+        state.sliderCurrent[1] = data.toSize;
         state.title = data.title;
         state.currentWeight = data.quantity;
         state.currentPrice = data.total_price;

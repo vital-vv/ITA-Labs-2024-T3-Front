@@ -8,13 +8,14 @@ function Button({ children, isValid, isDirty, btnText, onClose, ...props }) {
   const { currentBid } = useSelector((state) => state.lots);
   const dispatch = useDispatch();
 
-  const {idForBid} = useSelector(state => state.lots)
+  const {idForBid} = useSelector(state => state.lots);
+  const {currencyThisSession} = useSelector(state => state.currentUser)
   
   const handleAddBid = () => {
     const bidData = {
       lot_id: idForBid, 
       amount: currentBid,
-      currency: 'USD', //Still HARDCODE!!!, send preferred currency
+      currency: currencyThisSession
     };
     dispatch(confirmBid(bidData));
     onClose();
