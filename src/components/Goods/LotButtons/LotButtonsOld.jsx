@@ -40,7 +40,6 @@ const LotButtonsOld = ({userRole, id, buttonDelete, lotItem}) => {
         dispatch(buyLot(id))
     }
 
-    console.log(lotItem)
     switch (userRole) {
 
         case 'USER':
