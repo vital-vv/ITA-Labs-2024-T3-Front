@@ -59,6 +59,8 @@ const LotButtonsOld = ({userRole, id, buttonDelete, lotItem}) => {
                 } else return
             } else if (currentTab === 'Inactive' || currentTab === 'Sold') {
                 return null;
+            } else if (currentTab === 'Outbid' && lotItem.status === 'sold'){
+                return null;
             }
         default:
             return (
