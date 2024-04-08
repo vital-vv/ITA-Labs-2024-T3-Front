@@ -61,7 +61,8 @@ function Goods({
                                 {
                                     location === '/user/orders' ? `${lotItem.desired_price}` :
                                         currentTabName.currentTab === 'Sold' && lotItem.leading === null ? `${lotItem.total_price} ${lotItem.currency}` :
-                                            currentTabName.currentTab === 'Outbid' ? `${lotItem.users.amount} ${lotItem.currency}` :
+
+                                            currentTabName.currentTab === 'Outbid' ? `${lotItem?.users?.amount} ${lotItem.currency}` :
                                         lotItem.leading ? `${lotItem.leading.amount.toFixed(2)} ${lotItem.currency}` : 'No bets'}
                             </p>
                             <p className={!lotItem.leading ? classes.hidden : null}>
